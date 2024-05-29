@@ -7,9 +7,12 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
+const logoImg = require("@/assets/images/logo.png");
 
 export default function LoginScreen({ navigation }: any) {
   const signupHandler = () => navigation.navigate("signup");
@@ -21,8 +24,11 @@ export default function LoginScreen({ navigation }: any) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>Hello!</Text>
-          <Text style={styles.subHeaderText}>Welcome back to DumoEats!</Text>
+          <Image source={logoImg} style={styles.logo}/>
+          <View style={styles.headerText}>
+            <Text style={styles.subHeaderTextHello}>Hello! </Text>
+            <Text style={styles.subHeaderText}>Welcome back to DumoEats!</Text>
+          </View>
         </View>
         <View style={styles.details}>
           <TextInput
@@ -79,15 +85,24 @@ const styles = StyleSheet.create({
   },
 
   headerText: {
-    fontSize: 35,
-    fontWeight: "bold",
-    color: "darkgreen",
+    // fontSize: 35,
+    // fontWeight: "bold",
+    // color: "darkgreen",
+    flexDirection:"row",
   },
+
+  subHeaderTextHello: {
+    fontWeight: "bold",
+    marginVertical: 10,
+    color:"darkgreen",
+  },
+  
 
   subHeaderText: {
     fontWeight: "bold",
     marginVertical: 10,
   },
+
   details: {
     margin: 5,
     padding: 35,
@@ -136,4 +151,9 @@ const styles = StyleSheet.create({
     padding: 5,
     color: "white",
   },
+
+  logo: {
+    height:50,
+    width:220,
+  }
 });

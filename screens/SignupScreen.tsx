@@ -14,8 +14,12 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function SignupScreen({ navigation }: any) {
   const haveAccountHandler: any = () => navigation.navigate("login");
-  const [visible, setVisibility] = useState(false);
-  const pressHandler = () => setVisibility(!visible);
+  const [visible1, setVisibility1] = useState(false);
+  const [visible2, setVisibility2] = useState(false);
+
+  const pressHandler1 = () => setVisibility1(!visible1);
+  const pressHandler2 = () => setVisibility2(!visible2);
+
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -42,10 +46,10 @@ export default function SignupScreen({ navigation }: any) {
               style={styles.input}
               placeholderTextColor={"grey"}
               placeholder=" Password"
-              secureTextEntry={!visible}
+              secureTextEntry={!visible1}
             />
-            <TouchableOpacity style={styles.visible} onPress={pressHandler}>
-              {visible ? (
+            <TouchableOpacity style={styles.visible} onPress={pressHandler1}>
+              {visible1 ? (
                 <Ionicons name="eye" size={22} color="black" />
               ) : (
                 <Ionicons name="eye-off" size={22} color="black" />
@@ -57,10 +61,10 @@ export default function SignupScreen({ navigation }: any) {
               style={styles.input}
               placeholder="Confirm Password"
               placeholderTextColor={"grey"}
-              secureTextEntry={!visible}
+              secureTextEntry={!visible2}
             />
-            <TouchableOpacity onPress={pressHandler} style={styles.visible}>
-              {visible ? (
+            <TouchableOpacity onPress={pressHandler2} style={styles.visible}>
+              {visible2 ? (
                 <Ionicons name="eye" size={22} color="black" />
               ) : (
                 <Ionicons name="eye-off" size={22} color="black" />
