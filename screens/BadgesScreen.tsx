@@ -13,9 +13,9 @@ import React, { useState } from "react";
 
 export default function BadgesScreen() {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text>badge</Text>
-        </View>
+        </SafeAreaView>
     )
 }
 

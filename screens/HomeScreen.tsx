@@ -3,15 +3,13 @@ import {
     View,
     StyleSheet,
     SafeAreaView,
-    TextInput,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Keyboard,
-    Image,
   } from "react-native";
 import React, { useState } from "react";
+import ProgressTracker from "@/components/ProgressTracker";
+import UpdateScreen from "./UpdateScreen";
 
 export default function HomeScreen() {
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -20,7 +18,9 @@ export default function HomeScreen() {
 
             <View style={styles.progress}>
                 <Text style={styles.calories}>Calories (Kcal):</Text>
-                
+                <View style={styles.bar}>
+                    <ProgressTracker/>
+                </View>
             </View>
 
             <View style={styles.header}>
@@ -53,6 +53,12 @@ const styles = StyleSheet.create({
 
     calories: {
         fontSize: 15,
-        paddingLeft: 8,
+        paddingLeft: 18,
+        marginVertical: 10,
+    },
+
+    bar: {
+        paddingHorizontal:15,
+        marginBottom: 20,
     },
 })

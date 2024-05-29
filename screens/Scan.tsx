@@ -13,9 +13,9 @@ import React, { useState } from "react";
 
 export default function Scan() {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text>camera</Text>
-        </View>
+        </SafeAreaView>
     )
 }
 

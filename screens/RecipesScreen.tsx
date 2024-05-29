@@ -13,9 +13,9 @@ import React, { useState } from "react";
 
 export default function RecipesScreen() {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text>recipes</Text>
-        </View>
+        </SafeAreaView>
     )
 }
 
