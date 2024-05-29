@@ -11,10 +11,10 @@ import {
   } from "react-native";
 import React, { useState } from "react";
 
-export default function RecipesScreen() {
+export default function BadgesScreen() {
     return (
         <View style={styles.container}>
-            <Text>recipes</Text>
+            <Text>badge</Text>
         </View>
     )
 }

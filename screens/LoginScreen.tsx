@@ -19,6 +19,7 @@ export default function LoginScreen({ navigation }: any) {
   const forgetHandler = () => navigation.navigate("forget");
   const [visible, setVisibility] = useState(false);
   const pressHandler = () => setVisibility(!visible);
+  const loginHandler = () => navigation.navigate("main");
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -57,7 +58,10 @@ export default function LoginScreen({ navigation }: any) {
             </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity 
+          style={styles.loginButton}
+          onPress={loginHandler}
+          >
           <Text style={styles.login}>Log In</Text>
         </TouchableOpacity>
         <View>

@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "@/screens/LoginScreen";
 import SignupScreen from "@/screens/SignupScreen";
 import ForgotScreen from "@/screens/ForgotPWScreen";
+import TabNavigation from "@/components/navigation/TabNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,13 @@ export default function Index() {
       <Stack.Screen
         name="forget"
         component={ForgotScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="main"
+        component={TabNavigation}
         options={{
           headerShown: false,
         }}
