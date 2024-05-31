@@ -3,7 +3,9 @@
 ### Running frontend app
 
 1. Install dependencies for the project by entering this command:
-
+```bash
+cd Frontend
+```
 ```bash
 npm install
 ```
@@ -17,6 +19,9 @@ npx expo start
 ### Running backend app
 
 1. Start virtual environment
+```bash
+cd Backend
+```
 ```bash
 source .venv/bin/activate
 ```
