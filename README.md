@@ -9,9 +9,6 @@ cd Frontend
 ```bash
 npm install
 ```
-```bash
-yarn add expo
-```
 
 
 2. Run the app in development mode by entering this command:
