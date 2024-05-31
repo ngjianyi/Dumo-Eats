@@ -35,7 +35,7 @@ source .venv/bin/activate
 
 2. Install dependencies for the project by entering this command:
 ```bash
-pip install Django Djongo pymongo==3.12.3 pytz djangorestframework djangorestframework_simplejwt django_cors_headers
+pip install Django djongo==1.3.6 pymongo==3.12.3 pytz djangorestframework djangorestframework_simplejwt django_cors_headers dnspython
 ```
 
 3. Run the app in development mode by entering this command:
