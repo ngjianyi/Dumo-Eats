@@ -24,7 +24,7 @@ npx expo start
 cd Backend
 ```
 ```bash
-rm .venv
+rm -r .venv
 ```
 ```bash
 python3 -m venv .venv
