@@ -32,7 +32,9 @@ pip install Django Djongo pymongo==3.12.3 pytz djangorestframework djangorestfra
 ```
 
 3. Run the app in development mode by entering this command:
-
+```bash
+cd OrbitalBackend
+```
 ```bash
 python manage.py runserver
 ```
