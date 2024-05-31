@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, SafeAreaView } from "react-native";
 import React, { useState } from "react";
-// import ProgressTracker from "@/components/ProgressTracker";
-// import UpdateScreen from "./UpdateScreen";
+import ProgressTracker from "@/components/ProgressTracker";
+import UpdateScreen from "./UpdateScreen";
 
 export default function HomeScreen() {
   return (
@@ -12,7 +12,7 @@ export default function HomeScreen() {
 
       <View style={styles.progress}>
         <Text style={styles.calories}>Calories (Kcal):</Text>
-        <View style={styles.bar}>{/* <ProgressTracker/> */}</View>
+        <View style={styles.bar}><ProgressTracker/></View>
       </View>
 
       <View style={styles.header}>
