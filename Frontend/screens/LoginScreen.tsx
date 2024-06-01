@@ -27,7 +27,8 @@ export default function LoginScreen({ navigation }: any) {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    const response = await fetch("http://127.0.0.1:8000/auth/login/", {
+    // const response = await fetch("http://127.0.0.1:8000/auth/login/", {
+    const response = await fetch("https://dumo-eats.onrender.com/auth/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

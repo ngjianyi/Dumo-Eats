@@ -20,29 +20,40 @@ export default function SignupScreen({ navigation }: any) {
   const pressHandler1 = () => setVisibility1(!visible1);
   const pressHandler2 = () => setVisibility2(!visible2);
 
-  const [email, setEmail] = useState('');
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
-  const [username, setUsername] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const handleSubmit = async () => {
     if (password1 !== password2) {
-      console.error('Passwords do not match');
+      console.error("Passwords do not match");
       return;
     }
-    const response = await fetch('http://127.0.0.1:8000/auth/register/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password: password1, password2: password2, username: username, first_name: firstName, last_name: lastName })
-    });
+    // const response = await fetch('http://127.0.0.1:8000/auth/register/', {
+    const response = await fetch(
+      "https://dumo-eats.onrender.com/auth/register/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password: password1,
+          password2: password2,
+          username: username,
+          first_name: firstName,
+          last_name: lastName,
+        }),
+      }
+    );
     if (response.ok) {
       const data = await response.json();
       console.log(data);
-      navigation.navigate("login")
+      navigation.navigate("login");
     } else {
       const error = await response.json();
       console.error(error);
@@ -59,7 +70,7 @@ export default function SignupScreen({ navigation }: any) {
           </Text>
         </View>
         <View style={styles.details}>
-        <TextInput
+          <TextInput
             style={styles.input}
             placeholder="Username"
             placeholderTextColor={"grey"}
@@ -70,14 +81,18 @@ export default function SignupScreen({ navigation }: any) {
             style={styles.input}
             placeholder="First name"
             placeholderTextColor={"grey"}
-            onChangeText={(val) => {setFirstName(val)}}
+            onChangeText={(val) => {
+              setFirstName(val);
+            }}
             autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
             placeholder="Last name"
             placeholderTextColor={"grey"}
-            onChangeText={(val) => {setLastName(val)}}
+            onChangeText={(val) => {
+              setLastName(val);
+            }}
             autoCapitalize="none"
           />
           <TextInput
@@ -93,7 +108,9 @@ export default function SignupScreen({ navigation }: any) {
               placeholderTextColor={"grey"}
               placeholder=" Password"
               secureTextEntry={!visible1}
-              onChangeText={(val) => {setPassword1(val)}}
+              onChangeText={(val) => {
+                setPassword1(val);
+              }}
               textContentType="oneTimeCode"
               autoCapitalize="none"
             />
@@ -111,7 +128,9 @@ export default function SignupScreen({ navigation }: any) {
               placeholder="Confirm Password"
               placeholderTextColor={"grey"}
               secureTextEntry={!visible2}
-              onChangeText={(val) => {setPassword2(val)}}
+              onChangeText={(val) => {
+                setPassword2(val);
+              }}
               textContentType="oneTimeCode"
               autoCapitalize="none"
             />
