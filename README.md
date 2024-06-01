@@ -20,7 +20,7 @@ npx expo start
 
 ### Running backend app
 
-1. Start virtual environment
+1. Start virtual environment:
 
 ```bash
 cd Backend/OrbitalBackend
@@ -40,7 +40,7 @@ source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 ```
 
-3. Set environment variables for connection to database
+3. Set environment variables for connection to database:
 
 ```bash
 export USERNAME='[USERNAME]'
