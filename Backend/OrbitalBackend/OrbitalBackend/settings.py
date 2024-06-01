@@ -91,7 +91,8 @@ DATABASES = {
         'NAME': 'DumoEats',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': f'mongodb+srv://{username}:{password}@dumoeats.iv9yl4q.mongodb.net/?retryWrites=true&w=majority&appName=DumoEats'
+            'host': f'mongodb+srv://{username}:{password}@dumoeats.iv9yl4q.mongodb.net/?retryWrites=true&w=majority&appName=DumoEats',
+            'port': 10000
         }
     }
 }
