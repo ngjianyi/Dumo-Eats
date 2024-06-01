@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-ni&$p8j!tmex&$=3i+_g_*rxi#p3&1%pd$)%bip7_)kv#p9=!u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dumo-eats.onrender.com']
 
 
 # Application definition
