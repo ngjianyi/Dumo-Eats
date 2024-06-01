@@ -24,24 +24,22 @@ npx expo start
 cd Backend
 ```
 ```bash
-rm -r .venv
-```
-```bash
 python3 -m venv .venv
 ```
 ```bash
 source .venv/bin/activate
 ```
 
-2. Install dependencies for the project by entering this command:
-```bash
-pip install Django djongo==1.3.6 pymongo==3.12.3 pytz djangorestframework djangorestframework_simplejwt django_cors_headers dnspython
-```
-
-3. Run the app in development mode by entering this command:
+2. Install dependencies for the project:
 ```bash
 cd OrbitalBackend
 ```
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+3. Run the app in development mode by entering this command:
+
 ```bash
 python manage.py runserver
 ```
