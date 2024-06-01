@@ -9,3 +9,4 @@ PyJWT==2.8.0
 pymongo==3.12.3
 pytz==2024.1
 sqlparse==0.2.4
+gunicorn==22.0.0
