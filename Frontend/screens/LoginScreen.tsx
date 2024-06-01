@@ -44,6 +44,9 @@ export default function LoginScreen({ navigation }: any) {
       const error = await response.json();
       console.error(error);
     }
+    setUsername("");
+    setPassword("");
+    Keyboard.dismiss();
   };
 
   return (
@@ -61,6 +64,7 @@ export default function LoginScreen({ navigation }: any) {
             style={styles.input}
             placeholderTextColor={"grey"}
             placeholder=" Username"
+            value={username}
             onChangeText={(val) => {
               setUsername(val);
             }}
@@ -72,6 +76,7 @@ export default function LoginScreen({ navigation }: any) {
               placeholderTextColor={"grey"}
               placeholder=" Password"
               secureTextEntry={!visible}
+              value={password}
               onChangeText={(val) => {
                 setPassword(val);
               }}
