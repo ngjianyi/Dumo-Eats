@@ -8,13 +8,15 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as SecureStore from "expo-secure-store";
 // import axios, { AxiosError } from "axios";
-
+import {AUTH} from "../firebaseCONFIG";
+import { User, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 const logoImg = require("@/assets/images/logo.png");
 
 export default function LoginScreen({ navigation }: any) {
@@ -23,32 +25,70 @@ export default function LoginScreen({ navigation }: any) {
   const [visible, setVisibility] = useState(false);
   const pressHandler = () => setVisibility(!visible);
 
-  const [username, setUsername] = useState("");
+
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const[userLogedIn, setUserLogIn] = useState<User | null>(null);
+  const auth = AUTH;
 
   const handleSubmit = async () => {
-    // const response = await fetch("http://127.0.0.1:8000/auth/login/", {
-    const response = await fetch("https://dumo-eats.onrender.com/auth/login/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      SecureStore.setItemAsync("refresh", data["refresh"]);
-      AsyncStorage.setItem("access", data["access"]);
-      navigation.navigate("main");
-    } else {
-      const error = await response.json();
-      console.error(error);
+    setLoading(true);
+    try {  
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      if (!auth.currentUser?.emailVerified) {
+        alert("Email not verified");
+      }
+    } catch (error: any){
+      console.log(error);
+      alert("log in failed: " + error.message);
+    } finally {
+      setLoading(false);
     }
-    setUsername("");
-    setPassword("");
-    Keyboard.dismiss();
-  };
+  }
+  //observer that listens for changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(AUTH,(user) => {
+      console.log(user);
+      if (user && AUTH.currentUser?.emailVerified) {
+        setUserLogIn(user);
+      } else if (user == null) {
+        setUserLogIn(user);
+      }
+    })
+    return () => {
+      unsubscribe;
+    }
+  })
+
+  if (userLogedIn) {
+    navigation.navigate("main");
+    console.log(userLogedIn);
+  }
+
+  // const handleSubmit = async () => {
+  //   // const response = await fetch("http://127.0.0.1:8000/auth/login/", {
+  //   const response = await fetch("https://dumo-eats.onrender.com/auth/login/", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ username, password }),
+  //   });
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     console.log(data);
+  //     SecureStore.setItemAsync("refresh", data["refresh"]);
+  //     AsyncStorage.setItem("access", data["access"]);
+  //     navigation.navigate("main");
+  //   } else {
+  //     const error = await response.json();
+  //     console.error(error);
+  //   }
+  //   setUsername("");
+  //   setPassword("");
+  //   Keyboard.dismiss();
+  // };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -64,10 +104,10 @@ export default function LoginScreen({ navigation }: any) {
           <TextInput
             style={styles.input}
             placeholderTextColor={"grey"}
-            placeholder=" Username"
-            value={username}
+            placeholder=" Email"
+            value={email}
             onChangeText={(val) => {
-              setUsername(val);
+              setEmail(val);
             }}
             autoCapitalize="none"
           />
@@ -100,6 +140,7 @@ export default function LoginScreen({ navigation }: any) {
         <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
           <Text style={styles.login}>Log In</Text>
         </TouchableOpacity>
+        {loading ? (<ActivityIndicator size="large" color="deepskyblue"/>): true}
         <View>
           <Text style={{ textAlign: "center" }}>
             Don't have an account yet?
