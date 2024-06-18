@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { RecipeContext } from "../RecipeProvider";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS, FONT, SIZES, SHADOWS } from "@/constants/Theme";
 
@@ -35,11 +36,14 @@ type Props = {
   capitalizeFirstLetter: (string: string) => string;
 };
 
-export default function Instructions({ items, capitalizeFirstLetter }: Props) {
+export default function Instructions() {
+  const { recipe, setRecipe, capitalizeFirstLetter } =
+    useContext<any>(RecipeContext);
+
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
-        {items?.map((item) => (
+        {recipe?.analyzedInstructions.map((item: item) => (
           <View key={item.name}>
             <View>{item.name}</View>
             {item?.steps?.map((step: step) => (

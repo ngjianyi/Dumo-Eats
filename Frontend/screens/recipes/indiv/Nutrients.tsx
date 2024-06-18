@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { RecipeContext } from "../RecipeProvider";
 import { View, Text, StyleSheet } from "react-native";
 import { COLORS, FONT, SIZES } from "@/constants/Theme";
 
@@ -13,11 +15,14 @@ type Props = {
   capitalizeFirstLetter: (string: string) => string;
 };
 
-export default function Nutrients({ nutrients, capitalizeFirstLetter }: Props) {
+export default function Nutrients() {
+  const { recipe, setRecipe, capitalizeFirstLetter } =
+    useContext<any>(RecipeContext);
+
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
-        {nutrients.map((nutrient: nutrient) => (
+        {recipe?.nutrition.nutrients.map((nutrient: nutrient) => (
           <View style={styles.pointWrapper} key={nutrient.name}>
             <View style={styles.pointDot} />
             <Text style={styles.pointText}>

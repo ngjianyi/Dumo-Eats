@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, Text, Image } from "react-native";
 import { COLORS, FONT, SIZES } from "@/constants/Theme";
 import { StyleSheet } from "react-native";
@@ -9,7 +9,7 @@ type Props = {
   recipeCalories: number;
 };
 
-const Recipe = ({ recipeImage, recipeTitle, recipeCalories }: Props) => {
+const Recipe = memo(({ recipeImage, recipeTitle, recipeCalories }: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoBox}>
@@ -27,7 +27,7 @@ const Recipe = ({ recipeImage, recipeTitle, recipeCalories }: Props) => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useContext } from "react";
+import { RecipeContext } from "../RecipeProvider";
+import { View, Text, StyleSheet } from "react-native";
 import { COLORS, FONT, SIZES, SHADOWS } from "@/constants/Theme";
 
 type ingredient = {
@@ -21,8 +22,10 @@ type Props = {
   capitalizeFirstLetter: (string: string) => string;
 };
 
-export default function ({ ingredients, capitalizeFirstLetter }: Props) {
+export default function () {
   //   const [unit, setUnit] = useState("metric");
+  const { recipe, setRecipe, capitalizeFirstLetter } =
+    useContext<any>(RecipeContext);
 
   return (
     <View style={styles.container}>
@@ -39,7 +42,7 @@ export default function ({ ingredients, capitalizeFirstLetter }: Props) {
         </Text>
       </TouchableOpacity> */}
       <View style={styles.pointsContainer}>
-        {ingredients?.map((ingredient: ingredient) => (
+        {recipe?.nutrition.ingredients.map((ingredient: ingredient) => (
           <View style={styles.pointWrapper} key={ingredient.name}>
             <View style={styles.pointDot} />
             <Text style={styles.pointText}>

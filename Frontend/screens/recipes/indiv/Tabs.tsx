@@ -12,17 +12,17 @@ type buttonProps = {
 function TabButton({ name, activeTab, onHandleSearchType }: buttonProps) {
   return (
     <TouchableOpacity
-      style={
-        (styles.btn,
-        { backgroundColor: name === activeTab ? COLORS.primary : "#F3F4F8" })
-      }
+      style={{
+        ...styles.btn,
+        backgroundColor: name === activeTab ? COLORS.primary : "#F3F4F8",
+      }}
       onPress={onHandleSearchType}
     >
       <Text
-        style={
-          (styles.btnText,
-          { color: name === activeTab ? "#C3BFCC" : "#AAA9B8" })
-        }
+        style={{
+          ...styles.btnText,
+          color: name === activeTab ? "#C3BFCC" : "#AAA9B8",
+        }}
       >
         {name}
       </Text>

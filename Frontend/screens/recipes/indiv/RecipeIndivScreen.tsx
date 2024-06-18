@@ -1,11 +1,4 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
+import { Text, View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import React, { useState, useContext } from "react";
 import { RecipeContext } from "../RecipeProvider";
 import Tabs from "./Tabs";
@@ -15,10 +8,15 @@ import Nutrients from "./Nutrients";
 import Ingredients from "./Ingredients";
 import Instructions from "./Instructions";
 
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// const Tab = createBottomTabNavigator();
+
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+const Tab = createMaterialTopTabNavigator();
+
 export default function IndivScreen() {
   const { recipe, setRecipe } = useContext<any>(RecipeContext);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
 
   const tabs = ["Nutrition", "Ingredients", "Instructions"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -39,47 +37,43 @@ export default function IndivScreen() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const displayTabContent = () => {
-    switch (activeTab) {
-      case "Nutrition":
-        return (
-          <Nutrients
-            nutrients={recipe.nutrition.nutrients}
-            capitalizeFirstLetter={capitalizeFirstLetter}
-          />
-        );
+  // const displayTabContent = () => {
+  //   switch (activeTab) {
+  //     case "Nutrition":
+  //       return (
+  //         <Nutrients
+  //           nutrients={recipe.nutrition.nutrients}
+  //           capitalizeFirstLetter={capitalizeFirstLetter}
+  //         />
+  //       );
 
-      case "Ingredients":
-        return (
-          <Ingredients
-            ingredients={recipe.nutrition.ingredients}
-            capitalizeFirstLetter={capitalizeFirstLetter}
-          />
-        );
+  //     case "Ingredients":
+  //       return (
+  //         <Ingredients
+  //           ingredients={recipe.nutrition.ingredients}
+  //           capitalizeFirstLetter={capitalizeFirstLetter}
+  //         />
+  //       );
 
-      case "Instructions":
-        return (
-          <Instructions
-            items={recipe.analyzedInstructions}
-            capitalizeFirstLetter={capitalizeFirstLetter}
-          />
-        );
+  //     case "Instructions":
+  //       return (
+  //         <Instructions
+  //           items={recipe.analyzedInstructions}
+  //           capitalizeFirstLetter={capitalizeFirstLetter}
+  //         />
+  //       );
 
-      default:
-        return <Text>Something went wrong?</Text>;
-    }
-  };
+  //     default:
+  //       return <Text>Something went wrong</Text>;
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator size="large" />
-      ) : error ? (
-        <Text>Something went wrong</Text>
-      ) : (
+      {
         <ScrollView showsVerticalScrollIndicator={false}>
-          <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-            <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
+          <SafeAreaView style={styles.headerContainer}>
+            <View style={styles.header}>
               <Recipe
                 recipeImage={recipe.image}
                 recipeTitle={recipe.title}
@@ -93,12 +87,17 @@ export default function IndivScreen() {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
               />
+              <Tab.Navigator>
+                <Tab.Screen name="Nutrition" component={Nutrients} />
+                <Tab.Screen name="Ingredients" component={Ingredients} />
+                <Tab.Screen name="Instructions" component={Instructions} />
+              </Tab.Navigator>
 
-              {displayTabContent()}
+              {/* {displayTabContent()} */}
             </View>
           </SafeAreaView>
         </ScrollView>
-      )}
+      }
     </SafeAreaView>
   );
 }
@@ -107,120 +106,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
-  list: {
+  headerContainer: {
     flex: 1,
+    backgroundColor: COLORS.lightWhite,
   },
-
-  searchHeader: {
-    backgroundColor: "lightskyblue",
-    borderRadius: 20,
-    marginVertical: 20,
-    marginHorizontal: 14,
-    alignItems: "center",
-  },
-
-  subHeader: {
-    width: "85%",
-  },
-
-  input: {
-    padding: 10,
-    fontSize: 16,
-  },
-
-  searchBar: {
-    backgroundColor: "white",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingLeft: 10,
-    marginTop: 10,
-    borderRadius: 20,
-  },
-
-  headerButtons: {
-    marginVertical: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  slider: {
-    justifyContent: "center",
-  },
-
-  cameraView: {
-    marginLeft: "30%",
-  },
-
-  camera: {
-    backgroundColor: "white",
-    borderRadius: 160,
-    width: 70,
-    height: 70,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  tabsContainer: {
-    width: "100%",
-    marginTop: 16,
-    padding: 3,
-  },
-  tab: {
-    paddingVertical: 12 / 2,
-    paddingHorizontal: 12,
-    marginHorizontal: 2,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "#444262",
-  },
-  tabText: {
-    fontFamily: "DMMedium",
-    color: "#444262",
-  },
-
-  recipeItem: {
-    flex: 1,
-    backgroundColor: "coral",
-    marginVertical: 5,
-    borderRadius: 20,
-    marginHorizontal: 14,
-    justifyContent: "center",
-  },
-
-  content: {
-    flexDirection: "row",
-    marginVertical: 20,
-    alignItems: "center",
-    marginLeft: 30,
-    justifyContent: "space-between",
-  },
-
-  image: {
-    backgroundColor: "white",
-    marginRight: "10%",
-  },
-
-  name: {
-    fontSize: 25,
-    fontStyle: "italic",
-    color: "teal",
-    marginLeft: 0,
-  },
-
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  healthy: {
-    borderRadius: 20,
-    backgroundColor: "lightgreen",
-    padding: 10,
-  },
-  unhealthy: {
-    borderRadius: 20,
-    backgroundColor: "red",
-    padding: 7,
+  header: {
+    padding: SIZES.medium,
+    paddingBottom: SIZES.xSmall,
   },
 });

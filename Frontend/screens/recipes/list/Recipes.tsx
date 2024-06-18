@@ -5,18 +5,28 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  RefreshControl,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { RecipeContext } from "@/screens/recipes/RecipeProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 
-export default function Recipe({ recipes, navigation }: any) {
+export default function Recipe({ recipes, getRecipes, navigation }: any) {
   const { recipe, setRecipe } = useContext<any>(RecipeContext);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getRecipes();
+    setRefreshing(false);
+  };
+
   const handlePress = (item: any) => {
     setRecipe(item);
     navigation.navigate("indiv");
   };
+
   return (
     <View style={styles.list}>
       <FlatList
@@ -58,6 +68,9 @@ export default function Recipe({ recipes, navigation }: any) {
           </View>
         )}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </View>
   );
