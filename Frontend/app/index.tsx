@@ -10,7 +10,8 @@ const Stack = createNativeStackNavigator();
 
 export default function Index() {
   return (
-    <Stack.Navigator initialRouteName="login">
+    // NOTE TO TO CHANGE BACK TO LOGIN AFTER TESTING
+    <Stack.Navigator initialRouteName="main">
       <Stack.Screen
         name="signup"
         component={SignupScreen}

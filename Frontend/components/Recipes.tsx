@@ -1,145 +1,157 @@
 import {
-    Text,
-    View,
-    StyleSheet,
-    SafeAreaView,
-    TextInput,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Keyboard,
-    Image,
-    FlatList,
-  } from "react-native";
-  import React, { useState } from "react";
-  import Ionicons from "@expo/vector-icons/Ionicons";
-  
-  export default function Recipe() {
-    const [recipes, setRecipes] = useState([
-      {
-        name: "Chicken rice",
-        key: 1,
-        img: require("@/assets/images/taco.png"),
-        status: "Healthier!",
-        healthy: true,
-      },
-      {
-        name: "Prawn fried rice",
-        key: 2,
-        img: require("@/assets/images/fried-rice.png"),
-        status: " High in sodium!",
-        healthy: false,
-      },
-      {
-        name: "Caesar Salad",
-        key: 3,
-        img: require("@/assets/images/salad.png"),
-        status: " Healthier!",
-        healthy: true,
-      },
-  
-      {
-        name: "Carbonara",
-        key: 4,
-        img: require("@/assets/images/pasta.png"),
-        status: " High in sodium!",
-        healthy: false,
-      },
-    ]);
-    return (
-      <View style={styles.list}>
-        <FlatList
-          data={recipes}
-          renderItem={({ item }) => (
-            <View style={styles.recipeItem}>
-              <View style={styles.content}>
-                <TouchableOpacity>
-                  <Text style={styles.name}>{item.name}</Text>
-                </TouchableOpacity>
-                <View style={styles.image}>
-                  <Image source={item.img} style={{ width: 100, height: 100 }} />
-                </View>
-              </View>
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  FlatList,
+} from "react-native";
+import React, { useContext } from "react";
+import { RecipeContext } from "@/screens/recipes/RecipeProvider";
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+export default function Recipe({ recipes, navigation }: any) {
+  const { id, setId, recipe, setRecipe } = useContext<any>(RecipeContext);
+  const handlePress = (item: any) => {
+    setId(item.id);
+    setRecipe(item);
+    navigation.navigate("indiv");
+  };
+  return (
+    <View style={styles.list}>
+      <FlatList
+        data={recipes}
+        renderItem={({ item }) => (
+          <View style={styles.container}>
+            <View style={styles.textContainer}>
+              <TouchableOpacity onPress={() => handlePress(item)}>
+                <Text style={styles.jobName} numberOfLines={1}>
+                  {item.title}
+                </Text>
+              </TouchableOpacity>
+
+              <Text style={styles.jobType}>
+                Calories: {Math.ceil(item.calories)}
+              </Text>
               <View style={styles.buttons}>
                 <TouchableOpacity>
-                  <Ionicons name="heart-outline" size={40} color="black" />
+                  <Ionicons name="heart-outline" size={25} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Ionicons name="chatbubble-outline" size={35} color="black" />
+                  <Ionicons name="chatbubble-outline" size={25} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Ionicons name="bookmark-outline" size={35} color="black" />
+                  <Ionicons name="bookmark-outline" size={25} color="black" />
                 </TouchableOpacity>
-                <View>
-                  {item.healthy ? (
-                    <View style={styles.healthy}>
-                      <Text>{item.status}</Text>
-                    </View>
-                  ) : (
-                    <View style={styles.unhealthy}>
-                      <Text>{item.status}</Text>
-                    </View>
-                  )}
-                </View>
-  
                 <TouchableOpacity>
-                  <Ionicons name="arrow-redo-outline" size={35} color="black" />
+                  <Ionicons name="arrow-redo-outline" size={25} color="black" />
                 </TouchableOpacity>
               </View>
             </View>
-          )}
-        />
-      </View>
-    );
-  }
-  
-  const styles = StyleSheet.create({
-    list: {
-      flex: 1,
-    },
-    recipeItem: {
-      flex: 1,
-      backgroundColor: "coral",
-      marginVertical: 5,
-      borderRadius: 20,
-      marginHorizontal: 14,
-      justifyContent: "center",
-    },
-  
-    content: {
-      flexDirection: "row",
-      marginVertical: 20,
-      alignItems: "center",
-      marginLeft: 30,
-      justifyContent: "space-between",
-    },
-  
-    image: {
-      backgroundColor: "white",
-      marginRight: "10%",
-    },
-  
-    name: {
-      fontSize: 25,
-      fontStyle: "italic",
-      color: "teal",
-      marginLeft: 0,
-    },
-  
-    buttons: {
-      flexDirection: "row",
-      justifyContent: "space-evenly",
-      alignItems: "center",
-      marginBottom: 10,
-    },
-    healthy: {
-      borderRadius: 20,
-      backgroundColor: "lightgreen",
-      padding: 10,
-    },
-    unhealthy: {
-      borderRadius: 20,
-      backgroundColor: "red",
-      padding: 7,
-    },
-  });
-  
+            <TouchableOpacity style={styles.logoContainer}>
+              <Image
+                src={item.image}
+                resizeMode="contain"
+                style={styles.logImage}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  top: {
+    flexDirection: "row",
+  },
+  list: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: "#FFF",
+    margin: 5,
+    // ...SHADOWS.medium,
+    // shadowColor: COLORS.white,
+  },
+  logoContainer: {
+    width: 70,
+    height: 70,
+    backgroundColor: "#F3F4F8",
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logImage: {
+    width: "90%",
+    height: "90%",
+  },
+  textContainer: {
+    flex: 1,
+    marginHorizontal: 16,
+  },
+  jobName: {
+    fontSize: 16,
+    fontFamily: "DMBold",
+    color: "#312651",
+  },
+  jobType: {
+    fontSize: 12 + 2,
+    fontFamily: "DMRegular",
+    color: "#83829A",
+    marginTop: 3,
+    textTransform: "capitalize",
+  },
+  //   recipeItem: {
+  //     flex: 1,
+  //     backgroundColor: "coral",
+  //     marginVertical: 5,
+  //     borderRadius: 20,
+  //     marginHorizontal: 14,
+  //     justifyContent: "center",
+  //   },
+
+  //   content: {
+  //     flexDirection: "row",
+  //     marginVertical: 20,
+  //     alignItems: "center",
+  //     marginLeft: 30,
+  //     justifyContent: "space-between",
+  //   },
+
+  //   image: {
+  //     backgroundColor: "white",
+  //     marginRight: "10%",
+  //   },
+
+  //   name: {
+  //     fontSize: 25,
+  //     fontStyle: "italic",
+  //     color: "teal",
+  //     marginLeft: 0,
+  //   },
+
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: 5,
+  },
+  //   healthy: {
+  //     borderRadius: 20,
+  //     backgroundColor: "lightgreen",
+  //     padding: 10,
+  //   },
+  //   unhealthy: {
+  //     borderRadius: 20,
+  //     backgroundColor: "red",
+  //     padding: 7,
+  //   },
+});
