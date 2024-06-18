@@ -10,9 +10,10 @@ type nutrient = {
 
 type Props = {
   nutrients: nutrient[];
+  capitalizeFirstLetter: (string: string) => string;
 };
 
-export default function Nutrients({ nutrients }: Props) {
+export default function Nutrients({ nutrients, capitalizeFirstLetter }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
@@ -20,7 +21,7 @@ export default function Nutrients({ nutrients }: Props) {
           <View style={styles.pointWrapper} key={nutrient.name}>
             <View style={styles.pointDot} />
             <Text style={styles.pointText}>
-              {nutrient.name}: {nutrient.amount}
+              {capitalizeFirstLetter(nutrient.name)}: {nutrient.amount}
               {nutrient.unit} ({nutrient.percentOfDailyNeeds}% of daily needs)
             </Text>
           </View>

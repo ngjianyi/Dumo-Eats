@@ -1,5 +1,5 @@
 import React from "react";
-import RecipeIndivScreen from "./RecipeIndivScreen";
+import RecipeIndivScreen from "./indiv/RecipeIndivScreen";
 import RecipeListScreen from "./RecipeListScreen";
 import { RecipeProvider } from "./RecipeProvider";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

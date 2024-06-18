@@ -32,9 +32,10 @@ type item = {
 
 type Props = {
   items: item[];
+  capitalizeFirstLetter: (string: string) => string;
 };
 
-export default function Instructions({ items }: Props) {
+export default function Instructions({ items, capitalizeFirstLetter }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
@@ -45,7 +46,7 @@ export default function Instructions({ items }: Props) {
               <View style={styles.pointWrapper} key={item.name + step.number}>
                 <View style={styles.pointDot} />
                 <Text style={styles.pointText}>
-                  {step.number}. {step.step}
+                  {step.number}. {capitalizeFirstLetter(step.step)}
                 </Text>
               </View>
             ))}

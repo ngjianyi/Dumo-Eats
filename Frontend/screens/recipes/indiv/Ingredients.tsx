@@ -18,10 +18,11 @@ type ingredient = {
 
 type Props = {
   ingredients: ingredient[];
+  capitalizeFirstLetter: (string: string) => string;
 };
 
-export default function ({ ingredients }: Props) {
-  const [unit, setUnit] = useState("metric");
+export default function ({ ingredients, capitalizeFirstLetter }: Props) {
+  //   const [unit, setUnit] = useState("metric");
 
   return (
     <View style={styles.container}>
@@ -39,13 +40,11 @@ export default function ({ ingredients }: Props) {
       </TouchableOpacity> */}
       <View style={styles.pointsContainer}>
         {ingredients?.map((ingredient: ingredient) => (
-          <View
-            style={styles.pointWrapper}
-            key={ingredient.amount + ingredient.name}
-          >
+          <View style={styles.pointWrapper} key={ingredient.name}>
             <View style={styles.pointDot} />
             <Text style={styles.pointText}>
-              {ingredient.name}: {ingredient.amount} {ingredient.unit}
+              {capitalizeFirstLetter(ingredient.name)}: {ingredient.amount}{" "}
+              {ingredient.unit}
             </Text>
           </View>
         ))}

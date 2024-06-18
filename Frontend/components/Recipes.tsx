@@ -9,11 +9,11 @@ import {
 import React, { useContext } from "react";
 import { RecipeContext } from "@/screens/recipes/RecipeProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 
 export default function Recipe({ recipes, navigation }: any) {
-  const { id, setId, recipe, setRecipe } = useContext<any>(RecipeContext);
+  const { recipe, setRecipe } = useContext<any>(RecipeContext);
   const handlePress = (item: any) => {
-    setId(item.id);
     setRecipe(item);
     navigation.navigate("indiv");
   };
@@ -31,7 +31,7 @@ export default function Recipe({ recipes, navigation }: any) {
               </TouchableOpacity>
 
               <Text style={styles.jobType}>
-                Calories: {Math.ceil(item.calories)}
+                Calories: {Math.ceil(item.nutrition.nutrients[0].amount)}
               </Text>
               <View style={styles.buttons}>
                 <TouchableOpacity>
@@ -57,6 +57,7 @@ export default function Recipe({ recipes, navigation }: any) {
             </TouchableOpacity>
           </View>
         )}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -74,70 +75,41 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    padding: 16,
-    borderRadius: 12,
+    padding: SIZES.medium,
+    marginVertical: SIZES.xSmall / 4,
+    borderRadius: SIZES.small,
     backgroundColor: "#FFF",
-    margin: 5,
-    // ...SHADOWS.medium,
-    // shadowColor: COLORS.white,
+    ...SHADOWS.medium,
+    shadowColor: COLORS.white,
   },
   logoContainer: {
-    width: 70,
-    height: 70,
-    backgroundColor: "#F3F4F8",
-    borderRadius: 16,
+    width: 50,
+    height: 50,
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.medium,
     justifyContent: "center",
     alignItems: "center",
   },
   logImage: {
-    width: "90%",
-    height: "90%",
+    width: "70%",
+    height: "70%",
   },
   textContainer: {
     flex: 1,
-    marginHorizontal: 16,
+    marginHorizontal: SIZES.medium,
   },
   jobName: {
-    fontSize: 16,
+    fontSize: SIZES.medium,
     fontFamily: "DMBold",
-    color: "#312651",
+    color: COLORS.primary,
   },
   jobType: {
-    fontSize: 12 + 2,
+    fontSize: SIZES.small + 2,
     fontFamily: "DMRegular",
-    color: "#83829A",
+    color: COLORS.gray,
     marginTop: 3,
     textTransform: "capitalize",
   },
-  //   recipeItem: {
-  //     flex: 1,
-  //     backgroundColor: "coral",
-  //     marginVertical: 5,
-  //     borderRadius: 20,
-  //     marginHorizontal: 14,
-  //     justifyContent: "center",
-  //   },
-
-  //   content: {
-  //     flexDirection: "row",
-  //     marginVertical: 20,
-  //     alignItems: "center",
-  //     marginLeft: 30,
-  //     justifyContent: "space-between",
-  //   },
-
-  //   image: {
-  //     backgroundColor: "white",
-  //     marginRight: "10%",
-  //   },
-
-  //   name: {
-  //     fontSize: 25,
-  //     fontStyle: "italic",
-  //     color: "teal",
-  //     marginLeft: 0,
-  //   },
-
   buttons: {
     flexDirection: "row",
     justifyContent: "space-between",

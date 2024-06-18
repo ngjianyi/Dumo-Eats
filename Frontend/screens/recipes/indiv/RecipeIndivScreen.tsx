@@ -5,25 +5,20 @@ import {
   SafeAreaView,
   ActivityIndicator,
   ScrollView,
-  RefreshControl,
 } from "react-native";
-import React, { useState, useEffect, useContext } from "react";
-import { RecipeContext } from "./RecipeProvider";
-import axios, { AxiosError } from "axios";
-import Tabs from "./indiv/Tabs";
-import Recipe from "./indiv/Recipe";
+import React, { useState, useContext } from "react";
+import { RecipeContext } from "../RecipeProvider";
+import Tabs from "./Tabs";
+import Recipe from "./Recipe";
 import { COLORS, SIZES } from "@/constants/Theme";
-import Nutrients from "./indiv/Nutrients";
-import Ingredients from "./indiv/Ingredients";
-import Instructions from "./indiv/Instructions";
+import Nutrients from "./Nutrients";
+import Ingredients from "./Ingredients";
+import Instructions from "./Instructions";
 
 export default function IndivScreen() {
-  const { id, setId } = useContext<any>(RecipeContext);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { recipe, setRecipe } = useContext<any>(RecipeContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [recipe, setRecipe] = useState<any>(null);
-
-  const [refreshing, setRefreshing] = useState(false);
 
   const tabs = ["Nutrition", "Ingredients", "Instructions"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -40,52 +35,35 @@ export default function IndivScreen() {
     protein: 8,
   };
 
-  const getRecipe = async () => {
-    setIsLoading(true);
-    const KEY: string = "429fc2334b13424f9ab79a250d6d4a3c";
-    const URL: string = `https://api.spoonacular.com/recipes/${id}/information`;
-    setIsLoading(true);
-    await axios
-      .get(URL, {
-        params: {
-          apiKey: KEY,
-          includeNutrition: true,
-        },
-      })
-      .then((response) => {
-        console.log("Indiv recipe:", response.data);
-        setRecipe(response.data);
-        console.log(response.data.nutrition.ingredients);
-        setIsLoading(false);
-        setError(false);
-      })
-      .catch((error: Error | AxiosError) => {
-        console.error("Error:", error);
-        setError(true);
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    getRecipe();
-  }, []);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    getRecipe();
-    setRefreshing(false);
-  };
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   const displayTabContent = () => {
     switch (activeTab) {
       case "Nutrition":
-        return <Nutrients nutrients={recipe.nutrition.nutrients} />;
+        return (
+          <Nutrients
+            nutrients={recipe.nutrition.nutrients}
+            capitalizeFirstLetter={capitalizeFirstLetter}
+          />
+        );
 
       case "Ingredients":
-        return <Ingredients ingredients={recipe.nutrition.ingredients} />;
+        return (
+          <Ingredients
+            ingredients={recipe.nutrition.ingredients}
+            capitalizeFirstLetter={capitalizeFirstLetter}
+          />
+        );
 
       case "Instructions":
-        return <Instructions items={recipe.analyzedInstructions} />;
+        return (
+          <Instructions
+            items={recipe.analyzedInstructions}
+            capitalizeFirstLetter={capitalizeFirstLetter}
+          />
+        );
 
       default:
         return <Text>Something went wrong?</Text>;
@@ -99,12 +77,7 @@ export default function IndivScreen() {
       ) : error ? (
         <Text>Something went wrong</Text>
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
+        <ScrollView showsVerticalScrollIndicator={false}>
           <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
             <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
               <Recipe

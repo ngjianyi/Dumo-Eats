@@ -15,11 +15,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import axios, { AxiosError } from "axios";
 import Recipes from "@/components/Recipes";
-
-// type StateContextType = {
-//   value: number;
-//   setValue: React.Dispatch<React.SetStateAction<number>>;
-// };
+import { SIZES } from "@/constants/Theme";
 
 export default function ListScreen({ navigation }: any) {
   const cuisineTypes = [
@@ -51,7 +47,7 @@ export default function ListScreen({ navigation }: any) {
     "Thai",
     "Vietnamese",
   ];
-  const [cuisineType, setCuisineType] = useState("American");
+  const [cuisineType, setCuisineType] = useState("Asian");
   const [query, setQuery] = useState<string>("chicken");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -70,16 +66,12 @@ export default function ListScreen({ navigation }: any) {
           instructionsRequired: true,
           addRecipeNutrition: true,
           addRecipeInstructions: true,
-          number: 1,
+          number: 5,
         },
       })
       .then((response) => {
         console.log("Response:", response.data);
         setRecipes(response.data.results);
-        console.log("SOPMETHING");
-        console.log(response.data.results[0].analyzedInstructions);
-        console.log(response.data.results[0].nutrition);
-        console.log("SOPMETHING");
         setIsLoading(false);
         setError(false);
       })
@@ -135,6 +127,7 @@ export default function ListScreen({ navigation }: any) {
               )}
               keyExtractor={(item) => item}
               horizontal
+              showsHorizontalScrollIndicator={false}
             />
           </View>
         </View>
@@ -153,6 +146,7 @@ export default function ListScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    margin: SIZES.xSmall / 2,
   },
 
   list: {
