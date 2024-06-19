@@ -5,34 +5,36 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { SIZES, COLORS, FONT } from "@/constants/Theme";
 
 type Props = {
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
   handleClick: () => void;
+  navigation: any;
 };
 
-export default function Header({ query, setQuery, handleClick }: Props) {
-  const Drawer = createDrawerNavigator();
-
+export default function Header({
+  query,
+  setQuery,
+  handleClick,
+  navigation,
+}: Props) {
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.welcomeMessage}>Recipes</Text>
       </View>
       <View style={styles.searchContainer}>
-        <TouchableOpacity style={styles.filterBtn} onPress={handleClick}>
-          <AntDesign name="filter" size={24} color="black" />
+        <TouchableOpacity
+          style={styles.filterBtn}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        >
+          <Ionicons name="options" size={24} color="black" />
         </TouchableOpacity>
-        <NavigationContainer>
-          <Drawer.Navigator>
-            {/* Add your Drawer components here */}
-          </Drawer.Navigator>
-        </NavigationContainer>
 
         <View style={styles.searchWrapper}>
           <TextInput
@@ -40,6 +42,7 @@ export default function Header({ query, setQuery, handleClick }: Props) {
             value={query}
             onChangeText={(text) => setQuery(text)}
             placeholder="What are you looking for?"
+            autoCapitalize="none"
           />
         </View>
 
@@ -72,7 +75,7 @@ const styles = StyleSheet.create({
   searchWrapper: {
     flex: 1,
     backgroundColor: COLORS.white,
-    marginRight: SIZES.small,
+    marginHorizontal: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: SIZES.medium,

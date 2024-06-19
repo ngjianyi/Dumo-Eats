@@ -9,8 +9,9 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios, { AxiosError } from "axios";
+import { RecipeContext } from "../RecipeProvider";
 import Recipes from "@/screens/recipes/list/Recipes";
 import { SIZES, COLORS, FONT } from "@/constants/Theme";
 import Header from "./Header";
@@ -45,11 +46,25 @@ export default function RecipeListScreen({ navigation }: any) {
     "Thai",
     "Vietnamese",
   ];
+
+  const {
+    recipe,
+    setRecipe,
+    capitalizeFirstLetter,
+    includeIngredients,
+    setIncludeIngredients,
+    excludeIngredients,
+    setExcludeIngredients,
+    intolerances,
+    setIntolerances,
+  } = useContext<any>(RecipeContext);
+
   const [cuisineType, setCuisineType] = useState(cuisineTypes[0]);
   const [query, setQuery] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [recipes, setRecipes] = useState<any>(null);
+  const [totalRecipes, setTotalRecipes] = useState<number>(0);
 
   const getRecipes = async () => {
     setIsLoading(true);
@@ -60,16 +75,20 @@ export default function RecipeListScreen({ navigation }: any) {
       .get(URL, {
         params: {
           apiKey: KEY,
+          query: query,
           cuisine: cuisineType,
           instructionsRequired: true,
           addRecipeNutrition: true,
           addRecipeInstructions: true,
-          query: query,
+          intolerances: intolerances.toString(),
+          includeIngredients: includeIngredients.split(" ").toString(),
+          excludeIngredients: excludeIngredients.split(" ").toString(),
           number: 5,
         },
       })
       .then((response) => {
         console.log("Response:", response.data);
+        setTotalRecipes(response.data.totalResults);
         setRecipes(response.data.results);
         setIsLoading(false);
         setError(false);
@@ -89,7 +108,12 @@ export default function RecipeListScreen({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View>
-          <Header query={query} setQuery={setQuery} handleClick={getRecipes} />
+          <Header
+            query={query}
+            setQuery={setQuery}
+            handleClick={getRecipes}
+            navigation={navigation}
+          />
 
           <View style={styles.tabsContainer}>
             <FlatList
@@ -128,12 +152,14 @@ export default function RecipeListScreen({ navigation }: any) {
         <ActivityIndicator style={styles.activity} size="large" />
       ) : error ? (
         <Text style={styles.error}>Something went wrong</Text>
-      ) : (
+      ) : totalRecipes > 0 ? (
         <Recipes
           recipes={recipes}
           navigation={navigation}
           getRecipes={getRecipes}
         />
+      ) : (
+        <Text style={styles.error}>No results</Text>
       )}
     </SafeAreaView>
   );

@@ -8,23 +8,21 @@ const Stack = createNativeStackNavigator();
 
 export default function RecipesStack() {
   return (
-    <RecipeProvider>
-      <Stack.Navigator
-        initialRouteName="list"
-        screenOptions={{
-          title: "",
-          headerBackTitleVisible: false,
+    <Stack.Navigator
+      initialRouteName="list"
+      screenOptions={{
+        title: "",
+        headerBackTitleVisible: false,
+      }}
+    >
+      <Stack.Screen
+        name="list"
+        component={RecipeListScreen}
+        options={{
+          headerShown: false,
         }}
-      >
-        <Stack.Screen
-          name="list"
-          component={RecipeListScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen name="indiv" component={RecipeIndivScreen} />
-      </Stack.Navigator>
-    </RecipeProvider>
+      />
+      <Stack.Screen name="indiv" component={RecipeIndivScreen} />
+    </Stack.Navigator>
   );
 }

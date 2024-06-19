@@ -63,10 +63,9 @@ export default function Instructions() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: SIZES.large,
     backgroundColor: "#FFF",
     borderRadius: SIZES.medium,
-    padding: SIZES.medium,
+    paddingHorizontal: SIZES.medium,
   },
   title: {
     fontSize: SIZES.large,
@@ -94,17 +93,5 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
     fontFamily: FONT.regular,
     marginLeft: SIZES.small,
-  },
-  btn: {
-    paddingVertical: SIZES.medium,
-    paddingHorizontal: SIZES.xLarge,
-    borderRadius: SIZES.medium,
-    marginLeft: 2,
-    ...SHADOWS.medium,
-    shadowColor: COLORS.white,
-  },
-  btnText: {
-    fontFamily: "DMMedium",
-    fontSize: SIZES.small,
   },
 });

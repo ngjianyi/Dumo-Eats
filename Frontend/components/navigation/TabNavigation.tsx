@@ -1,12 +1,12 @@
 import HomeScreen from "@/screens/HomeScreen";
 import ProfileScreen from "@/screens/ProfileScreen";
-import RecipesStack from "@/screens/recipes/RecipesStack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import BadgesScreen from "@/screens/BadgesScreen";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Scan from "@/screens/Scan";
+import Drawer from "@/screens/recipes/list/Drawer";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +30,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="Recipes"
-        component={RecipesStack}
+        component={Drawer}
         options={{
           tabBarIcon: ({ color }) => (
             <SimpleLineIcons name="compass" size={25} color={color} />

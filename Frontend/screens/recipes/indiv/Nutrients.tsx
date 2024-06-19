@@ -38,10 +38,9 @@ export default function Nutrients() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: SIZES.large,
     backgroundColor: "#FFF",
     borderRadius: SIZES.medium,
-    padding: SIZES.medium,
+    paddingHorizontal: SIZES.medium,
   },
   title: {
     fontSize: SIZES.large,
