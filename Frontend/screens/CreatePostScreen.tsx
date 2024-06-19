@@ -36,10 +36,6 @@ export default function CreatePostScreen() {
     const onSubmitHandler = async (value: any) => {
         setLoading(true);
         value.image = image;
-        // if (!image) {
-        //     alert("image is missing")
-        //     return
-        // }
         Keyboard.dismiss()
         console.log(value)
         try {
