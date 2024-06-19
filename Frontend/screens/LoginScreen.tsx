@@ -52,19 +52,20 @@ export default function LoginScreen({ navigation }: any) {
       console.log(user);
       if (user && AUTH.currentUser?.emailVerified) {
         setUserLogIn(user);
+        navigation.navigate("main");
       } else if (user == null) {
         setUserLogIn(user);
       }
+
     })
     return () => {
       unsubscribe;
     }
-  })
+  }, [])
 
-  if (userLogedIn) {
-    navigation.navigate("main");
-    console.log(userLogedIn);
-  }
+  // if (userLogedIn) {
+  //   navigation.navigate("main");
+  // }
 
   // const handleSubmit = async () => {
   //   // const response = await fetch("http://127.0.0.1:8000/auth/login/", {

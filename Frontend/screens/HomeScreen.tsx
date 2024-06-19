@@ -1,24 +1,51 @@
-import { Text, View, StyleSheet, SafeAreaView } from "react-native";
-import React, { useState } from "react";
+import {ScrollView, Text, View, StyleSheet, SafeAreaView } from "react-native";
+import React, { useState, useEffect } from "react";
 import ProgressTracker from "@/components/ProgressTracker";
 import UpdateScreen from "./UpdateScreen";
+//redux imports
+import { connect } from "react-redux"
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { fetchUserData } from "@/redux/action";
+import { DocumentData, collection, getDocs } from "firebase/firestore";
+import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import Feed from "@/components/Feed";
+
 
 export default function HomeScreen() {
+  const [posts, setPosts] = useState<DocumentData[]>([]);
+  //to retrieve  All posts from data base collection "Posts"
+  useEffect(() => {getAllPosts();},[])
+
+  const getAllPosts = async () => {
+  setPosts([])
+  //get all documents which points to subcollection inside main 'Posts' collection
+  const querySnapshot = await getDocs(collection(DATA_BASE, "Posts"));
+  //for each document reference
+  querySnapshot.forEach(async (doc) => {
+      // console.log(doc.id)
+      //for each subcollection, display all posts
+      const querySnapshotSubcollection = await getDocs(collection(DATA_BASE, "Posts", "" + doc.id, "Gojo's posts"));
+      querySnapshotSubcollection.forEach((subdoc) => {
+        console.log(doc.id + "=>", subdoc.data())
+        setPosts(currentPosts => [...currentPosts, subdoc.data()])
+      })
+  })};
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={{ fontSize: 18 }}>Today's progress</Text>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={{ fontSize: 18 }}>Today's progress</Text>
+        </View>
+        <View style={styles.progress}>
+          <Text style={styles.calories}>Calories (Kcal):</Text>
+          <View style={styles.bar}><ProgressTracker/></View>
+        </View>
 
-      <View style={styles.progress}>
-        <Text style={styles.calories}>Calories (Kcal):</Text>
-        <View style={styles.bar}><ProgressTracker/></View>
-      </View>
-
-      <View style={styles.header}>
-        <Text style={{ fontSize: 18 }}>Feed</Text>
-      </View>
-    </SafeAreaView>
+        <View style={styles.header}>
+          <Text style={{ fontSize: 18 }}>Feed</Text>
+        </View>
+        <Feed posts={posts}/>
+      </SafeAreaView>
   );
 }
 

@@ -21,9 +21,11 @@ export default function ProfileScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [calorieGoal, setGoal] = useState("");
   const logOutHandler = () => {
-    AUTH.signOut();
-    navigation.navigate("login");
-  }
+    AUTH.signOut().then(navigation.navigate("login"));
+  };
+  const uploadHandler = () => {
+    navigation.navigate("upload");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -62,10 +64,16 @@ export default function ProfileScreen({ navigation }: any) {
           style={styles.logoutButton}
           // onPress={() => navigation.navigate("login")}
           onPress={logOutHandler}
-
         >
           <Text style={styles.logout}>logout</Text>
         </TouchableOpacity>
+        {/* <TouchableOpacity
+          style={styles.logoutButton}
+          // onPress={() => navigation.navigate("login")}
+          onPress={logOutHandler}
+        >
+          <Text style={styles.logout}>upload</Text>
+        </TouchableOpacity> */}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
