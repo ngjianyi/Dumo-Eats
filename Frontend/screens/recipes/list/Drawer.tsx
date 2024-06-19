@@ -19,12 +19,14 @@ export default function Drawer() {
   const Drawer = createDrawerNavigator();
 
   const CustomDrawerContentComponent = (props: any) => (
-    <SafeAreaView
+    // <SafeAreaView
     // forceInset={{ top: "always", horizontal: "never" }}
-    >
+    // >
+    <View>
       <Filter />
-      {/* <DrawerItemList {...props} /> */}
-    </SafeAreaView>
+    </View>
+    // {/* <DrawerItemList {...props} /> */}
+    // </SafeAreaView>
   );
 
   return (

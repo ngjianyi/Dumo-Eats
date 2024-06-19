@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { SIZES, COLORS, FONT } from "@/constants/Theme";
+import { SIZES, COLORS } from "@/constants/Theme";
 
 type Props = {
   query: string;
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   welcomeMessage: {
-    fontFamily: FONT.bold,
+    // fontFamily: FONT.bold,
     fontSize: SIZES.xLarge,
     color: COLORS.primary,
     marginTop: 2,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   searchInput: {
-    fontFamily: FONT.regular,
+    // fontFamily: FONT.regular,
     width: "100%",
     height: "100%",
     paddingHorizontal: SIZES.medium,

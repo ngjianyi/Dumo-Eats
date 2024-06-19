@@ -13,7 +13,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios, { AxiosError } from "axios";
 import { RecipeContext } from "../RecipeProvider";
 import Recipes from "@/screens/recipes/list/Recipes";
-import { SIZES, COLORS, FONT } from "@/constants/Theme";
+import { SIZES, COLORS } from "@/constants/Theme";
 import Header from "./Header";
 
 export default function RecipeListScreen({ navigation }: any) {
@@ -51,6 +51,10 @@ export default function RecipeListScreen({ navigation }: any) {
     recipe,
     setRecipe,
     capitalizeFirstLetter,
+    minCalories,
+    setMinCalories,
+    maxCalories,
+    setMaxCalories,
     includeIngredients,
     setIncludeIngredients,
     excludeIngredients,
@@ -59,7 +63,7 @@ export default function RecipeListScreen({ navigation }: any) {
     setIntolerances,
   } = useContext<any>(RecipeContext);
 
-  const [cuisineType, setCuisineType] = useState(cuisineTypes[0]);
+  const [cuisineType, setCuisineType] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -80,6 +84,8 @@ export default function RecipeListScreen({ navigation }: any) {
           instructionsRequired: true,
           addRecipeNutrition: true,
           addRecipeInstructions: true,
+          minCalories: minCalories ? minCalories : 50,
+          maxCalories: maxCalories ? maxCalories : 800,
           intolerances: intolerances.toString(),
           includeIngredients: includeIngredients.split(" ").toString(),
           excludeIngredients: excludeIngredients.split(" ").toString(),
@@ -126,7 +132,9 @@ export default function RecipeListScreen({ navigation }: any) {
                       item === cuisineType ? COLORS.secondary : COLORS.gray2,
                   }}
                   onPress={() => {
-                    setCuisineType(item);
+                    item === cuisineType
+                      ? setCuisineType("")
+                      : setCuisineType(item);
                   }}
                 >
                   <Text
@@ -186,11 +194,11 @@ const styles = StyleSheet.create({
     marginHorizontal: SIZES.xSmall / 2,
   },
   tabText: {
-    fontFamily: FONT.medium,
+    // fontFamily: FONT.medium,
     color: "#444262",
   },
   error: {
-    fontFamily: FONT.bold,
+    // fontFamily: FONT.bold,
     textAlign: "center",
     margin: SIZES.xLarge,
   },

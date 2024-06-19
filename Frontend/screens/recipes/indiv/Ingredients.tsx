@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { RecipeContext } from "../RecipeProvider";
 import { View, Text, StyleSheet } from "react-native";
-import { COLORS, FONT, SIZES, SHADOWS } from "@/constants/Theme";
+import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 
 type ingredient = {
   //   amount: {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: SIZES.large,
     color: COLORS.primary,
-    fontFamily: FONT.bold,
+    // fontFamily: FONT.bold,
   },
   pointsContainer: {
     marginVertical: SIZES.small,
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   pointText: {
     fontSize: SIZES.medium - 2,
     color: COLORS.gray,
-    fontFamily: FONT.regular,
+    // fontFamily: FONT.regular,
     marginLeft: SIZES.small,
   },
 });

@@ -10,7 +10,7 @@ import {
   Keyboard,
 } from "react-native";
 import { RecipeContext } from "../RecipeProvider";
-import { SIZES, COLORS, FONT } from "@/constants/Theme";
+import { SIZES, COLORS, SHADOWS } from "@/constants/Theme";
 
 const intolerancesList = [
   "Dairy",
@@ -29,9 +29,10 @@ const intolerancesList = [
 
 export default function Filter() {
   const {
-    recipe,
-    setRecipe,
-    capitalizeFirstLetter,
+    minCalories,
+    setMinCalories,
+    maxCalories,
+    setMaxCalories,
     includeIngredients,
     setIncludeIngredients,
     excludeIngredients,
@@ -42,13 +43,37 @@ export default function Filter() {
 
   return (
     <>
-      <View style={styles.container}>
-        <Text style={styles.welcomeMessage}>Filters</Text>
+      <Text style={styles.welcomeMessage}>Filters</Text>
+      <View style={{ flexDirection: "column" }}>
+        <Text style={styles.titleText}>Calories:</Text>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <View style={styles.searchWrapper}>
+            <TextInput
+              style={styles.searchInput}
+              value={minCalories}
+              onChangeText={(text) => setMinCalories(text)}
+              placeholder="Min"
+              keyboardType="numeric"
+              maxLength={4}
+            />
+          </View>
+          <Text style={styles.calorie}>to</Text>
+          <View style={styles.searchWrapper}>
+            <TextInput
+              style={styles.searchInput}
+              value={maxCalories}
+              onChangeText={(text) => setMaxCalories(text)}
+              placeholder="Max"
+              keyboardType="numeric"
+              maxLength={4}
+            />
+          </View>
+        </View>
       </View>
 
       <View style={styles.searchContainer}>
         <View style={{ flexDirection: "column" }}>
-          <Text style={styles.searchText}>Ingredients to include:</Text>
+          <Text style={styles.titleText}>Ingredients to include:</Text>
           <View style={styles.searchWrapper}>
             <TextInput
               style={styles.searchInput}
@@ -58,7 +83,7 @@ export default function Filter() {
               autoCapitalize="none"
             />
           </View>
-          <Text style={styles.searchText}>Ingredients to exclude:</Text>
+          <Text style={styles.titleText}>Ingredients to exclude:</Text>
           <View style={styles.searchWrapper}>
             <TextInput
               style={styles.searchInput}
@@ -70,6 +95,7 @@ export default function Filter() {
           </View>
         </View>
       </View>
+
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.allergyContainer}>
           <Text style={styles.allergy}>Allergies</Text>
@@ -103,6 +129,7 @@ export default function Filter() {
                 </Text>
               </TouchableOpacity>
             )}
+            keyExtractor={(item) => item}
             numColumns={2}
             scrollEnabled={false}
           />
@@ -122,26 +149,26 @@ const styles = StyleSheet.create({
     flex: 1 / 2,
   },
   tabText: {
-    fontFamily: FONT.medium,
+    // fontFamily: FONT.medium,
     color: "#444262",
     textAlign: "center",
   },
-  container: {
-    width: "100%",
+  calorie: {
+    paddingTop: SIZES.xSmall / 2,
   },
   allergyContainer: {
     width: "70%",
     alignSelf: "center",
   },
   allergy: {
-    fontFamily: FONT.regular,
+    // fontFamily: FONT.regular,
     fontSize: SIZES.large,
     color: COLORS.secondary,
     textAlign: "center",
     paddingVertical: SIZES.small,
   },
   welcomeMessage: {
-    fontFamily: FONT.bold,
+    // fontFamily: FONT.bold,
     fontSize: SIZES.xLarge,
     color: COLORS.primary,
     marginTop: 2,
@@ -157,23 +184,23 @@ const styles = StyleSheet.create({
     padding: SIZES.xSmall / 2,
   },
   searchWrapper: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: COLORS.white,
     marginHorizontal: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: SIZES.medium,
-    height: "100%",
+    height: 30,
   },
-  searchText: {
-    marginHorizontal: SIZES.small,
+  titleText: {
+    // marginHorizontal: SIZES.small,
     padding: SIZES.small,
     textAlign: "center",
   },
   searchInput: {
-    fontFamily: FONT.regular,
-    width: "100%",
-    height: "100%",
+    // fontFamily: FONT.regular,
+    // width: "100%",
+    // height: "100%",
     paddingHorizontal: SIZES.medium,
   },
   searchBtn: {
