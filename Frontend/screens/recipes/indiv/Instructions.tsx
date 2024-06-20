@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { RecipeContext } from "../RecipeProvider";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
+import { View, Text, StyleSheet } from "react-native";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 type step = {
   equipment: {
@@ -31,14 +31,8 @@ type item = {
   steps: step[];
 };
 
-type Props = {
-  items: item[];
-  capitalizeFirstLetter: (string: string) => string;
-};
-
 export default function Instructions() {
-  const { recipe, setRecipe, capitalizeFirstLetter } =
-    useContext<any>(RecipeContext);
+  const { recipe, capitalizeFirstLetter } = useContext<any>(RecipeContext);
 
   return (
     <View style={styles.container}>

@@ -17,7 +17,7 @@ const Recipe = memo(({ recipeImage, recipeTitle, recipeCalories }: Props) => {
       </View>
 
       <View style={styles.jobTitleBox}>
-        <Text style={styles.jobTitle}>{recipeTitle}</Text>
+        <Text style={styles.recipeTitle}>{recipeTitle}</Text>
       </View>
 
       <View style={styles.companyInfoBox}>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   jobTitleBox: {
     marginTop: SIZES.small,
   },
-  jobTitle: {
+  recipeTitle: {
     fontSize: SIZES.large,
     color: COLORS.primary,
     // fontFamily: FONT.bold,

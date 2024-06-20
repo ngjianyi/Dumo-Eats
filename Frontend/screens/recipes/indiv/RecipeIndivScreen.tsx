@@ -8,18 +8,11 @@ import Nutrients from "./Nutrients";
 import Ingredients from "./Ingredients";
 import Instructions from "./Instructions";
 
-// import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-// const Tab = createMaterialTopTabNavigator();
-
 export default function IndivScreen() {
-  const { recipe, setRecipe } = useContext<any>(RecipeContext);
+  const { recipe } = useContext<any>(RecipeContext);
 
   const tabs = ["Nutrition", "Ingredients", "Instructions"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
-
-  function capitalizeFirstLetter(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
 
   const displayTabContent = () => {
     switch (activeTab) {
@@ -54,13 +47,6 @@ export default function IndivScreen() {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
               />
-              {/* <View style={{ flex: 1 }}>
-                <Tab.Navigator initialRouteName="Nutrition">
-                  <Tab.Screen name="Nutrition" component={Nutrients} />
-                  <Tab.Screen name="Ingredients" component={Ingredients} />
-                  <Tab.Screen name="Instructions" component={Instructions} />
-                </Tab.Navigator>
-              </View> */}
 
               {displayTabContent()}
             </View>
@@ -81,6 +67,5 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: SIZES.medium,
-    // paddingBottom: SIZES.xSmall,
   },
 });

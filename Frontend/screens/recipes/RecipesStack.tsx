@@ -1,7 +1,6 @@
 import React from "react";
 import RecipeIndivScreen from "./indiv/RecipeIndivScreen";
 import RecipeListScreen from "./list/RecipeListScreen";
-import { RecipeProvider } from "./RecipeProvider";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();

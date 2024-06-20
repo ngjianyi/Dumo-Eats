@@ -3,9 +3,9 @@ import {
   createDrawerNavigator,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import Filter from "./Filter";
-import RecipesStack from "../RecipesStack";
-import { RecipeProvider } from "../RecipeProvider";
+import Filter from "./list/Filter";
+import RecipesStack from "./RecipesStack";
+import { RecipeProvider } from "./RecipeProvider";
 
 export default function Drawer() {
   const Drawer = createDrawerNavigator();

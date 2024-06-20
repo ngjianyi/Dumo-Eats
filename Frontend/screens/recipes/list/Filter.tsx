@@ -10,7 +10,7 @@ import {
   Keyboard,
 } from "react-native";
 import { RecipeContext } from "../RecipeProvider";
-import { SIZES, COLORS, SHADOWS } from "@/constants/Theme";
+import { SIZES, COLORS } from "@/constants/Theme";
 
 const intolerancesList = [
   "Dairy",

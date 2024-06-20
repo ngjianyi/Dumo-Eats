@@ -6,7 +6,7 @@ import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import BadgesScreen from "@/screens/BadgesScreen";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Scan from "@/screens/Scan";
-import Drawer from "@/screens/recipes/list/Drawer";
+import Drawer from "@/screens/recipes/Drawer";
 
 const Tab = createBottomTabNavigator();
 

@@ -4,13 +4,6 @@ import { View, Text, StyleSheet } from "react-native";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 
 type ingredient = {
-  //   amount: {
-  //     metric: {
-  //       unit: string;
-  //       value: number;
-  //     };
-  //     us: { unit: string; value: number };
-  //   };
   amount: number;
   unit: string;
   image: string;
@@ -23,24 +16,10 @@ type Props = {
 };
 
 export default function () {
-  //   const [unit, setUnit] = useState("metric");
-  const { recipe, setRecipe, capitalizeFirstLetter } =
-    useContext<any>(RecipeContext);
+  const { recipe, capitalizeFirstLetter } = useContext<any>(RecipeContext);
 
   return (
     <View style={styles.container}>
-      {/* <TouchableOpacity
-        style={styles.btn}
-        onPress={() => {
-          unit === "metric" ? setUnit("us") : setUnit("metric");
-        }}
-      >
-        <Text style={styles.btnText}>
-          {unit === "metric"
-            ? "Change to imperial units"
-            : "Change to metric units"}
-        </Text>
-      </TouchableOpacity> */}
       <View style={styles.pointsContainer}>
         {recipe?.nutrition.ingredients.map((ingredient: ingredient) => (
           <View style={styles.pointWrapper} key={ingredient.name}>

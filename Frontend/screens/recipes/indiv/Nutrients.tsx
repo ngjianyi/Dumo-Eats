@@ -10,14 +10,8 @@ type nutrient = {
   percentOfDailyNeeds: number;
 };
 
-type Props = {
-  nutrients: nutrient[];
-  capitalizeFirstLetter: (string: string) => string;
-};
-
 export default function Nutrients() {
-  const { recipe, setRecipe, capitalizeFirstLetter } =
-    useContext<any>(RecipeContext);
+  const { recipe, capitalizeFirstLetter } = useContext<any>(RecipeContext);
 
   return (
     <View style={styles.container}>
