@@ -12,8 +12,8 @@ import { RecipeContext } from "@/screens/recipes/RecipeProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 
-export default function Recipe({ recipes, getRecipes, navigation }: any) {
-  const { recipe, setRecipe } = useContext<any>(RecipeContext);
+export default function Recipe({ getRecipes, navigation }: any) {
+  const { recipes, setRecipe } = useContext<any>(RecipeContext);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const onRefresh = () => {
@@ -129,14 +129,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 5,
   },
-  //   healthy: {
-  //     borderRadius: 20,
-  //     backgroundColor: "lightgreen",
-  //     padding: 10,
-  //   },
-  //   unhealthy: {
-  //     borderRadius: 20,
-  //     backgroundColor: "red",
-  //     padding: 7,
-  //   },
 });

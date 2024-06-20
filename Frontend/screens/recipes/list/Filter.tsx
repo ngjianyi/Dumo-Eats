@@ -98,7 +98,7 @@ export default function Filter() {
 
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.allergyContainer}>
-          <Text style={styles.allergy}>Allergies</Text>
+          <Text style={styles.allergy}>Allergens:</Text>
           <FlatList
             data={intolerancesList}
             renderItem={({ item }) => (

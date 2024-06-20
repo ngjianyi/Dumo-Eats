@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   Text,
   View,
@@ -7,20 +8,15 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SIZES, COLORS } from "@/constants/Theme";
+import { RecipeContext } from "../RecipeProvider";
 
 type Props = {
-  query: string;
-  setQuery: React.Dispatch<React.SetStateAction<string>>;
   handleClick: () => void;
   navigation: any;
 };
 
-export default function Header({
-  query,
-  setQuery,
-  handleClick,
-  navigation,
-}: Props) {
+export default function Header({ handleClick, navigation }: Props) {
+  const { query, setQuery } = useContext<any>(RecipeContext);
   return (
     <>
       <View style={styles.container}>

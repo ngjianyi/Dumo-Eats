@@ -1,12 +1,4 @@
-import {
-  Dimensions,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { Dimensions, SafeAreaView } from "react-native";
 import {
   createDrawerNavigator,
   DrawerItemList,
@@ -19,14 +11,10 @@ export default function Drawer() {
   const Drawer = createDrawerNavigator();
 
   const CustomDrawerContentComponent = (props: any) => (
-    // <SafeAreaView
-    // forceInset={{ top: "always", horizontal: "never" }}
-    // >
-    <View>
+    <SafeAreaView>
       <Filter />
-    </View>
-    // {/* <DrawerItemList {...props} /> */}
-    // </SafeAreaView>
+      {/* <DrawerItemList {...props} /> */}
+    </SafeAreaView>
   );
 
   return (

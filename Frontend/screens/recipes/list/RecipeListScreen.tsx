@@ -17,6 +17,17 @@ import { SIZES, COLORS } from "@/constants/Theme";
 import Header from "./Header";
 
 export default function RecipeListScreen({ navigation }: any) {
+  const {
+    recipes,
+    setRecipes,
+    query,
+    minCalories,
+    maxCalories,
+    includeIngredients,
+    excludeIngredients,
+    intolerances,
+  } = useContext<any>(RecipeContext);
+
   const cuisineTypes = [
     "African",
     "Asian",
@@ -47,27 +58,9 @@ export default function RecipeListScreen({ navigation }: any) {
     "Vietnamese",
   ];
 
-  const {
-    recipe,
-    setRecipe,
-    capitalizeFirstLetter,
-    minCalories,
-    setMinCalories,
-    maxCalories,
-    setMaxCalories,
-    includeIngredients,
-    setIncludeIngredients,
-    excludeIngredients,
-    setExcludeIngredients,
-    intolerances,
-    setIntolerances,
-  } = useContext<any>(RecipeContext);
-
   const [cuisineType, setCuisineType] = useState<string>("");
-  const [query, setQuery] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [recipes, setRecipes] = useState<any>(null);
   const [totalRecipes, setTotalRecipes] = useState<number>(0);
 
   const getRecipes = async () => {
@@ -114,12 +107,7 @@ export default function RecipeListScreen({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View>
-          <Header
-            query={query}
-            setQuery={setQuery}
-            handleClick={getRecipes}
-            navigation={navigation}
-          />
+          <Header handleClick={getRecipes} navigation={navigation} />
 
           <View style={styles.tabsContainer}>
             <FlatList

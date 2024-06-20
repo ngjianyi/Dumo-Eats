@@ -1,10 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
 
 type StateContextType = {
+  capitalizeFirstLetter: (string: string) => string;
+  recipes: any;
+  setRecipes: React.Dispatch<React.SetStateAction<any>>;
   recipe: any;
   setRecipe: React.Dispatch<React.SetStateAction<any>>;
-  capitalizeFirstLetter: (string: string) => string;
   minCalories: number;
+  query: string;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
   setMinCalories: React.Dispatch<React.SetStateAction<number>>;
   maxCalories: number;
   setMaxCalories: React.Dispatch<React.SetStateAction<number>>;
@@ -23,19 +27,25 @@ function capitalizeFirstLetter(string: string) {
 }
 
 function RecipeProvider({ children }: any) {
+  const [recipes, setRecipes] = useState(null);
   const [recipe, setRecipe] = useState(null);
+  const [query, setQuery] = useState<string>("");
   const [minCalories, setMinCalories] = useState<number>(50);
   const [maxCalories, setMaxCalories] = useState<number>(800);
-  const [includeIngredients, setIncludeIngredients] = useState("");
-  const [excludeIngredients, setExcludeIngredients] = useState("");
+  const [includeIngredients, setIncludeIngredients] = useState<string>("");
+  const [excludeIngredients, setExcludeIngredients] = useState<string>("");
   const [intolerances, setIntolerances] = useState<string[]>([]);
 
   return (
     <RecipeContext.Provider
       value={{
+        capitalizeFirstLetter,
+        recipes,
+        setRecipes,
         recipe,
         setRecipe,
-        capitalizeFirstLetter,
+        query,
+        setQuery,
         minCalories,
         setMinCalories,
         maxCalories,
