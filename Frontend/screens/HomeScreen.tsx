@@ -6,7 +6,7 @@ import UpdateScreen from "./UpdateScreen";
 import { connect } from "react-redux"
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { fetchUserData } from "@/redux/action";
-import { DocumentData, collection, getDocs } from "firebase/firestore";
+import { doc, DocumentData, collection, getDocs, getDoc } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import Feed from "@/components/Feed";
 
@@ -15,27 +15,36 @@ export default function HomeScreen() {
   const [posts, setPosts] = useState<DocumentData[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
-  const refreshHandler = () => setRefresh(true);
+  const refreshHandler = () => {
+    setRefresh(!refresh)
+  };
+
   //to retrieve  All posts from data base collection "Posts"
-  useEffect(() => {getAllPosts();},[refresh])
+  useEffect(() => {
+    setLoading(true)
+    setPosts([])
+    getAllPosts();
+    setLoading(false);
+  },[refresh])
 
   const getAllPosts = async () => {
     setLoading(true)
-    setPosts([])
     //get all documents which points to subcollection inside main 'Posts' collection
     const querySnapshot = await getDocs(collection(DATA_BASE, "Posts"));
+    const docRefUser = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
+    const docSnap = await getDoc(docRefUser);
+    const name = docSnap.data()?.userName;
     //for each document reference
-    querySnapshot.forEach(async (doc) => {
-        // console.log(doc.id)
+    const counter = 0
+    querySnapshot.forEach(async (document) => {        
         //for each subcollection, display all posts
-        const querySnapshotSubcollection = await getDocs(collection(DATA_BASE, "Posts", "" + doc.id, "Gojo's posts"));
+        const querySnapshotSubcollection = await getDocs(collection(DATA_BASE, "Posts", "" + document.id, name + "'s posts"));
         querySnapshotSubcollection.forEach((subdoc) => {
-          console.log(doc.id + "=>", subdoc.data())
+          console.log(document.id + "=>", subdoc.data())
           setPosts(currentPosts => [...currentPosts, subdoc.data()])
-        })
-        setRefresh(false)
-      setLoading(false);
-  })};
+        }) 
+    })
+  };
 
   return (
       <SafeAreaView style={styles.container}>
