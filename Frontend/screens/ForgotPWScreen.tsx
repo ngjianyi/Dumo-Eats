@@ -8,11 +8,24 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import {AUTH} from "../firebaseCONFIG";
+import {  sendPasswordResetEmail } from "firebase/auth";
 
 export default function ForgotScreen({ navigation }: any) {
   const backHandler = () => navigation.navigate("login");
- 
+  const [email, setEmail] = useState("");
+  const sendReset = () => {
+    sendPasswordResetEmail(AUTH, email)
+  .then(() => {
+    alert("Check your Email")
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(error.message)
+  });
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -28,12 +41,13 @@ export default function ForgotScreen({ navigation }: any) {
             style={styles.input} 
             placeholder="Email" 
             placeholderTextColor={"grey"}
+            onChangeText={(value) => setEmail(value)}
             />
           <TouchableOpacity onPress={backHandler}>
             <Text style={styles.back}>Back to Login</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.submit}>
+        <TouchableOpacity style={styles.submit} onPress={sendReset}>
           <Text style={styles.submitText}>Submit</Text>
         </TouchableOpacity>
       </SafeAreaView>

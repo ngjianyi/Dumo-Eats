@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   Text,
   View,
@@ -9,8 +10,13 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { createUserWithEmailAndPassword, onAuthStateChanged,sendEmailVerification } from "firebase/auth";
+import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import { doc, setDoc } from "firebase/firestore"; 
+
 
 export default function SignupScreen({ navigation }: any) {
   const haveAccountHandler: any = () => navigation.navigate("login");
@@ -26,38 +32,75 @@ export default function SignupScreen({ navigation }: any) {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const[loading, setLoading] = useState(false);
+  const auth = AUTH;
 
   const handleSubmit = async () => {
-    if (password1 !== password2) {
-      console.error("Passwords do not match");
-      return;
+    setLoading(true);
+    try {
+      if (password1.length < 5) {
+        alert("Password too short, must be at least 5 characters ")
+        return;
+      }
+      if (password1 != password2) {
+        alert("Passwords do not match")
+        return;
+      }
+      const response = await createUserWithEmailAndPassword(auth, email, password1)
+      if (auth.currentUser != null) {
+        sendEmailVerification(auth.currentUser);
+      }
+      alert("Check Inbox for verification email")
+      //add user into firestore db
+      await setDoc(doc(DATA_BASE,"Users", "" + auth.currentUser?.uid), {
+        userName: username,
+        name: firstName + " " + lastName,
+        email: email,
+        calorieGoal: 0
+      })
+      
+      auth.signOut(); 
+      navigation.navigate("login")
+    } catch (error: any){
+      console.log(error);
+      alert("Sign up failed: " + error.message);
+    } finally {
+      setLoading(false);
     }
-    const response = await fetch("http://127.0.0.1:8000/auth/register/", {
-      // const response = await fetch(
-      //   "https://dumo-eats.onrender.com/auth/register/",
-      // {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password: password1,
-        password2: password2,
-        username: username,
-        first_name: firstName,
-        last_name: lastName,
-      }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      navigation.navigate("login");
-    } else {
-      const error = await response.json();
-      console.error(error);
-    }
-  };
+  }
+
+  // const handleSubmit = async () => {
+  //   if (password1 !== password2) {
+  //     console.error("Passwords do not match");
+  //     return;
+  //   }
+  //   // const response = await fetch('http://127.0.0.1:8000/auth/register/', {
+  //   const response = await fetch(
+  //     "https://dumo-eats.onrender.com/auth/register/",
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email,
+  //         password: password1,
+  //         password2: password2,
+  //         username: username,
+  //         first_name: firstName,
+  //         last_name: lastName,
+  //       }),
+  //     }
+  //   );
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     console.log(data);
+  //     navigation.navigate("login");
+  //   } else {
+  //     const error = await response.json();
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -145,6 +188,7 @@ export default function SignupScreen({ navigation }: any) {
         <TouchableOpacity style={styles.signUpButton} onPress={handleSubmit}>
           <Text style={styles.signup}>Sign Up</Text>
         </TouchableOpacity>
+        {loading ? (<ActivityIndicator size="large" color="deepskyblue"/>): true}
         <TouchableOpacity onPress={haveAccountHandler}>
           <Text style={styles.back}>Already have an account?</Text>
         </TouchableOpacity>

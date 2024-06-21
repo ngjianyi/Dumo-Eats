@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import React, { useState } from "react";
+import { AUTH } from "@/firebaseCONFIG";
 // import * as Keychain from "react-native-keychain";
 
 const profilePic = require("@/assets/images/SampleProfile.png");
@@ -19,6 +20,12 @@ export default function ProfileScreen({ navigation }: any) {
   const [date, setDate] = useState("");
   const [email, setEmail] = useState("");
   const [calorieGoal, setGoal] = useState("");
+  const logOutHandler = () => {
+    AUTH.signOut().then(navigation.navigate("login"));
+  };
+  const uploadHandler = () => {
+    navigation.navigate("upload");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -55,10 +62,18 @@ export default function ProfileScreen({ navigation }: any) {
         </View>
         <TouchableOpacity
           style={styles.logoutButton}
-          onPress={() => navigation.navigate("login")}
+          // onPress={() => navigation.navigate("login")}
+          onPress={logOutHandler}
         >
           <Text style={styles.logout}>logout</Text>
         </TouchableOpacity>
+        {/* <TouchableOpacity
+          style={styles.logoutButton}
+          // onPress={() => navigation.navigate("login")}
+          onPress={logOutHandler}
+        >
+          <Text style={styles.logout}>upload</Text>
+        </TouchableOpacity> */}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
