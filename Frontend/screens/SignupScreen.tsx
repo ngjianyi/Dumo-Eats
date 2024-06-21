@@ -14,7 +14,8 @@ import {
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createUserWithEmailAndPassword, onAuthStateChanged,sendEmailVerification } from "firebase/auth";
-import { AUTH } from "@/firebaseCONFIG";
+import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import { doc, setDoc } from "firebase/firestore"; 
 
 
 export default function SignupScreen({ navigation }: any) {
@@ -49,8 +50,16 @@ export default function SignupScreen({ navigation }: any) {
       if (auth.currentUser != null) {
         sendEmailVerification(auth.currentUser);
       }
-      auth.signOut();    
       alert("Check Inbox for verification email")
+      //add user into firestore db
+      await setDoc(doc(DATA_BASE,"Users", "" + auth.currentUser?.uid), {
+        userName: username,
+        name: firstName + " " + lastName,
+        email: email,
+        calorieGoal: 0
+      })
+      
+      auth.signOut(); 
       navigation.navigate("login")
     } catch (error: any){
       console.log(error);
