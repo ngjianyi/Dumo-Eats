@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-ni&$p8j!tmex&$=3i+_g_*rxi#p3&1%pd$)%bip7_)kv#p9=!u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dumo-eats.onrender.com']
+ALLOWED_HOSTS = ['dumo-eats.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -91,7 +91,8 @@ DATABASES = {
         'NAME': 'DumoEats',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': f'mongodb+srv://{username}:{password}@dumoeats.iv9yl4q.mongodb.net/?retryWrites=true&w=majority&appName=DumoEats',
+            # 'host': f'mongodb+srv://{username}:{password}@dumoeats.iv9yl4q.mongodb.net/?retryWrites=true&w=majority&appName=DumoEats',
+            'host': f'mongodb+srv://admin:orbitaldumoeats@dumoeats.iv9yl4q.mongodb.net/?retryWrites=true&w=majority&appName=DumoEats',
             'port': 10000
         }
     }
