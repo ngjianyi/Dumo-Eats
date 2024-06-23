@@ -29,7 +29,9 @@ export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const[userLogedIn, setUserLogIn] = useState<User | null>(null);
+  // const[userLogedIn, setUserLogIn] = useState<User | null>(null);
+  const[userLogedIn, setUserLogIn] = useState(false);
+
   const auth = AUTH;
 
   const handleSubmit = async () => {
@@ -38,6 +40,8 @@ export default function LoginScreen({ navigation }: any) {
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (!auth.currentUser?.emailVerified) {
         alert("Email not verified");
+      } else {
+        setUserLogIn(!userLogedIn)
       }
     } catch (error: any){
       console.log(error);
@@ -51,10 +55,10 @@ export default function LoginScreen({ navigation }: any) {
     const unsubscribe = onAuthStateChanged(AUTH,(user) => {
       console.log(user);
       if (user && AUTH.currentUser?.emailVerified) {
-        setUserLogIn(user);
+        //setUserLogIn(user);
         navigation.navigate("main");
       } else if (user == null) {
-        setUserLogIn(user);
+        //setUserLogIn(user);
       }
 
     })

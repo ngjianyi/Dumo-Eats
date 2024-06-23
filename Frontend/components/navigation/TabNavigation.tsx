@@ -17,10 +17,13 @@ import CreatePostScreen from "@/screens/CreatePostScreen";
 const store = configureStore({ reducer: rootReducer });
 
 const Tab = createBottomTabNavigator();
+//remove later
+import AutoRefresh from "@/contexts/AutoRefresh";
 
 export default function TabNavigation() {
+  const sharedValue = true;
   return (
-    <Provider store={store}>
+    <AutoRefresh.Provider value= {sharedValue}>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
@@ -84,6 +87,6 @@ export default function TabNavigation() {
           }}
         />
       </Tab.Navigator>
-    </Provider>
+    </AutoRefresh.Provider>
   );
 }

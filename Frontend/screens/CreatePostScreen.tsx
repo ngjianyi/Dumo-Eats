@@ -1,11 +1,12 @@
 import { ScrollView, Text, View, StyleSheet, SafeAreaView , TextInput, Button, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView} from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, FormikProps } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import {AUTH, DATA_BASE, STORAGE}  from "@/firebaseCONFIG";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {collection, doc,getDoc,addDoc, setDoc, updateDoc } from "firebase/firestore"; 
 import moment from 'moment'
+import autoRefresh from "@/contexts/AutoRefresh";
 
 
 export default function CreatePostScreen() {
@@ -15,6 +16,9 @@ export default function CreatePostScreen() {
         image: string;
         userName: string;
         time: string;
+        likes: [];
+        comments: [];
+        postRef: string;
     }
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState<string | null>(null);
@@ -61,7 +65,7 @@ export default function CreatePostScreen() {
                     value.time = moment().format('LLL');  // June 19, 2024 11:22 AM
                     
                     //create a reference for doc that will point to Subcollection eg
-                    const id: string = "4" + AUTH.currentUser?.uid
+                    const id: string = "" + AUTH.currentUser?.uid
                     const subCollectionDocRef = doc(DATA_BASE, "Posts",id);
                     const docSnapshot = await getDoc(subCollectionDocRef);  
 
@@ -71,13 +75,17 @@ export default function CreatePostScreen() {
                     }
                     //create a reference for subcollection 
                     const subcollectionRef = collection(subCollectionDocRef, value.userName +"'s posts")
-                    const postDocRef = await addDoc(subcollectionRef, value);
+                    //create a doc reference for each post
+                    const postref = doc(subcollectionRef)
+                    value.postRef = postref
+                    await setDoc(postref, value);
+                    // const postDoc = await addDoc(subcollectionRef, value);
                     console.log("Document written with UID: ");
+                    alert("post uploaded successfully")
+                    setLoading(false);
+                    setImage(null);
                 })
               });
-              setLoading(false);
-              setImage(null);
-              alert("post uploaded successfully")
         } catch(error) {
             alert("no image uploaded")
             setLoading(false)
@@ -91,7 +99,7 @@ export default function CreatePostScreen() {
                 <ScrollView>
                     <Text style={styles.header}>Create New Post</Text>
                     <Formik
-                    initialValues={{ caption:'', image:'', userName:'', time:''}}
+                    initialValues={{ caption:'', image:'', userName:'', time:'', likes:[], comments:[], postRef:""}}
                     //the val is initialValues after being updated with new values
                     onSubmit={(val, {resetForm}) =>{
                         onSubmitHandler(val)
@@ -121,6 +129,8 @@ export default function CreatePostScreen() {
                                     value={values?.caption}
                                     multiline={true}
                                     onChangeText={handleChange('caption')}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
                                 />
                                 <TouchableOpacity 
                                     style={styles.button}

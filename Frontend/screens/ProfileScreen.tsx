@@ -8,9 +8,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
+  Modal,
 } from "react-native";
 import React, { useState } from "react";
 import { AUTH } from "@/firebaseCONFIG";
+import CreatePostScreen from "./CreatePostScreen";
+import AddUsersScreen from "./AddUsersScreen";
 // import * as Keychain from "react-native-keychain";
 
 const profilePic = require("@/assets/images/SampleProfile.png");
@@ -20,6 +23,7 @@ export default function ProfileScreen({ navigation }: any) {
   const [date, setDate] = useState("");
   const [email, setEmail] = useState("");
   const [calorieGoal, setGoal] = useState("");
+  const [searchUser, setSearch] = useState(false);
   const logOutHandler = () => {
     AUTH.signOut().then(navigation.navigate("login"));
   };
@@ -29,7 +33,11 @@ export default function ProfileScreen({ navigation }: any) {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+
       <SafeAreaView style={styles.container}>
+        <Modal visible={searchUser}>
+          <AddUsersScreen searchUser={searchUser} setSearch={setSearch}/>
+        </Modal>
         <View style={styles.header}>
           <Text style={styles.headerText}>Profile</Text>
           <Image source={profilePic} style={styles.profilePic} />
@@ -67,13 +75,14 @@ export default function ProfileScreen({ navigation }: any) {
         >
           <Text style={styles.logout}>logout</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
+
+         <TouchableOpacity
           style={styles.logoutButton}
           // onPress={() => navigation.navigate("login")}
-          onPress={logOutHandler}
+          onPress={() => setSearch(!searchUser)}
         >
-          <Text style={styles.logout}>upload</Text>
-        </TouchableOpacity> */}
+          <Text style={styles.logout}>add</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -121,6 +130,7 @@ const styles = StyleSheet.create({
   logoutButton: {
     backgroundColor: "maroon",
     marginHorizontal: 150,
+    marginVertical: 10,
   },
 
   logout: {
