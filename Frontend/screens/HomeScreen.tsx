@@ -9,7 +9,7 @@ import { fetchUserData } from "@/redux/action";
 import { doc, DocumentData, collection, getDocs, getDoc } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import Feed from "@/components/Feed";
-import autoRefresh from "@/contexts/AutoRefresh"
+import AutoRefresh from "@/contexts/AutoRefresh"
 
 export default function HomeScreen() {
   const [posts, setPosts] = useState<DocumentData[]>([]);
@@ -25,7 +25,7 @@ export default function HomeScreen() {
     setPosts([])
     getAllPosts();
     setLoading(false);
-  },[refresh, autoRefresh])
+  },[refresh])
 
   const getAllPosts = async () => {
     setLoading(true)

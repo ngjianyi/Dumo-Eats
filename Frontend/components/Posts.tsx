@@ -9,12 +9,14 @@ import {
     Keyboard,
     Image,
     FlatList,
+    Modal,
   } from "react-native";
 import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { updateDoc, arrayUnion, arrayRemove, doc, DocumentData, collection, getDocs, getDoc, DocumentReference } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import { delay } from "@reduxjs/toolkit/dist/utils";
+import CommentsScreen from "@/screens/CommentsScreen";
 
 const profilepic = require("@/assets/images/SampleProfile.png")
 interface PostItem {
@@ -34,7 +36,10 @@ interface PostProps {
 export default function Post({item}: PostProps) {
      const postref = item.postRef;
      
-     
+     const[visible, setVisible] = useState(false)
+     const[comments, setComments] = useState<DocumentData[]>([]);
+
+     const[refreshComment, setRefresh] = useState(false)
      const[likes, setLikes] = useState(0)
      const[heart, setHeart] = useState(false)
      const setInitialLikes = async () => {
@@ -42,11 +47,19 @@ export default function Post({item}: PostProps) {
         setLikes(updatedDoc?.likes.length)
         setHeart(updatedDoc?.likes.includes(AUTH.currentUser?.uid))
      }
+     const getAllComments = async () => {
+        setComments([])
+        const updatedDoc = (await getDoc(postref)).data()
+        //acts like a stack, last in first to be displayed
+        setComments(updatedDoc?.comments.reverse())
+     }
 
     // to keep previous state of likes when refreshed / logged in 
+    // to keep previous state of comments
      useEffect(() => {
         setInitialLikes()
-     }, [])
+        getAllComments()
+     }, [refreshComment])
 
      const likeHandler = async () => {
         setHeart(!heart)
@@ -73,6 +86,11 @@ export default function Post({item}: PostProps) {
 
     return(
         <View style={styles.container}> 
+            <View>
+                <Modal visible={visible}>
+                    <CommentsScreen item={item} visible={visible} setVisible={setVisible} comments={comments} refreshComment={refreshComment} setRefresh={setRefresh}/>
+                </Modal>
+            </View>
             <View style={styles.header}>
                 <View style={styles.userinfo}>
                     <Image source={profilepic} style={styles.profilePic}/>
@@ -93,7 +111,7 @@ export default function Post({item}: PostProps) {
                             : <Ionicons name="heart-outline" size={40} color="black"/>
                         }
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => setVisible(!visible)}>
                         <Ionicons name="chatbubble-outline" size={35} color="black" />
                     </TouchableOpacity>
 

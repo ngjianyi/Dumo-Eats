@@ -10,6 +10,7 @@ import Scan from "@/screens/Scan";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "@/redux/reducer";
+import {useState} from "react" 
 //REMEMBER TO REMOVEEEE
 //remove after testing
 import CreatePostScreen from "@/screens/CreatePostScreen";
@@ -21,7 +22,7 @@ const Tab = createBottomTabNavigator();
 import AutoRefresh from "@/contexts/AutoRefresh";
 
 export default function TabNavigation() {
-  const sharedValue = true;
+  const [sharedValue, setValue] = useState(false)
   return (
     <AutoRefresh.Provider value= {sharedValue}>
       <Tab.Navigator
