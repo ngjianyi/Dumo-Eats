@@ -5,6 +5,7 @@ import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import CommentsList from "@/components/CommentsList";
 import { useLocalSearchParams } from "expo-router";
+import moment from  "moment"
 
 export default function CommentsScreen({item, visible, setVisible, comments, setRefresh, refreshComment} : any) {
     const [input, setInput] = useState("")
@@ -13,8 +14,9 @@ export default function CommentsScreen({item, visible, setVisible, comments, set
     //add comment to comments array field, and then change dependency of useEffect
     const onPost =  async () => {
         //add new comment to comments array
+        const time = moment().format('LLL');
         await updateDoc(postref, {
-            comments: arrayUnion(input)
+            comments: arrayUnion(time +"|" + input)
         })
         //set back to ""
         setInput("")

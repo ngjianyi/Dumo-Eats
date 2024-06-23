@@ -39,6 +39,7 @@ export default function Post({item}: PostProps) {
      const[visible, setVisible] = useState(false)
      const[comments, setComments] = useState<DocumentData[]>([]);
 
+
      const[refreshComment, setRefresh] = useState(false)
      const[likes, setLikes] = useState(0)
      const[heart, setHeart] = useState(false)
