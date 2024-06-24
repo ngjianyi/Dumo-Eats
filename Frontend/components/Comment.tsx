@@ -20,18 +20,18 @@ import CommentsScreen from "@/screens/CommentsScreen";
 
 
 export default function Comment({comment, details}: any) {
-    const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid)
-    const [name, setName] = useState("")
-    const docsnap = async () => await getDoc(userRef).then((val) => {setName(val.data()?.userName)})
-    docsnap()
+    // const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid)
+    // const [name, setName] = useState("")
+    // const docsnap = async () => await getDoc(userRef).then((val) => {setName(val.data()?.userName)})
+    // docsnap()
     return(
         <View style={styles.commentBox}>
             <View style={styles.userInfo}>
-                <Text style={{fontSize:15, fontWeight:"bold"}}>{name}</Text>
-                <Text style={{fontSize:15, marginLeft: 5,}}>{comment.split("|")[0]}</Text>
+                <Text style={{fontSize:15, fontWeight:"bold"}}>{comment.split("|")[0]}</Text>
+                <Text style={{fontSize:15, marginLeft: 5,}}>{comment.split("|")[1]}</Text>
             </View>
             <View style={styles.comment}>
-                <Text >{comment.split("|")[1]}</Text>
+                <Text >{comment.split("|")[2]}</Text>
             </View>
         </View>
     )

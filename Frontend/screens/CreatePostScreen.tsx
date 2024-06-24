@@ -9,7 +9,7 @@ import moment from 'moment'
 import autoRefresh from "@/contexts/AutoRefresh";
 
 
-export default function CreatePostScreen() {
+export default function CreatePostScreen({upload, setUpload, refresh, setRefresh}: any) {
     const img = require("@/assets/images/imagePlaceholder.png")
     interface FormValues {
         caption: string;
@@ -29,7 +29,7 @@ export default function CreatePostScreen() {
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
           aspect: [4, 3],
-          quality: 1,
+          quality: 0,
         });
         console.log(result);
         if (!result.canceled) {
@@ -66,7 +66,8 @@ export default function CreatePostScreen() {
                     
                     //create a reference for doc that will point to Subcollection eg
                     const id: string = "" + AUTH.currentUser?.uid
-                    const subCollectionDocRef = doc(DATA_BASE, "Posts",id);
+                    // const subCollectionDocRef = doc(DATA_BASE, "Posts",id);
+                    const subCollectionDocRef = doc(DATA_BASE, "Posts", value.userName);
                     const docSnapshot = await getDoc(subCollectionDocRef);  
 
                     //if first time uploading, set document
@@ -82,8 +83,10 @@ export default function CreatePostScreen() {
                     // const postDoc = await addDoc(subcollectionRef, value);
                     console.log("Document written with UID: ");
                     alert("post uploaded successfully")
+                    setRefresh(!refresh)
                     setLoading(false);
                     setImage(null);
+                    setUpload(!upload);
                 })
               });
         } catch(error) {
@@ -140,6 +143,11 @@ export default function CreatePostScreen() {
                                     :<Text style={{textAlign:"center", fontSize:20,}}>Upload</Text>
                                     }
                                 </TouchableOpacity>
+                                <TouchableOpacity 
+                                    style={[styles.button, {backgroundColor:"red"}]}
+                                    onPress={() => setUpload(!upload) }> 
+                                    <Text style={{textAlign:"center", fontSize:20, color:"white"}}>Cancel</Text>
+                                </TouchableOpacity>
                             </View>
                         )}
                     </Formik>
@@ -155,7 +163,8 @@ const styles = StyleSheet.create({
         marginHorizontal:17,
         fontSize:25,
         fontWeight:'bold',
-        textAlign:'center'
+        textAlign:'center',
+        marginVertical: 80,
     },
     input: {
         borderWidth:1,
@@ -171,6 +180,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 150,
         borderRadius: 15,
         padding: 10,
+        marginVertical: 10,
 
     },
     image: {

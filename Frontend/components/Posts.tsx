@@ -52,7 +52,7 @@ export default function Post({item}: PostProps) {
         setComments([])
         const updatedDoc = (await getDoc(postref)).data()
         //acts like a stack, last in first to be displayed
-        setComments(updatedDoc?.comments.reverse())
+        setComments(updatedDoc?.comments)
      }
 
     // to keep previous state of likes when refreshed / logged in 

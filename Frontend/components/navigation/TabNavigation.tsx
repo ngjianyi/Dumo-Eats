@@ -13,7 +13,6 @@ import rootReducer from "@/redux/reducer";
 import {useState} from "react" 
 //REMEMBER TO REMOVEEEE
 //remove after testing
-import CreatePostScreen from "@/screens/CreatePostScreen";
 //create redux store
 const store = configureStore({ reducer: rootReducer });
 
@@ -72,15 +71,6 @@ export default function TabNavigation() {
         <Tab.Screen
           name="Profile"
           component={ProfileScreen}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="person-circle-outline" size={33} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="upload"
-          component={CreatePostScreen}
           options={{
             tabBarIcon: ({ color }) => (
               <Ionicons name="person-circle-outline" size={33} color={color} />
