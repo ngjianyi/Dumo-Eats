@@ -26,10 +26,14 @@ export default function ProgressTracker({input} : any) {
         calorieContext?.setCalorie(docsnap.data()?.calorieGoal)
         const curr: number = docsnap.data()?.currentCalorie
         setCal(curr)
-        const ratio = calorieContext?.calorie != undefined
+        const ratio: number = calorieContext?.calorie != undefined
                     ? curr / calorieContext?.calorie
                     : 0        
-        setProg(ratio)
+        if (isNaN(ratio)) {
+            return
+        } else {
+            setProg(ratio)
+        }
     }
 
     const resetHandler = async () => {
