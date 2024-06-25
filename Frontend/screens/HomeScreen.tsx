@@ -1,5 +1,5 @@
 import {ScrollView, Modal, Text, View, StyleSheet, SafeAreaView, TouchableOpacity, ActivityIndicator } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ProgressTracker from "@/components/ProgressTracker";
 import UpdateScreen from "./UpdateScreen";
 //redux imports
@@ -12,7 +12,6 @@ import Feed from "@/components/Feed";
 import AutoRefresh from "@/contexts/AutoRefresh"
 import CreatePostScreen from "./CreatePostScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';
-
 export default function HomeScreen() {
   const [posts, setPosts] = useState<DocumentData[]>([]);
   const [refresh, setRefresh] = useState(false);
@@ -21,7 +20,7 @@ export default function HomeScreen() {
   // const refreshHandler = () => {
   //   setRefresh(!refresh)
   // };
-
+  const autoRefreshcontext = useContext(AutoRefresh)
   const uploadHandler = () => {
     setUpload(!upload)
 
@@ -32,7 +31,7 @@ export default function HomeScreen() {
     setLoading(true)
     setPosts([])
     getAllPosts();
-  },[refresh])
+  },[refresh, autoRefreshcontext?.autoRefresh])
 
   const getAllPosts = async () => {
     setLoading(true)

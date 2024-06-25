@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { AUTH } from "@/firebaseCONFIG";
 import CreatePostScreen from "./CreatePostScreen";
 import AddUsersScreen from "./AddUsersScreen";
+import CollectionScreen from "./CollectionScreen";
 // import * as Keychain from "react-native-keychain";
 
 const profilePic = require("@/assets/images/SampleProfile.png");
@@ -24,6 +25,9 @@ export default function ProfileScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [calorieGoal, setGoal] = useState("");
   const [searchUser, setSearch] = useState(false);
+  const[collection, setCollection] = useState(false);
+  const[refresh, setRefresh] = useState(false);
+
   const logOutHandler = () => {
     AUTH.signOut().then(navigation.navigate("login"));
   };
@@ -31,6 +35,10 @@ export default function ProfileScreen({ navigation }: any) {
     navigation.navigate("upload");
   };
 
+  const collectionsHandler = ()=> {
+    setRefresh(refresh);
+    setCollection(!collection);
+  }
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 
@@ -68,21 +76,31 @@ export default function ProfileScreen({ navigation }: any) {
             />
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.logoutButton}
-          // onPress={() => navigation.navigate("login")}
-          onPress={logOutHandler}
-        >
-          <Text style={styles.logout}>logout</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.logoutButton}
+            // onPress={() => navigation.navigate("login")}
+            onPress={logOutHandler}
+          >
+            <Text style={styles.logout}>Logout</Text>
+          </TouchableOpacity>
 
-         <TouchableOpacity
-          style={styles.logoutButton}
-          // onPress={() => navigation.navigate("login")}
-          onPress={() => setSearch(!searchUser)}
-        >
-          <Text style={styles.logout}>add</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.addButton}
+            // onPress={() => navigation.navigate("login")}
+            onPress={() => setSearch(!searchUser)}
+          >
+            <Text style={styles.logout}>Add Friends</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+          style={styles.collectionButton}
+          onPress={collectionsHandler}>
+            <Text style={styles.logout}>Collections</Text>
+            </TouchableOpacity>
+        </View>
+        <Modal visible={collection}>
+          <CollectionScreen refresh={refresh} collection ={collection} setCollection={setCollection}/>
+        </Modal>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -116,7 +134,7 @@ const styles = StyleSheet.create({
   inputLabel: {
     marginHorizontal: 2,
   },
-
+  
   inputBox: {
     height: 44,
     width: "100%",
@@ -127,15 +145,40 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
 
+  buttonContainer: {
+    flexDirection:"row",
+    width:"100%",
+    justifyContent:"space-evenly"
+  },
+
   logoutButton: {
     backgroundColor: "maroon",
-    marginHorizontal: 150,
     marginVertical: 10,
+    paddingVertical:8,
+    borderRadius:14,
+    width:"25%"
   },
 
   logout: {
     textAlign: "center",
     padding: 5,
     color: "white",
+    fontWeight:"bold"
   },
+
+  addButton: {
+    backgroundColor: "hotpink",
+    marginVertical: 10,
+    paddingVertical:8,
+    borderRadius:14,
+    width:"25%"
+  },
+
+  collectionButton: {
+    backgroundColor: "mediumseagreen",
+    marginVertical: 10,
+    paddingVertical:8,
+    borderRadius:14,
+    width:"25%"
+  }
 });

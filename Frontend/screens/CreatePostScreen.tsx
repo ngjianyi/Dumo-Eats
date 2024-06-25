@@ -1,10 +1,10 @@
-import { ScrollView, Text, View, StyleSheet, SafeAreaView , TextInput, Button, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView} from "react-native";
+import { ScrollView, Text, View, StyleSheet, SafeAreaView , TextInput, Button, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView, Alert} from "react-native";
 import React, { useState, useContext } from "react";
 import { Formik, FormikProps } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import {AUTH, DATA_BASE, STORAGE}  from "@/firebaseCONFIG";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import {collection, doc,getDoc,addDoc, setDoc, updateDoc } from "firebase/firestore"; 
+import {collection, doc,getDoc,addDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import moment from 'moment'
 import autoRefresh from "@/contexts/AutoRefresh";
 
@@ -64,6 +64,15 @@ export default function CreatePostScreen({upload, setUpload, refresh, setRefresh
                     //add time
                     value.time = moment().format('LLL');  // June 19, 2024 11:22 AM
                     
+                    //add to saved collection
+                    await updateDoc(docRefUser, {
+                        collection: arrayUnion(value)
+                    });
+                    const docSnapTest = await getDoc(docRefUser);
+
+                    console.log(docSnapTest.data()?.collection)
+
+                    
                     //create a reference for doc that will point to Subcollection eg
                     const id: string = "" + AUTH.currentUser?.uid
                     // const subCollectionDocRef = doc(DATA_BASE, "Posts",id);
@@ -79,14 +88,16 @@ export default function CreatePostScreen({upload, setUpload, refresh, setRefresh
                     //create a doc reference for each post
                     const postref = doc(subcollectionRef)
                     value.postRef = postref
+                    //add the whole post data as a document in sub collection
                     await setDoc(postref, value);
                     // const postDoc = await addDoc(subcollectionRef, value);
                     console.log("Document written with UID: ");
-                    alert("post uploaded successfully")
-                    setRefresh(!refresh)
                     setLoading(false);
-                    setImage(null);
-                    setUpload(!upload);
+                    Alert.alert("Uploaded", "post uploaded successfully", [{text: "OK", onPress: () => {
+                        setRefresh(!refresh)
+                        setImage(null);
+                        setUpload(!upload);
+                    }}])
                 })
               });
         } catch(error) {

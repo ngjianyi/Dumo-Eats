@@ -1,11 +1,13 @@
-import {TextInput, Text, View, StyleSheet, SafeAreaView, TouchableOpacity, ActivityIndicator,Modal, TouchableWithoutFeedback, Keyboard } from "react-native";
-import {useState} from "react"
+import {TextInput, Text, View, StyleSheet, SafeAreaView, TouchableOpacity, ActivityIndicator,Modal, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
+import {useState, useContext} from "react"
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import { updateDoc, arrayUnion, arrayRemove, doc, DocumentData, collection, getDocs, getDoc, DocumentReference } from "firebase/firestore";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AutoRefresh from "@/contexts/AutoRefresh";
 
 export default function AddUsersScreen({searchUser, setSearch}:any) {
     const [followed, setFollow] = useState("")
+    const refreshContext = useContext(AutoRefresh)
     const addHandler = async () => {
         //add to data base
         const userRef = doc(DATA_BASE, "Users", ""+AUTH.currentUser?.uid)
@@ -13,7 +15,11 @@ export default function AddUsersScreen({searchUser, setSearch}:any) {
             following: arrayUnion(followed)         
         });
         setFollow("")
-        setSearch(!searchUser)
+        Alert.alert("Successful!", "Added " + followed + " as friend", [{text: 'OK', onPress: () => {
+            setSearch(!searchUser)
+            refreshContext?.setRefresh(!refreshContext.autoRefresh)
+        }}])
+        
     }
     //append to following array on database
     return(

@@ -58,6 +58,7 @@ export default function SignupScreen({ navigation }: any) {
         email: email,
         calorieGoal: 0,
         following: [username],
+        collection: [],
       })
       
       auth.signOut(); 
