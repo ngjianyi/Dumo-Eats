@@ -9,21 +9,45 @@ import {
   Keyboard,
   Image,
   Modal,
+  ScrollView,
+  KeyboardAvoidingView,
+  
 } from "react-native";
-import React, { useState } from "react";
-import { AUTH } from "@/firebaseCONFIG";
-import CreatePostScreen from "./CreatePostScreen";
+import React, { useContext, useEffect, useState } from "react";
+import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import { doc, DocumentData, collection, getDocs, getDoc, query, where, updateDoc } from "firebase/firestore";
 import AddUsersScreen from "./AddUsersScreen";
 import CollectionScreen from "./CollectionScreen";
-// import * as Keychain from "react-native-keychain";
+import CalorieGoal from "@/contexts/CalorieGoal";
 
 const profilePic = require("@/assets/images/SampleProfile.png");
 
 export default function ProfileScreen({ navigation }: any) {
-  const [name, setName] = useState("Tom henry");
+  const userRef = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
+  const calorieContext = useContext(CalorieGoal);
+
+  const getAllDetails = async () => {
+    const docsnap = await getDoc(userRef);
+    setName(docsnap.data()?.name);
+    setGoal(docsnap.data()?.calorieGoal);
+    setDate(docsnap.data()?.DOB)
+  }
+
+  const updateDetails = async () => {
+    await updateDoc(userRef, {
+      calorieGoal: caloriegoal,
+      name: name,
+      DOB: date,
+    })
+    Keyboard.dismiss()
+    const docsnap = await getDoc(userRef);
+    calorieContext?.setCalorie(docsnap.data()?.calorieGoal)
+    alert("Updated Successfully!")
+
+  }
+  const [name, setName] = useState("");
   const [date, setDate] = useState("");
-  const [email, setEmail] = useState("");
-  const [calorieGoal, setGoal] = useState("");
+  const [caloriegoal, setGoal] = useState(0);
   const [searchUser, setSearch] = useState(false);
   const[collection, setCollection] = useState(false);
   const[refresh, setRefresh] = useState(false);
@@ -31,17 +55,18 @@ export default function ProfileScreen({ navigation }: any) {
   const logOutHandler = () => {
     AUTH.signOut().then(navigation.navigate("login"));
   };
-  const uploadHandler = () => {
-    navigation.navigate("upload");
-  };
 
   const collectionsHandler = ()=> {
     setRefresh(refresh);
     setCollection(!collection);
   }
+
+  useEffect(() => {
+    getAllDetails();
+  }, [])
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-
       <SafeAreaView style={styles.container}>
         <Modal visible={searchUser}>
           <AddUsersScreen searchUser={searchUser} setSearch={setSearch}/>
@@ -49,32 +74,6 @@ export default function ProfileScreen({ navigation }: any) {
         <View style={styles.header}>
           <Text style={styles.headerText}>Profile</Text>
           <Image source={profilePic} style={styles.profilePic} />
-        </View>
-        <View style={styles.details}>
-          <Text style={styles.inputLabel}>Name:</Text>
-          <View style={styles.inputBox}>
-            <TextInput
-              onChangeText={(value: string) => setName(value)}
-              placeholder="Tom henry"
-              value={name}
-            />
-          </View>
-          <Text style={styles.inputLabel}>Date of Birth:</Text>
-          <View style={styles.inputBox}>
-            <TextInput
-              onChangeText={(value: string) => setDate(value)}
-              placeholder="03/06/2024"
-              value={date}
-            />
-          </View>
-          <Text style={styles.inputLabel}>Calories Goal:</Text>
-          <View style={styles.inputBox}>
-            <TextInput
-              onChangeText={(value: string) => setGoal(value)}
-              placeholder="1234"
-              value={calorieGoal}
-            />
-          </View>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -98,6 +97,48 @@ export default function ProfileScreen({ navigation }: any) {
             <Text style={styles.logout}>Collections</Text>
             </TouchableOpacity>
         </View>
+        <KeyboardAvoidingView style={{flex:1}} behavior="padding" keyboardVerticalOffset={100}>
+          <ScrollView  style={{flex:1}}>
+              <View style={styles.details}>
+                <Text style={styles.inputLabel}>Name:</Text>
+                <View style={styles.inputBox}>
+                  <TextInput
+                    onChangeText={(value: string) => {
+                      setName(value)
+                    }}
+                    // placeholder="Tom henry"
+                    value={name}
+                    autoCorrect={false}
+                  />
+                </View>
+                <Text style={styles.inputLabel}>Date of Birth:</Text>
+                <View style={styles.inputBox}>
+                  <TextInput
+                    onChangeText={(value: string) => setDate(value)}
+                    placeholder="03/06/2024"
+                    value={date}
+                  />
+                </View>
+                <Text style={styles.inputLabel}>Calories Goal:</Text>
+                <View style={styles.inputBox}>
+                  <TextInput
+                    keyboardType={"numeric"}
+                    onChangeText={(val: string) => {
+                      setGoal(Number(val))
+                    }}
+                    value={String(caloriegoal)}
+                  />
+                </View>
+              </View>
+              <View style={{width:"100%", alignItems:"center"}}>
+                <TouchableOpacity 
+                onPress={updateDetails}
+                style={styles.updateButton}>
+                  <Text style={styles.updateDetails}>Update</Text>
+                </TouchableOpacity>
+              </View>
+          </ScrollView>
+       </KeyboardAvoidingView>
         <Modal visible={collection}>
           <CollectionScreen refresh={refresh} collection ={collection} setCollection={setCollection}/>
         </Modal>
@@ -128,7 +169,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
   },
   details: {
-    marginTop: 20,
+    marginTop: 5,
     padding: 15,
   },
   inputLabel: {
@@ -175,10 +216,27 @@ const styles = StyleSheet.create({
   },
 
   collectionButton: {
-    backgroundColor: "mediumseagreen",
+    backgroundColor: "gold",
     marginVertical: 10,
     paddingVertical:8,
     borderRadius:14,
     width:"25%"
-  }
+  },
+
+  updateButton: {
+    backgroundColor: "mediumseagreen",
+    marginVertical: 80,
+    marginBottom:20,
+    paddingVertical:8,
+    borderRadius:14,
+    width:"25%",
+  },
+  updateDetails: {
+    textAlign: "center",
+    color: "white",
+    fontWeight:"bold",
+    padding:5,
+
+  },
+
 });

@@ -59,6 +59,7 @@ export default function Post({item}: PostProps) {
                 index = i
             }
         }
+        console.log(index)
         if (index == -1) {
             await updateDoc(docRefUser, {
                 collection: arrayUnion(item)
@@ -70,13 +71,13 @@ export default function Post({item}: PostProps) {
                 const temp = []
                 let count = 0
                 for (let i = 0; i < array.length; i++) {
-                    if (i == -1) {
+                    if (i == index) {
                         continue
                     }
                     temp[count] = array[i]
                     count += 1
-                    array = temp
                 }
+                array = temp
             }
             await updateDoc(docRefUser, {
                 collection: array
