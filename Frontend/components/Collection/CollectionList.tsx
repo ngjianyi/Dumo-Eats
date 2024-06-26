@@ -15,7 +15,7 @@ import {
   import { doc, DocumentData, collection, getDocs, getDoc, query, where } from "firebase/firestore";
   import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
   import AddCollectionFunc from "@/contexts/AddCollectionFunc";
-import SavedPost from "./SavedPost";
+  import SavedPost from "./SavedPost";
 
   export default function CollectionList({collectionArray} : any) {
 

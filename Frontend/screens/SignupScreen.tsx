@@ -60,7 +60,7 @@ export default function SignupScreen({ navigation }: any) {
         following: [username],
         collection: [],
         currentCalorie: 0,
-        badges: [],
+        badges: [false, false, false, false, false],
         DOB: "",
         streak:[],
       })
