@@ -159,7 +159,7 @@ export default function ProgressTracker({input} : any) {
 
     useEffect(() => {
         getCalorieProgress()
-
+        autoReset()
     }, [bar])
 
     //to control the popup
