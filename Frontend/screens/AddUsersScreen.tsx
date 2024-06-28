@@ -1,22 +1,46 @@
-import {TextInput, Text, View, StyleSheet, SafeAreaView, TouchableOpacity, ActivityIndicator,Modal, TouchableWithoutFeedback, Keyboard } from "react-native";
-import {useState} from "react"
+import {TextInput, Text, View, StyleSheet, SafeAreaView, TouchableOpacity, ActivityIndicator,Modal, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
+import {useState, useContext} from "react"
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import { updateDoc, arrayUnion, arrayRemove, doc, DocumentData, collection, getDocs, getDoc, DocumentReference } from "firebase/firestore";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import AutoRefresh from "@/contexts/AutoRefresh";
+
 export default function AddUsersScreen({searchUser, setSearch}:any) {
-    const [follow, setFollow] = useState("")
-    const addHandler = () => {
+    const [followed, setFollow] = useState("")
+    const refreshContext = useContext(AutoRefresh)
+    const addHandler = async () => {
         //add to data base
-        setSearch(!searchUser)
+        const userRef = doc(DATA_BASE, "Users", ""+AUTH.currentUser?.uid)
+        await updateDoc(userRef, {
+            following: arrayUnion(followed)         
+        });
+        setFollow("")
+        Alert.alert("Successful!", "Added " + followed + " as friend", [{text: 'OK', onPress: () => {
+            setSearch(!searchUser)
+            refreshContext?.setRefresh(!refreshContext.autoRefresh)
+        }}])
+        
     }
     //append to following array on database
     return(
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <SafeAreaView style={styles.searchWrapper}>
-                <Text style={styles.header}>Add your friends here!</Text>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Add your friends here!</Text>
+                    <TouchableOpacity
+                        style={styles.closeButton}
+                        onPress={(()=>setSearch(!searchUser))}
+                    >
+                        <Ionicons name="arrow-back" size={24} color="white" />                    
+                    </TouchableOpacity>
+                </View>
+
                 <TextInput
                     style={styles.searchInput}
                     onChangeText={(text) => setFollow(text)}
-                    placeholder="Who are you looking for?"
+                    placeholder="Username"
                     autoCapitalize="none"
+                    value={followed}
                 />
                 <TouchableOpacity 
                     style={styles.addButton}
@@ -39,9 +63,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
       },
     header: {
-        marginTop: 70,
-        fontSize:18,
+        marginTop: 50,
+        flexDirection:"row",
+        width:"100%",
+        justifyContent:"center",
+        backgroundColor:"hotpink",
+        padding:20,
+        alignItems:"center",
+        borderRadius:10,
     },
+    title: {
+        fontSize:18,
+        alignSelf:"center",
+        color:"white"
+    },
+
 
     searchInput: {
     padding:10,
@@ -53,9 +89,13 @@ const styles = StyleSheet.create({
     },
 
     addButton: {
-        backgroundColor:"maroon",
+        backgroundColor:"hotpink",
         padding:8,
-        marginTop:10,
+        marginTop:50,
         borderRadius:8,
-    }
+    },
+    closeButton: {
+        position: "absolute",
+        left:4,
+    },
 })

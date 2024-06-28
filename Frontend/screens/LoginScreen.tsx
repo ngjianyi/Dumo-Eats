@@ -38,10 +38,11 @@ export default function LoginScreen({ navigation }: any) {
     setLoading(true);
     try {  
       const response = await signInWithEmailAndPassword(auth, email, password);
+      setUserLogIn(!userLogedIn)
       if (!auth.currentUser?.emailVerified) {
+        AUTH.signOut()
         alert("Email not verified");
       } else {
-        setUserLogIn(!userLogedIn)
       }
     } catch (error: any){
       console.log(error);
@@ -60,12 +61,11 @@ export default function LoginScreen({ navigation }: any) {
       } else if (user == null) {
         //setUserLogIn(user);
       }
-
     })
     return () => {
       unsubscribe;
     }
-  }, [])
+  }, [userLogedIn])
 
   // if (userLogedIn) {
   //   navigation.navigate("main");

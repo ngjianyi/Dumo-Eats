@@ -33,18 +33,18 @@ import {
     )
   }
 
-  const styles = StyleSheet.create({
-    post: {
-        flex:1,
-        marginHorizontal: 17,
-        alignItems: 'center',
-        backgroundColor:"lightblue",
-        paddingLeft:10,
-        marginTop:15,
-        borderRadius:10,
-    },
-    Pic: {
-        height: 200,
-        width: 200,
-    },
-  })
+//   const styles = StyleSheet.create({
+//     post: {
+//         flex:1,
+//         marginHorizontal: 17,
+//         alignItems: 'center',
+//         backgroundColor:"lightblue",
+//         paddingLeft:10,
+//         marginTop:15,
+//         borderRadius:10,
+//     },
+//     Pic: {
+//         height: 200,
+//         width: 200,
+//     },
+//   })

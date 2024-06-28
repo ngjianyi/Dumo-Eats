@@ -10,13 +10,15 @@ import moment from  "moment"
 export default function CommentsScreen({item, visible, setVisible, comments, setRefresh, refreshComment} : any) {
     const [input, setInput] = useState("")
     const postref = item.postRef;
-
+    const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid)
     //add comment to comments array field, and then change dependency of useEffect
     const onPost =  async () => {
         //add new comment to comments array
+        const docsnap = await getDoc(userRef);
+        const posterName = docsnap.data()?.userName
         const time = moment().format('LLL');
         await updateDoc(postref, {
-            comments: arrayUnion(time +"|" + input)
+            comments: arrayUnion(posterName + "|" + time +"|" + input)
         })
         //set back to ""
         setInput("")

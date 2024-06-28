@@ -15,10 +15,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { updateDoc, arrayUnion, arrayRemove, doc, DocumentData, collection, getDocs, getDoc, DocumentReference, FieldValue } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-import { delay } from "@reduxjs/toolkit/dist/utils";
 import CommentsScreen from "@/screens/CommentsScreen";
-import AddCollectionFunc from "@/contexts/AddCollectionFunc";
-
 const profilepic = require("@/assets/images/SampleProfile.png")
 interface PostItem {
     caption: string;
@@ -34,71 +31,23 @@ interface PostProps {
     item: PostItem;
 }
 
-export default function Post({item}: PostProps) {
-     const postref = item.postRef;
-     
-     const[visible, setVisible] = useState(false)
-     const[comments, setComments] = useState<DocumentData[]>([]);
+export default function SavedPost({item} : PostProps) {
+    const postref = item.postRef;
+    const[temp, setTemp] = useState(false)
+    const[visible, setVisible] = useState(false)
+    const[comments, setComments] = useState<DocumentData[]>([]);
 
 
-     const[refreshComment, setRefresh] = useState(false)
-     const[likes, setLikes] = useState(0)
-     const[heart, setHeart] = useState(false)
-     const [saved, setSaved] = useState(false)
-
-     const addCollection = useContext(AddCollectionFunc);
-
-     const onSaveHandler = async () => {
-        const docRefUser = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
-        const docSnap = await getDoc(docRefUser);
-        let array = docSnap.data()?.collection
-        console.log(array)
-        let index = -1
-        for (let i = 0; i < array.length; i++ ) {
-            if (array[i].caption == item.caption) {
-                index = i
-            }
-        }
-        if (index == -1) {
-            await updateDoc(docRefUser, {
-                collection: arrayUnion(item)
-            });
-        } else {
-            if (array.length == 1) {
-                array = []
-            } else {
-                const temp = []
-                let count = 0
-                for (let i = 0; i < array.length; i++) {
-                    if (i == -1) {
-                        continue
-                    }
-                    temp[count] = array[i]
-                    count += 1
-                    array = temp
-                }
-            }
-            await updateDoc(docRefUser, {
-                collection: array
-            });
-
-        }
-        setSaved(!saved)
-     }
-
+    const[refreshComment, setRefresh] = useState(false)
+    const[likes, setLikes] = useState(0)
+    const[heart, setHeart] = useState(false)
+    
+          
      const setInitialStates = async () => {
         const updatedDoc = (await getDoc(postref)).data()
         const docSnap = (await getDoc(doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid))).data();
         setLikes(updatedDoc?.likes.length)
         setHeart(updatedDoc?.likes.includes(AUTH.currentUser?.uid))
-        let array = docSnap?.collection
-        let index = -1
-        for (let i = 0; i < array.length; i++ ) {
-            if (array[i].caption == item.caption) {
-                index = i
-            }
-        }
-        setSaved(index != -1)
      }
      const getAllComments = async () => {
         setComments([])
@@ -110,35 +59,14 @@ export default function Post({item}: PostProps) {
     // to keep previous state of likes when refreshed / logged in 
     // to keep previous state of comments
      useEffect(() => {
-        setInitialStates()
-        getAllComments()
-     }, [refreshComment])
+        setInitialStates().catch((val) => {return})
+        getAllComments().catch((val) => {return})
+     }, [])
 
-     const likeHandler = async () => {
-        setHeart(!heart)
-        //ref for user post
+     
 
-        //GET MOST UPDATED VERSION, cannot just use item.likes as it is outdated
-        const postCurr = (await getDoc(postref)).data()
-
-        //true if user already liked
-        const status = postCurr?.likes.includes("" + AUTH.currentUser?.uid);
-        //if liked post already, remove user.uid from likes array, else add to likes array
-        status 
-        ? await updateDoc(postref, {
-            likes: arrayRemove(AUTH.currentUser?.uid)   
-        })
-        : await updateDoc(postref, {
-            likes: arrayUnion(AUTH.currentUser?.uid)
-        })
-        //get updated copy once gain
-        const updatedDoc = (await getDoc(postref)).data()
-        console.log(updatedDoc?.likes)
-        setLikes(updatedDoc?.likes.length)
-     }
-
-    return(
-        <View style={styles.container}> 
+    return (
+        <View style={styles.container}>
             <View>
                 <Modal visible={visible}>
                     <CommentsScreen item={item} visible={visible} setVisible={setVisible} comments={comments} refreshComment={refreshComment} setRefresh={setRefresh}/>
@@ -158,7 +86,9 @@ export default function Post({item}: PostProps) {
             </View>
             <View style={styles.footer}>
                 <View style={styles.leftFooter}>
-                    <TouchableOpacity onPress={likeHandler}>
+                    <TouchableOpacity
+                    onPress={()=>setTemp(!temp)}
+                    >
                         {heart 
                             ? <Ionicons name="heart" size={40} color="red" />
                             : <Ionicons name="heart-outline" size={40} color="black"/>
@@ -166,15 +96,6 @@ export default function Post({item}: PostProps) {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setVisible(!visible)}>
                         <Ionicons name="chatbubble-outline" size={35} color="black" />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.rightFooter}>
-                    <TouchableOpacity 
-                        onPress={onSaveHandler}
-                    >
-                        {saved
-                        ? <Ionicons name="bookmark" size={35} color="magenta" />
-                        :<Ionicons name="bookmark-outline" size={35} color="black" />}
                     </TouchableOpacity>
                 </View>
             </View>
@@ -195,6 +116,7 @@ export default function Post({item}: PostProps) {
         </View>
     )
 }
+
 
 const styles = StyleSheet.create({
     container: {
