@@ -9,13 +9,89 @@ import {
     Keyboard,
     Image,
     FlatList,
+    Modal,
   } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { updateDoc, arrayUnion, arrayRemove, doc, DocumentData, collection, getDocs, getDoc, DocumentReference } from "firebase/firestore";
+import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import { delay } from "@reduxjs/toolkit/dist/utils";
+import CommentsScreen from "@/screens/CommentsScreen";
+
 const profilepic = require("@/assets/images/SampleProfile.png")
-export default function Post({item}: any) {
+interface PostItem {
+    caption: string;
+    image: string;
+    userName: string;
+    time: string;
+    likes: [string];
+    comments: [string];
+    postRef: DocumentReference;
+}
+
+interface PostProps {
+    item: PostItem;
+}
+
+export default function Post({item}: PostProps) {
+     const postref = item.postRef;
+     
+     const[visible, setVisible] = useState(false)
+     const[comments, setComments] = useState<DocumentData[]>([]);
+
+
+     const[refreshComment, setRefresh] = useState(false)
+     const[likes, setLikes] = useState(0)
+     const[heart, setHeart] = useState(false)
+     const setInitialLikes = async () => {
+        const updatedDoc = (await getDoc(postref)).data()
+        setLikes(updatedDoc?.likes.length)
+        setHeart(updatedDoc?.likes.includes(AUTH.currentUser?.uid))
+     }
+     const getAllComments = async () => {
+        setComments([])
+        const updatedDoc = (await getDoc(postref)).data()
+        //acts like a stack, last in first to be displayed
+        setComments(updatedDoc?.comments.reverse())
+     }
+
+    // to keep previous state of likes when refreshed / logged in 
+    // to keep previous state of comments
+     useEffect(() => {
+        setInitialLikes()
+        getAllComments()
+     }, [refreshComment])
+
+     const likeHandler = async () => {
+        setHeart(!heart)
+        //ref for user post
+
+        //GET MOST UPDATED VERSION, cannot just use item.likes as it is outdated
+        const postCurr = (await getDoc(postref)).data()
+
+        //true if user already liked
+        const status = postCurr?.likes.includes("" + AUTH.currentUser?.uid);
+        //if liked post already, remove user.uid from likes array, else add to likes array
+        status 
+        ? await updateDoc(postref, {
+            likes: arrayRemove(AUTH.currentUser?.uid)   
+        })
+        : await updateDoc(postref, {
+            likes: arrayUnion(AUTH.currentUser?.uid)
+        })
+        //get updated copy once gain
+        const updatedDoc = (await getDoc(postref)).data()
+        console.log(updatedDoc?.likes)
+        setLikes(updatedDoc?.likes.length)
+     }
+
     return(
         <View style={styles.container}> 
+            <View>
+                <Modal visible={visible}>
+                    <CommentsScreen item={item} visible={visible} setVisible={setVisible} comments={comments} refreshComment={refreshComment} setRefresh={setRefresh}/>
+                </Modal>
+            </View>
             <View style={styles.header}>
                 <View style={styles.userinfo}>
                     <Image source={profilepic} style={styles.profilePic}/>
@@ -30,15 +106,16 @@ export default function Post({item}: any) {
             </View>
             <View style={styles.footer}>
                 <View style={styles.leftFooter}>
-                    <TouchableOpacity>
-                        <Ionicons name="heart-outline" size={40} color="black" />
+                    <TouchableOpacity onPress={likeHandler}>
+                        {heart 
+                            ? <Ionicons name="heart" size={40} color="red" />
+                            : <Ionicons name="heart-outline" size={40} color="black"/>
+                        }
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => setVisible(!visible)}>
                         <Ionicons name="chatbubble-outline" size={35} color="black" />
                     </TouchableOpacity>
-                    {/* <TouchableOpacity>
-                        <Ionicons name="bookmark-outline" size={35} color="black" />
-                    </TouchableOpacity> */}
+
                 </View>
                 <View style={styles.rightFooter}>
                     <TouchableOpacity>
@@ -48,7 +125,7 @@ export default function Post({item}: any) {
             </View>
             <View style={styles.description}>
                 <Text style={[styles.caption, {color:"green", marginBottom:3,}]}>
-                    1000 Likes
+                    {likes} Likes
                 </Text>
                 <Text style={styles.caption}>
                     <Text style={{fontWeight:"bold"}}>

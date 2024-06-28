@@ -10,6 +10,7 @@ import Drawer from "@/screens/recipes/Drawer";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "@/redux/reducer";
+import {useState} from "react" 
 //REMEMBER TO REMOVEEEE
 //remove after testing
 import CreatePostScreen from "@/screens/CreatePostScreen";
@@ -17,10 +18,13 @@ import CreatePostScreen from "@/screens/CreatePostScreen";
 const store = configureStore({ reducer: rootReducer });
 
 const Tab = createBottomTabNavigator();
+//remove later
+import AutoRefresh from "@/contexts/AutoRefresh";
 
 export default function TabNavigation() {
+  const [sharedValue, setValue] = useState(false)
   return (
-    <Provider store={store}>
+    <AutoRefresh.Provider value= {sharedValue}>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
@@ -84,6 +88,6 @@ export default function TabNavigation() {
           }}
         />
       </Tab.Navigator>
-    </Provider>
+    </AutoRefresh.Provider>
   );
 }
