@@ -20,13 +20,14 @@ import AddUsersScreen from "./AddUsersScreen";
 import CollectionScreen from "./CollectionScreen";
 import CalorieGoal from "@/contexts/CalorieGoal";
 import RefreshBadgeContext from "@/contexts/RefreshBadge";
+import UserLoggedInContext from "@/contexts/UserLoggedIn";
 const profilePic = require("@/assets/images/SampleProfile.png");
 
 export default function ProfileScreen({ navigation }: any) {
   const userRef = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
   const calorieContext = useContext(CalorieGoal);
   const refreshBadgeContext = useContext(RefreshBadgeContext)
-
+  const userLoggedInContext = useContext(UserLoggedInContext)
 
   const getAllDetails = async () => {
     const docsnap = await getDoc(userRef);
@@ -76,6 +77,7 @@ export default function ProfileScreen({ navigation }: any) {
   const[refresh, setRefresh] = useState(false);
 
   const logOutHandler = () => {
+    userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn)
     AUTH.signOut().then(navigation.navigate("login"));
   };
 

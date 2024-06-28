@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import {
   Text,
@@ -16,12 +16,12 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { createUserWithEmailAndPassword, onAuthStateChanged,sendEmailVerification } from "firebase/auth";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import { doc, setDoc } from "firebase/firestore"; 
-
-
+import UserLoggedInContext from "@/contexts/UserLoggedIn";
 export default function SignupScreen({ navigation }: any) {
   const haveAccountHandler: any = () => navigation.navigate("login");
   const [visible1, setVisibility1] = useState(false);
   const [visible2, setVisibility2] = useState(false);
+  const userLoggedInContext = useContext(UserLoggedInContext)
 
   const pressHandler1 = () => setVisibility1(!visible1);
   const pressHandler2 = () => setVisibility2(!visible2);
@@ -51,6 +51,7 @@ export default function SignupScreen({ navigation }: any) {
         sendEmailVerification(auth.currentUser);
       }
       alert("Check Inbox for verification email")
+  
       //add user into firestore db
       await setDoc(doc(DATA_BASE,"Users", "" + auth.currentUser?.uid), {
         userName: username,
@@ -63,50 +64,19 @@ export default function SignupScreen({ navigation }: any) {
         badges: [false, false, false, false, false],
         DOB: "",
         streak:[],
+        lastUpdatedAt: "",
       })
-      
-      auth.signOut(); 
-      navigation.navigate("login")
+
+
     } catch (error: any){
       console.log(error);
       alert("Sign up failed: " + error.message);
     } finally {
       setLoading(false);
+      auth.signOut(); 
     }
+    navigation.navigate("login")
   }
-
-  // const handleSubmit = async () => {
-  //   if (password1 !== password2) {
-  //     console.error("Passwords do not match");
-  //     return;
-  //   }
-  //   // const response = await fetch('http://127.0.0.1:8000/auth/register/', {
-  //   const response = await fetch(
-  //     "https://dumo-eats.onrender.com/auth/register/",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         email,
-  //         password: password1,
-  //         password2: password2,
-  //         username: username,
-  //         first_name: firstName,
-  //         last_name: lastName,
-  //       }),
-  //     }
-  //   );
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     console.log(data);
-  //     navigation.navigate("login");
-  //   } else {
-  //     const error = await response.json();
-  //     console.error(error);
-  //   }
-  // };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

@@ -12,36 +12,36 @@ export default function ProgressTracker({input} : any) {
     const docref = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid)
     const refreshBadgeContext = useContext(RefreshBadgeContext)
 
-    const checkStreak = (prev: string, curr: string) : boolean => {
-        const array1 = prev.split("/")
-        const array2 = curr.split("/")
-        const month1 = Number(array1[0])
-        const month2 = Number(array2[0])
-        const day1 = Number(array1[1])
-        const day2 = Number(array2[1])
+    // const checkStreak = (prev: string, curr: string) : boolean => {
+    //     const array1 = prev.split("/")
+    //     const array2 = curr.split("/")
+    //     const month1 = Number(array1[0])
+    //     const month2 = Number(array2[0])
+    //     const day1 = Number(array1[1])
+    //     const day2 = Number(array2[1])
 
-        const thirty = [4,6,9,11]
-        //same month
-        if (month1 == month2 && day2 > day1) {
-            return day2 - day1 == 1
-            //end of 30 days month
-        } else if (thirty.includes(month1) && day1 == 30) {
-            return day2 == 1 && month2 - month1 == 1
-            //end of feb
-        } else if (month1 == 2 && day1 == 28) {
-            return day2 == 1 && month2 - month1 == 1
-            //end of year
-        } else if (month1 == 12 && day1 == 31){
-            return day2 == 1 && month2 == 1
-            //end of 31 days month
-        } else if (day1 == 31){
-            return day2 == 1 && month2 - month1 == 1
-        } else {
-            return false
-        }
-        // 6/26/2024
+    //     const thirty = [4,6,9,11]
+    //     //same month
+    //     if (month1 == month2 && day2 > day1) {
+    //         return day2 - day1 == 1
+    //         //end of 30 days month
+    //     } else if (thirty.includes(month1) && day1 == 30) {
+    //         return day2 == 1 && month2 - month1 == 1
+    //         //end of feb
+    //     } else if (month1 == 2 && day1 == 28) {
+    //         return day2 == 1 && month2 - month1 == 1
+    //         //end of year
+    //     } else if (month1 == 12 && day1 == 31){
+    //         return day2 == 1 && month2 == 1
+    //         //end of 31 days month
+    //     } else if (day1 == 31){
+    //         return day2 == 1 && month2 - month1 == 1
+    //     } else {
+    //         return false
+    //     }
+    //     // 6/26/2024
 
-    } 
+    // } 
 
     //store current calories from db to display
     const [currentCal, setCal] = useState(0);
@@ -56,8 +56,9 @@ export default function ProgressTracker({input} : any) {
     //     const docsnap = await getDoc(docref)
     //     calorieContext?.setCalorie(docsnap.data()?.calorieGoal)
     // }
+
+    // to update total calories clocked and progress bar
     const getCalorieProgress = async () => {
-        //update total calories clocked
         const docsnap = await getDoc(docref)
         calorieContext?.setCalorie(docsnap.data()?.calorieGoal)  
         const targetGoal: number = docsnap.data()?.calorieGoal
@@ -72,64 +73,6 @@ export default function ProgressTracker({input} : any) {
             console.log(ratio)
             setProg(ratio)
         }
-
-        //check for two possible achievements, first time hit goal + streaks
-        if  (calorieContext?.calorie != undefined && curr >= calorieContext?.calorie) {
-            let streakArray = docsnap.data()?.streak
-            const currdate = moment().format('l');    // 6/26/2024
-            if (streakArray.length >= 1) {
-                const previousDayindex = streakArray.length - 1
-                //check if streak is maintained
-                const prevDate = streakArray[previousDayindex];
-                const consistent: boolean = checkStreak(prevDate, currdate)
-                if (consistent) {
-                    //increase streak
-                    streakArray.push(currdate)
-                } else {
-                    //clear streak, start from 1
-                    streakArray = []
-                    streakArray.push(currdate)
-                }
-            } else {
-                //no streak yet, add to streakArray
-                streakArray.push(currdate)
-            }
-            const temp = docsnap.data()?.badges
-            //first time hiting goal when use app
-            const firstTime = !temp[1]
-            let newbadge: boolean = false
-            let badgeName: string = ""
-            if (firstTime) {
-                temp[1] = true
-                newbadge = true
-                badgeName = "Baby Steps Explorer"
-            } 
-            //check if met required streak to unlock badge, do note since nth is changed to false
-            //previously actained achievements are not made invalid
-            //check if already obtained before
-            if (!temp[3] && streakArray.length == 2) {
-                temp[3] = true
-                newbadge = true
-                badgeName = "Chasing Success"
-            }
-
-            if (!temp[4] && streakArray.length == 7) {
-                temp[4] = true
-                newbadge = true
-                badgeName = "Unstoppable Force"
-
-            }
-    
-            await updateDoc(docref, {
-                badges: temp,
-                streak: streakArray
-            })
-            //new badge unlocked, refresh badges screen by changing useEFFECT dependency and give alert
-            if (newbadge) {
-                refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge)
-                alert("New Badge " + badgeName + " unlocked!")
-            }            
-        }
     }
 
     const resetHandler = async () => {
@@ -139,19 +82,29 @@ export default function ProgressTracker({input} : any) {
         })
         setCal(0)
         setProg(0)
+        console.log("test3")
     }
 
     const autoReset = async () => {
         const docsnap = await getDoc(docref)
         const streakArray = docsnap.data()?.streak
+
         //already reset and nvr upload any caloreis
-        if (currentCal == 0) {
+        if (docsnap.data()?.currentCalorie == 0) {
+            return
+        }
+        if (streakArray == undefined) {
             return
         }
         const lastIndex: number = streakArray.length - 1
-        const lastUploadDay: string = streakArray[lastIndex]
+        // const lastUploadDay: string = streakArray[lastIndex]
+        const lastUploadDay: string = docsnap.data()?.lastUpdatedAt
+
         const todayDate: string = moment().format('l')   // 6/26/2024
-        //doesnt mattter when lastupload day is, its bound to be different
+        console.log(todayDate)
+        //doesnt mattter when lastupload day is, its bound to be different 
+        //but make sure only reset if goal was reached previously
+        //if not threre will be a bug where everytime u update calories but havent rch goal it will reset to 0
         if (todayDate != lastUploadDay) {
             resetHandler()
         }
@@ -160,7 +113,7 @@ export default function ProgressTracker({input} : any) {
     useEffect(() => {
         getCalorieProgress()
         autoReset()
-    }, [bar])
+    },[bar])
 
     //to control the popup
     const modalHandler = () => {
