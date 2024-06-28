@@ -59,6 +59,10 @@ export default function SignupScreen({ navigation }: any) {
         calorieGoal: 0,
         following: [username],
         collection: [],
+        currentCalorie: 0,
+        badges: [],
+        DOB: "",
+        streak:[],
       })
       
       auth.signOut(); 
@@ -120,6 +124,7 @@ export default function SignupScreen({ navigation }: any) {
             placeholderTextColor={"grey"}
             onChangeText={(val) => setUsername(val)}
             autoCapitalize="none"
+            autoCorrect={false}
           />
           <TextInput
             style={styles.input}
@@ -129,6 +134,8 @@ export default function SignupScreen({ navigation }: any) {
               setFirstName(val);
             }}
             autoCapitalize="none"
+            autoCorrect={false}
+
           />
           <TextInput
             style={styles.input}
@@ -138,6 +145,8 @@ export default function SignupScreen({ navigation }: any) {
               setLastName(val);
             }}
             autoCapitalize="none"
+            autoCorrect={false}
+
           />
           <TextInput
             style={styles.input}
@@ -145,6 +154,8 @@ export default function SignupScreen({ navigation }: any) {
             placeholderTextColor={"grey"}
             onChangeText={(val) => setEmail(val)}
             autoCapitalize="none"
+            autoCorrect={false}
+
           />
           <View style={{ justifyContent: "center" }}>
             <TextInput
@@ -157,6 +168,8 @@ export default function SignupScreen({ navigation }: any) {
               }}
               textContentType="oneTimeCode"
               autoCapitalize="none"
+              autoCorrect={false}
+
             />
             <TouchableOpacity style={styles.visible} onPress={pressHandler1}>
               {visible1 ? (

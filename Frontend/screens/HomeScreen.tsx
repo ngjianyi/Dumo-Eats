@@ -12,11 +12,13 @@ import Feed from "@/components/Feed";
 import AutoRefresh from "@/contexts/AutoRefresh"
 import CreatePostScreen from "./CreatePostScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';
+
 export default function HomeScreen() {
   const [posts, setPosts] = useState<DocumentData[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
   const [upload, setUpload] = useState(false);
+
   // const refreshHandler = () => {
   //   setRefresh(!refresh)
   // };
@@ -27,12 +29,17 @@ export default function HomeScreen() {
   }
 
   //to retrieve  All posts from data base collection "Posts"
+  //autoRefreshContext is for adding new users as friends
+  
   useEffect(() => {
     setLoading(true)
     setPosts([])
     getAllPosts();
   },[refresh, autoRefreshcontext?.autoRefresh])
 
+  
+
+  //
   const getAllPosts = async () => {
     setLoading(true)
     setPosts([])

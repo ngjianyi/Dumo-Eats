@@ -4,6 +4,5 @@ interface AutoRefreshContextValue {
     setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const [dummy, setDummy] = useState(false)
 const AutoRefresh = createContext<AutoRefreshContextValue | undefined>(undefined)
 export default AutoRefresh;
