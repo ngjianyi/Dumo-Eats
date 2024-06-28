@@ -19,12 +19,15 @@ import { doc, DocumentData, collection, getDocs, getDoc, query, where, updateDoc
 import AddUsersScreen from "./AddUsersScreen";
 import CollectionScreen from "./CollectionScreen";
 import CalorieGoal from "@/contexts/CalorieGoal";
-
+import RefreshBadgeContext from "@/contexts/RefreshBadge";
+import UserLoggedInContext from "@/contexts/UserLoggedIn";
 const profilePic = require("@/assets/images/SampleProfile.png");
 
 export default function ProfileScreen({ navigation }: any) {
   const userRef = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
   const calorieContext = useContext(CalorieGoal);
+  const refreshBadgeContext = useContext(RefreshBadgeContext)
+  const userLoggedInContext = useContext(UserLoggedInContext)
 
   const getAllDetails = async () => {
     const docsnap = await getDoc(userRef);
@@ -39,9 +42,30 @@ export default function ProfileScreen({ navigation }: any) {
       name: name,
       DOB: date,
     })
+    //to change false value to true for set calorie goal badge
+  
+
     Keyboard.dismiss()
     const docsnap = await getDoc(userRef);
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal)
+    const temp = docsnap.data()?.badges
+    if (docsnap.data()?.calorieGoal > 0) {
+      temp[0] = true
+      await updateDoc(userRef, {
+        badges: temp
+      })
+      refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge)
+      alert("New Badge Strategic Visionary Unlocked!")
+    }
+    //for testing purposes
+    // } else {
+    //   temp[0] = false
+    //   await updateDoc(userRef, {
+    //     badges: temp
+    //   })
+    //   refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge)
+
+    // }
     alert("Updated Successfully!")
 
   }
@@ -53,6 +77,7 @@ export default function ProfileScreen({ navigation }: any) {
   const[refresh, setRefresh] = useState(false);
 
   const logOutHandler = () => {
+    userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn)
     AUTH.signOut().then(navigation.navigate("login"));
   };
 

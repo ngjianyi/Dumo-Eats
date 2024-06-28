@@ -1,12 +1,47 @@
 import UpdateScreen from "@/screens/UpdateScreen";
-import React, {useState, useContext, useEffect, useRef} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import {View, Text, StyleSheet, TouchableOpacity, Modal} from "react-native";
 import * as Progress from 'react-native-progress';
 import { doc, DocumentData, collection, getDocs, getDoc, query, where, updateDoc } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import CalorieGoal from "@/contexts/CalorieGoal";
+import RefreshBadgeContext from "@/contexts/RefreshBadge";
+import moment from "moment"
+
 export default function ProgressTracker({input} : any) {
     const docref = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid)
+    const refreshBadgeContext = useContext(RefreshBadgeContext)
+
+    // const checkStreak = (prev: string, curr: string) : boolean => {
+    //     const array1 = prev.split("/")
+    //     const array2 = curr.split("/")
+    //     const month1 = Number(array1[0])
+    //     const month2 = Number(array2[0])
+    //     const day1 = Number(array1[1])
+    //     const day2 = Number(array2[1])
+
+    //     const thirty = [4,6,9,11]
+    //     //same month
+    //     if (month1 == month2 && day2 > day1) {
+    //         return day2 - day1 == 1
+    //         //end of 30 days month
+    //     } else if (thirty.includes(month1) && day1 == 30) {
+    //         return day2 == 1 && month2 - month1 == 1
+    //         //end of feb
+    //     } else if (month1 == 2 && day1 == 28) {
+    //         return day2 == 1 && month2 - month1 == 1
+    //         //end of year
+    //     } else if (month1 == 12 && day1 == 31){
+    //         return day2 == 1 && month2 == 1
+    //         //end of 31 days month
+    //     } else if (day1 == 31){
+    //         return day2 == 1 && month2 - month1 == 1
+    //     } else {
+    //         return false
+    //     }
+    //     // 6/26/2024
+
+    // } 
 
     //store current calories from db to display
     const [currentCal, setCal] = useState(0);
@@ -21,17 +56,21 @@ export default function ProgressTracker({input} : any) {
     //     const docsnap = await getDoc(docref)
     //     calorieContext?.setCalorie(docsnap.data()?.calorieGoal)
     // }
+
+    // to update total calories clocked and progress bar
     const getCalorieProgress = async () => {
         const docsnap = await getDoc(docref)
-        calorieContext?.setCalorie(docsnap.data()?.calorieGoal)
+        calorieContext?.setCalorie(docsnap.data()?.calorieGoal)  
+        const targetGoal: number = docsnap.data()?.calorieGoal
         const curr: number = docsnap.data()?.currentCalorie
         setCal(curr)
         const ratio: number = calorieContext?.calorie != undefined
-                    ? curr / calorieContext?.calorie
+                    ? curr / targetGoal
                     : 0        
         if (isNaN(ratio)) {
             return
         } else {
+            console.log(ratio)
             setProg(ratio)
         }
     }
@@ -43,11 +82,38 @@ export default function ProgressTracker({input} : any) {
         })
         setCal(0)
         setProg(0)
+        console.log("test3")
+    }
+
+    const autoReset = async () => {
+        const docsnap = await getDoc(docref)
+        const streakArray = docsnap.data()?.streak
+
+        //already reset and nvr upload any caloreis
+        if (docsnap.data()?.currentCalorie == 0) {
+            return
+        }
+        if (streakArray == undefined) {
+            return
+        }
+        const lastIndex: number = streakArray.length - 1
+        // const lastUploadDay: string = streakArray[lastIndex]
+        const lastUploadDay: string = docsnap.data()?.lastUpdatedAt
+
+        const todayDate: string = moment().format('l')   // 6/26/2024
+        console.log(todayDate)
+        //doesnt mattter when lastupload day is, its bound to be different 
+        //but make sure only reset if goal was reached previously
+        //if not threre will be a bug where everytime u update calories but havent rch goal it will reset to 0
+        if (todayDate != lastUploadDay) {
+            resetHandler()
+        }
     }
 
     useEffect(() => {
         getCalorieProgress()
-    }, [bar])
+        autoReset()
+    },[bar])
 
     //to control the popup
     const modalHandler = () => {

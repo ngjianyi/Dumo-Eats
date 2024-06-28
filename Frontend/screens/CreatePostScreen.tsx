@@ -7,9 +7,10 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {collection, doc,getDoc,addDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import moment from 'moment'
 import autoRefresh from "@/contexts/AutoRefresh";
-
+import RefreshBadgeContext from "@/contexts/RefreshBadge";
 
 export default function CreatePostScreen({upload, setUpload, refresh, setRefresh}: any) {
+    const refreshContext = useContext(RefreshBadgeContext)
     const img = require("@/assets/images/imagePlaceholder.png")
     interface FormValues {
         caption: string;
@@ -63,10 +64,16 @@ export default function CreatePostScreen({upload, setUpload, refresh, setRefresh
                     value.userName = docSnap.data()?.userName;
                     //add time
                     value.time = moment().format('LLL');  // June 19, 2024 11:22 AM
-                    
-                    //add to saved collection
+                    //check for whtehr its first post for necessary achievemtn
+                    const firstTime: boolean = !docSnap.data()?.badges[2]
+                    const temp = docSnap.data()?.badges
+                    if (firstTime) {
+                        temp[2] = true
+                    }
+                    //user's own posts will be added to saved collection
                     await updateDoc(docRefUser, {
-                        collection: arrayUnion(value)
+                        collection: arrayUnion(value),
+                        badges: temp
                     });
                     const docSnapTest = await getDoc(docRefUser);
 
@@ -97,6 +104,10 @@ export default function CreatePostScreen({upload, setUpload, refresh, setRefresh
                         setRefresh(!refresh)
                         setImage(null);
                         setUpload(!upload);
+                        if (firstTime) {
+                            alert("New badge 'Upcoming Influencer' unlocked!")
+                            refreshContext?.setRefreshBadge(!refreshContext?.refreshBadge)
+                        }
                     }}])
                 })
               });

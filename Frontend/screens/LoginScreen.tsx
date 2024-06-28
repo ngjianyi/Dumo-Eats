@@ -11,26 +11,25 @@ import {
   ActivityIndicator,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as SecureStore from "expo-secure-store";
-// import axios, { AxiosError } from "axios";
 import {AUTH} from "../firebaseCONFIG";
 import { User, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import UserLoggedInContext from "@/contexts/UserLoggedIn";
 const logoImg = require("@/assets/images/logo.png");
 
 export default function LoginScreen({ navigation }: any) {
+  const userLoggedInContext = useContext(UserLoggedInContext)
+
   const signupHandler = () => navigation.navigate("signup");
   const forgetHandler = () => navigation.navigate("forget");
   const [visible, setVisibility] = useState(false);
   const pressHandler = () => setVisibility(!visible);
 
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  // const[userLogedIn, setUserLogIn] = useState<User | null>(null);
-  const[userLogedIn, setUserLogIn] = useState(false);
 
   const auth = AUTH;
 
@@ -38,11 +37,11 @@ export default function LoginScreen({ navigation }: any) {
     setLoading(true);
     try {  
       const response = await signInWithEmailAndPassword(auth, email, password);
-      setUserLogIn(!userLogedIn)
       if (!auth.currentUser?.emailVerified) {
         AUTH.signOut()
         alert("Email not verified");
       } else {
+        userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn)
       }
     } catch (error: any){
       console.log(error);
@@ -54,46 +53,15 @@ export default function LoginScreen({ navigation }: any) {
   //observer that listens for changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(AUTH,(user) => {
-      console.log(user);
-      if (user && AUTH.currentUser?.emailVerified) {
-        //setUserLogIn(user);
+      if (user && userLoggedInContext?.UserLoggedIn) {
         navigation.navigate("main");
       } else if (user == null) {
-        //setUserLogIn(user);
       }
     })
     return () => {
       unsubscribe;
     }
-  }, [userLogedIn])
-
-  // if (userLogedIn) {
-  //   navigation.navigate("main");
-  // }
-
-  // const handleSubmit = async () => {
-  //   // const response = await fetch("http://127.0.0.1:8000/auth/login/", {
-  //   const response = await fetch("https://dumo-eats.onrender.com/auth/login/", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ username, password }),
-  //   });
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     console.log(data);
-  //     SecureStore.setItemAsync("refresh", data["refresh"]);
-  //     AsyncStorage.setItem("access", data["access"]);
-  //     navigation.navigate("main");
-  //   } else {
-  //     const error = await response.json();
-  //     console.error(error);
-  //   }
-  //   setUsername("");
-  //   setPassword("");
-  //   Keyboard.dismiss();
-  // };
+  }, [userLoggedInContext?.UserLoggedIn])
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -171,9 +139,6 @@ const styles = StyleSheet.create({
   },
 
   headerText: {
-    // fontSize: 35,
-    // fontWeight: "bold",
-    // color: "darkgreen",
     flexDirection: "row",
   },
 
