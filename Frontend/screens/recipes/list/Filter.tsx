@@ -55,6 +55,7 @@ export default function Filter() {
               placeholder="Min"
               keyboardType="numeric"
               maxLength={4}
+              placeholderTextColor={COLORS.gray}
             />
           </View>
           <Text style={styles.calorie}>to</Text>
@@ -66,6 +67,7 @@ export default function Filter() {
               placeholder="Max"
               keyboardType="numeric"
               maxLength={4}
+              placeholderTextColor={COLORS.gray}
             />
           </View>
         </View>
@@ -81,6 +83,7 @@ export default function Filter() {
               onChangeText={(text) => setIncludeIngredients(text)}
               placeholder="Separate ingredients with a space"
               autoCapitalize="none"
+              placeholderTextColor={COLORS.gray}
             />
           </View>
           <Text style={styles.titleText}>Ingredients to exclude:</Text>
@@ -91,6 +94,7 @@ export default function Filter() {
               onChangeText={(text) => setExcludeIngredients(text)}
               placeholder="Separate ingredients with a space"
               autoCapitalize="none"
+              placeholderTextColor={COLORS.gray}
             />
           </View>
         </View>

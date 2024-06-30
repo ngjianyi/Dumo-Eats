@@ -39,6 +39,7 @@ export default function Header({ handleClick, navigation }: Props) {
             onChangeText={(text) => setQuery(text)}
             placeholder="What are you looking for?"
             autoCapitalize="none"
+            placeholderTextColor={COLORS.gray}
           />
         </View>
 
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.lightWhite,
     marginHorizontal: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
