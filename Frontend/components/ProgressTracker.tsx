@@ -10,38 +10,6 @@ import moment from "moment"
 
 export default function ProgressTracker({input} : any) {
     const docref = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid)
-    const refreshBadgeContext = useContext(RefreshBadgeContext)
-
-    // const checkStreak = (prev: string, curr: string) : boolean => {
-    //     const array1 = prev.split("/")
-    //     const array2 = curr.split("/")
-    //     const month1 = Number(array1[0])
-    //     const month2 = Number(array2[0])
-    //     const day1 = Number(array1[1])
-    //     const day2 = Number(array2[1])
-
-    //     const thirty = [4,6,9,11]
-    //     //same month
-    //     if (month1 == month2 && day2 > day1) {
-    //         return day2 - day1 == 1
-    //         //end of 30 days month
-    //     } else if (thirty.includes(month1) && day1 == 30) {
-    //         return day2 == 1 && month2 - month1 == 1
-    //         //end of feb
-    //     } else if (month1 == 2 && day1 == 28) {
-    //         return day2 == 1 && month2 - month1 == 1
-    //         //end of year
-    //     } else if (month1 == 12 && day1 == 31){
-    //         return day2 == 1 && month2 == 1
-    //         //end of 31 days month
-    //     } else if (day1 == 31){
-    //         return day2 == 1 && month2 - month1 == 1
-    //     } else {
-    //         return false
-    //     }
-    //     // 6/26/2024
-
-    // } 
 
     //store current calories from db to display
     const [currentCal, setCal] = useState(0);
@@ -52,10 +20,6 @@ export default function ProgressTracker({input} : any) {
     const calorieContext = useContext(CalorieGoal);
     //dependency to refresh bar after submiting calories
     const [bar, setBar] = useState(false)
-    // const getCalorieGoal = async () => {
-    //     const docsnap = await getDoc(docref)
-    //     calorieContext?.setCalorie(docsnap.data()?.calorieGoal)
-    // }
 
     // to update total calories clocked and progress bar
     const getCalorieProgress = async () => {
