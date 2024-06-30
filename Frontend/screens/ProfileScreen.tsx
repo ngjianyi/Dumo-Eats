@@ -49,7 +49,7 @@ export default function ProfileScreen({ navigation }: any) {
     const docsnap = await getDoc(userRef);
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal)
     const temp = docsnap.data()?.badges
-    if (docsnap.data()?.calorieGoal > 0) {
+    if (!temp[0] && docsnap.data()?.calorieGoal > 0) {
       temp[0] = true
       await updateDoc(userRef, {
         badges: temp
@@ -137,7 +137,9 @@ export default function ProfileScreen({ navigation }: any) {
                 <Text style={styles.inputLabel}>Date of Birth:</Text>
                 <View style={styles.inputBox}>
                   <TextInput
-                    onChangeText={(value: string) => setDate(value)}
+                    onChangeText={(value: string) => {
+                      setDate(value)
+                    }}
                     placeholder="03/06/2024"
                     value={date}
                   />

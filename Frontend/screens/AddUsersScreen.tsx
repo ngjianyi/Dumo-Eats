@@ -11,6 +11,11 @@ export default function AddUsersScreen({searchUser, setSearch}:any) {
     const addHandler = async () => {
         //add to data base
         const userRef = doc(DATA_BASE, "Users", ""+AUTH.currentUser?.uid)
+        const array = (await getDoc(userRef)).data()?.following 
+        if (array.includes(followed)) {
+            alert("Already added friend")
+            return
+        }
         await updateDoc(userRef, {
             following: arrayUnion(followed)         
         });
