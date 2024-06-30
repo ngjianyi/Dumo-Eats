@@ -37,6 +37,11 @@ export default function ProfileScreen({ navigation }: any) {
   }
 
   const updateDetails = async () => {
+    const validDate = checkDate(date)
+    if (!validDate) {
+      alert("Invalid date please key in day/month/year only")
+      return
+    }
     await updateDoc(userRef, {
       calorieGoal: caloriegoal,
       name: name,
@@ -86,6 +91,16 @@ export default function ProfileScreen({ navigation }: any) {
     setCollection(!collection);
   }
 
+  const checkDate = (val: string) => {
+    const array = val.split("/")
+    if (array.length != 3) {
+      return false
+    } else if (Number(array[0]) > 31 || Number(array[1]) > 12 || Number(array[2]) > 2024) {
+      return false
+    } else {
+      return true
+    }
+  }
   useEffect(() => {
     getAllDetails();
   }, [])
@@ -128,7 +143,7 @@ export default function ProfileScreen({ navigation }: any) {
                 <View style={styles.inputBox}>
                   <TextInput
                     onChangeText={(value: string) => {
-                      setName(value)
+                        setName(value)
                     }}
                     value={name}
                     autoCorrect={false}
@@ -140,7 +155,7 @@ export default function ProfileScreen({ navigation }: any) {
                     onChangeText={(value: string) => {
                       setDate(value)
                     }}
-                    placeholder="03/06/2024"
+                    placeholder="31/06/2024"
                     value={date}
                   />
                 </View>
