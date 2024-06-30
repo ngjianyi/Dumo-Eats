@@ -59,7 +59,6 @@ interface BadgesListProps {
     booleanArray: boolean[];
 }
 export default function BadgesList({booleanArray}: BadgesListProps) {
-
     return(
         <FlatList
             style={{width:"100%"}}

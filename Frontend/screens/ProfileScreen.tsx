@@ -122,7 +122,6 @@ export default function ProfileScreen({ navigation }: any) {
             <Text style={styles.logout}>Collections</Text>
             </TouchableOpacity>
         </View>
-        <KeyboardAvoidingView style={{flex:1}} behavior="padding" keyboardVerticalOffset={100}>
           <ScrollView  style={{flex:1}}>
               <View style={styles.details}>
                 <Text style={styles.inputLabel}>Name:</Text>
@@ -131,7 +130,6 @@ export default function ProfileScreen({ navigation }: any) {
                     onChangeText={(value: string) => {
                       setName(value)
                     }}
-                    // placeholder="Tom henry"
                     value={name}
                     autoCorrect={false}
                   />
@@ -163,7 +161,6 @@ export default function ProfileScreen({ navigation }: any) {
                 </TouchableOpacity>
               </View>
           </ScrollView>
-       </KeyboardAvoidingView>
         <Modal visible={collection}>
           <CollectionScreen refresh={refresh} collection ={collection} setCollection={setCollection}/>
         </Modal>

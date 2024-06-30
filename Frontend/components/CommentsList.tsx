@@ -19,7 +19,6 @@ import {
             showsVerticalScrollIndicator={true}
             data={comments}
             renderItem={({item, index}) => (
-                // <Text>{item}</Text>
                 <Comment comment={item} details={details} />
             )}  
         />

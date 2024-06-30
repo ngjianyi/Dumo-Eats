@@ -22,7 +22,7 @@ export default function HomeScreen() {
   // const refreshHandler = () => {
   //   setRefresh(!refresh)
   // };
-  const autoRefreshcontext = useContext(AutoRefresh)
+  // const autoRefreshcontext = useContext(AutoRefresh)
   const uploadHandler = () => {
     setUpload(!upload)
 
@@ -31,6 +31,8 @@ export default function HomeScreen() {
   //to retrieve  All posts from data base collection "Posts"
   //autoRefreshContext is for adding new users as friends
   
+  const autoRefreshcontext = useContext(AutoRefresh)
+
   useEffect(() => {
     setLoading(true)
     setPosts([])
