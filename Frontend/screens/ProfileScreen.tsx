@@ -101,6 +101,7 @@ export default function ProfileScreen({ navigation }: any) {
       return true
     }
   }
+  
   useEffect(() => {
     getAllDetails();
   }, [])
