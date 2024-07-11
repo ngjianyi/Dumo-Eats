@@ -1,14 +1,13 @@
 import {ScrollView, Modal, Text, View, StyleSheet, SafeAreaView, TouchableOpacity, ActivityIndicator } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
-import ProgressTracker from "@/components/ProgressTracker";
-import UpdateScreen from "./UpdateScreen";
+import ProgressTracker from "../CalorieTracker/ProgressTracker";
 //redux imports
 import { connect } from "react-redux"
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { fetchUserData } from "@/redux/action";
 import { doc, DocumentData, collection, getDocs, getDoc, query, where } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-import Feed from "@/components/Feed";
+import Feed from "../Feed/Feed";
 import AutoRefresh from "@/contexts/AutoRefresh"
 import CreatePostScreen from "./CreatePostScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';

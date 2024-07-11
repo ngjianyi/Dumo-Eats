@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginScreen from "@/screens/LoginScreen";
-import SignupScreen from "@/screens/SignupScreen";
-import ForgotScreen from "@/screens/ForgotPWScreen";
+import LoginScreen from "@/screens/Authentication/LoginScreen";
+import SignupScreen from "@/screens/Authentication/SignupScreen";
+import ForgotScreen from "@/screens/Authentication/ForgotPWScreen";
 import TabNavigation from "@/components/navigation/TabNavigation";
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
 

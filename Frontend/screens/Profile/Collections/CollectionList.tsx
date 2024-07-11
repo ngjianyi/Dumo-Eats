@@ -11,7 +11,6 @@ import {
     FlatList,
   } from "react-native";
   import React, { useState, useContext } from "react";
-  import Comment from"@/components/Comment"
   import { doc, DocumentData, collection, getDocs, getDoc, query, where } from "firebase/firestore";
   import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
   import AddCollectionFunc from "@/contexts/AddCollectionFunc";

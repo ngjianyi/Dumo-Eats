@@ -10,7 +10,7 @@ import {
     Image,
   } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
-import BadgesList from "@/components/Badges/BadgesList";
+import BadgesList from "../Badge/BadgesList";
 import { doc, DocumentData, collection, getDocs, getDoc, query, where } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import RefreshBadgeContext from "@/contexts/RefreshBadge";

@@ -16,7 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { updateDoc, arrayUnion, arrayRemove, doc, DocumentData, collection, getDocs, getDoc, DocumentReference } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import { delay } from "@reduxjs/toolkit/dist/utils";
-import CommentsScreen from "@/screens/CommentsScreen";
+import CommentsScreen from "./CommentsScreen";
 
 
 export default function Comment({comment, details}: any) {

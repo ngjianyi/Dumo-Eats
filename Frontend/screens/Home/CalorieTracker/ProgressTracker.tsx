@@ -1,15 +1,16 @@
-import UpdateScreen from "@/screens/UpdateScreen";
+import UpdateCaloriesScreen from "@/screens/Home/CalorieTracker/UpdateCaloriesScreen";
 import React, {useState, useContext, useEffect} from "react";
 import {View, Text, StyleSheet, TouchableOpacity, Modal} from "react-native";
 import * as Progress from 'react-native-progress';
 import { doc, DocumentData, collection, getDocs, getDoc, query, where, updateDoc } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import CalorieGoal from "@/contexts/CalorieGoal";
-import RefreshBadgeContext from "@/contexts/RefreshBadge";
+import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import moment from "moment"
 
 export default function ProgressTracker({input} : any) {
     const docref = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid)
+    const refreshCalorieContext = useContext(RefreshCalorieContext)
 
     //store current calories from db to display
     const [currentCal, setCal] = useState(0);
@@ -77,7 +78,8 @@ export default function ProgressTracker({input} : any) {
     useEffect(() => {
         getCalorieProgress()
         autoReset()
-    },[bar])
+    },[refreshCalorieContext?.refreshCalorie])
+    //[bar])
 
     //to control the popup
     const modalHandler = () => {
@@ -130,7 +132,7 @@ export default function ProgressTracker({input} : any) {
                 visible={open}
             >
                 {/* <UpdateScreen modalHandler={modalHandler} progressHandler={progressHandler} /> */}
-                <UpdateScreen modalHandler={modalHandler} bar={bar} setBar={setBar} />
+                <UpdateCaloriesScreen modalHandler={modalHandler} />
 
             </Modal>
         </View>

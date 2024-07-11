@@ -6,7 +6,6 @@ import {AUTH, DATA_BASE, STORAGE}  from "@/firebaseCONFIG";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {collection, doc,getDoc,addDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import moment from 'moment'
-import autoRefresh from "@/contexts/AutoRefresh";
 import RefreshBadgeContext from "@/contexts/RefreshBadge";
 
 export default function CreatePostScreen({upload, setUpload, refresh, setRefresh}: any) {

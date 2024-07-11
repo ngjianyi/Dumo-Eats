@@ -27,7 +27,7 @@ interface badgeprops {
     item: Item 
 }
 
-export default function Badge({item}: badgeprops) {
+export default function BadgeColoured({item}: badgeprops) {
     return(
         <View style={styles.badgeContainer}>
             <View style={styles.icon}>

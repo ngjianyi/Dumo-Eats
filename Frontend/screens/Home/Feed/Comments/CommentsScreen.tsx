@@ -3,8 +3,7 @@ import React, { useState, useEffect } from "react";
 import { doc, DocumentData, collection, getDocs, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import CommentsList from "@/components/CommentsList";
-import { useLocalSearchParams } from "expo-router";
+import CommentsList from "./CommentsList";
 import moment from  "moment"
 
 export default function CommentsScreen({item, visible, setVisible, comments, setRefresh, refreshComment} : any) {

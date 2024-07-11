@@ -14,6 +14,7 @@ import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import { doc, DocumentData, collection, getDocs, getDoc, query, where, updateDoc } from "firebase/firestore";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import RefreshBadgeContext from "@/contexts/RefreshBadge";
+import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import moment from "moment"
 export const checkStreak =  (prev: string, curr: string) : boolean => {
     const array1 = prev.split("/")
@@ -24,7 +25,6 @@ export const checkStreak =  (prev: string, curr: string) : boolean => {
     const day2 = Number(array2[1])
     const year1 = Number(array1[2])
     const year2 = Number(array2[2])
-
     const thirty = [4,6,9,11]
     //same month
     if (year1 != year2 ) {
@@ -51,11 +51,12 @@ export const checkStreak =  (prev: string, curr: string) : boolean => {
     // 6/26/2024
 
 } 
-export default function UpdateScreen({modalHandler, setBar, bar}: any) {
+export default function UpdateCaloriesScreen({modalHandler}: any) {
     const docref = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid)
     const[calories, setCalories] = useState(0);
     const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid)
     const refreshBadgeContext = useContext(RefreshBadgeContext)
+    const refreshCalorieContext = useContext(RefreshCalorieContext)
 
 
     const updateCalories = (input: string) => {
@@ -133,7 +134,8 @@ export default function UpdateScreen({modalHandler, setBar, bar}: any) {
                 alert("New Badge " + badgeName + " unlocked!")
             }            
         }
-        setBar(!bar)
+        //setBar(!bar)
+        refreshCalorieContext?.setRefreshCalorie(!refreshCalorieContext?.refreshCalorie)
         // progressHandler(calories);
     }
     return (

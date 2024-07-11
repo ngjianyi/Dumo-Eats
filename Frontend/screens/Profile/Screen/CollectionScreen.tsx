@@ -3,7 +3,7 @@ import {useEffect, useState} from "react"
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import { updateDoc, arrayUnion, arrayRemove, doc, DocumentData, collection, getDocs, getDoc, DocumentReference } from "firebase/firestore";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import CollectionList from "@/components/Collection/CollectionList";
+import CollectionList from "../Collections/CollectionList";
 
 export default function CollectionScreen({collection, setCollection, refresh}: any) {
     const [collectionArray, setArray] = useState<string[]>([])

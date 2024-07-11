@@ -11,7 +11,7 @@ import {
     FlatList,
     ImageURISource,
   } from "react-native";
-import Badge from "./Badge";
+import BadgeColoured from "./BadgeColoured";
 import BadgeGrey from "./BadgeGrey";
 import { doc, DocumentData, collection, getDocs, getDoc, query, where } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
@@ -64,7 +64,7 @@ export default function BadgesList({booleanArray}: BadgesListProps) {
             style={{width:"100%"}}
             data={badges}
             renderItem={({item, index}) => (
-                booleanArray[index] ? <Badge item={item}/> : <BadgeGrey item={item}/>
+                booleanArray[index] ? <BadgeColoured item={item}/> : <BadgeGrey item={item}/>
             )}  
         />
     )

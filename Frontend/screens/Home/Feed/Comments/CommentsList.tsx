@@ -11,16 +11,15 @@ import {
     FlatList,
   } from "react-native";
   import React, { useState } from "react";
-  import Post from "@/components/Posts"
+  import Comment from "./Comment";
 
-  export default function Feed({ posts }: any) {
+  export default function CommentsList({ comments, details }: any) {
     return(
         <FlatList
-            showsVerticalScrollIndicator={false}
-            style={{flex:1}}
-            data={posts}
+            showsVerticalScrollIndicator={true}
+            data={comments}
             renderItem={({item, index}) => (
-                <Post item={item} />
+                <Comment comment={item} details={details} />
             )}  
         />
     )
