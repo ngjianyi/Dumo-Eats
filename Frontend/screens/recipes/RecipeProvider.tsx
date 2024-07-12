@@ -6,9 +6,11 @@ type StateContextType = {
   setRecipes: React.Dispatch<React.SetStateAction<any>>;
   recipe: any;
   setRecipe: React.Dispatch<React.SetStateAction<any>>;
-  minCalories: number;
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
+  cuisineType: string;
+  setCuisineType: React.Dispatch<React.SetStateAction<string>>;
+  minCalories: number;
   setMinCalories: React.Dispatch<React.SetStateAction<number>>;
   maxCalories: number;
   setMaxCalories: React.Dispatch<React.SetStateAction<number>>;
@@ -30,6 +32,7 @@ function RecipeProvider({ children }: any) {
   const [recipes, setRecipes] = useState(null);
   const [recipe, setRecipe] = useState(null);
   const [query, setQuery] = useState<string>("");
+  const [cuisineType, setCuisineType] = useState<string>("");
   const [minCalories, setMinCalories] = useState<number>(50);
   const [maxCalories, setMaxCalories] = useState<number>(800);
   const [includeIngredients, setIncludeIngredients] = useState<string>("");
@@ -46,6 +49,8 @@ function RecipeProvider({ children }: any) {
         setRecipe,
         query,
         setQuery,
+        cuisineType,
+        setCuisineType,
         minCalories,
         setMinCalories,
         maxCalories,

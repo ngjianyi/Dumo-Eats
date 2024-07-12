@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import React, { useState, useContext } from "react";
 import { RecipeContext } from "../RecipeProvider";
 import Tabs from "./Tabs";
-import Recipe from "./Recipe";
+import RecipeHeader from "./RecipeHeader";
 import { COLORS, SIZES } from "@/constants/Theme";
 import Nutrients from "./Nutrients";
 import Ingredients from "./Ingredients";
@@ -36,7 +36,7 @@ export default function IndivScreen() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <SafeAreaView style={styles.headerContainer}>
             <View style={styles.header}>
-              <Recipe
+              <RecipeHeader
                 recipeImage={recipe.image}
                 recipeTitle={recipe.title}
                 recipeCalories={recipe.nutrition.nutrients[0].amount}
