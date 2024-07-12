@@ -1,12 +1,4 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  RefreshControl,
-} from "react-native";
+import { View, StyleSheet, FlatList, RefreshControl } from "react-native";
 import React, { useContext, useState } from "react";
 import { RecipeContext } from "@/screens/recipes/RecipeProvider";
 import RecipeDisplay from "./RecipeDisplay";

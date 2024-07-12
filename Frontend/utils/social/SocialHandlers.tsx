@@ -9,17 +9,11 @@ import {
 import { AUTH } from "@/firebaseCONFIG";
 import { getUserID } from "./User";
 
-type likeHandlerArgs = {
-  setHeart: React.Dispatch<React.SetStateAction<boolean>>;
-  setLikes: React.Dispatch<React.SetStateAction<number>>;
-  itemRef: DocumentReference<DocumentData, DocumentData>;
-};
-
-const likeHandler = async ({
-  setHeart,
-  setLikes,
-  itemRef,
-}: likeHandlerArgs) => {
+const likeHandler = async (
+  setHeart: React.Dispatch<React.SetStateAction<boolean>>,
+  setLikes: React.Dispatch<React.SetStateAction<number>>,
+  itemRef: DocumentReference<DocumentData, DocumentData>
+) => {
   setHeart((prev: boolean) => !prev);
 
   const currentDoc = (await getDoc(itemRef)).data();

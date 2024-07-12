@@ -51,11 +51,11 @@ export default function RecipeListScreen({ navigation }: any) {
           intolerances: intolerances.toString(),
           includeIngredients: includeIngredients.split(" ").toString(),
           excludeIngredients: excludeIngredients.split(" ").toString(),
-          number: 5,
+          number: 1,
         },
       })
       .then((response) => {
-        console.log("Response:", response.data);
+        // console.log("Response:", response.data);
         setTotalRecipes(response.data.totalResults);
         setRecipes(response.data.results);
         setIsLoading(false);
