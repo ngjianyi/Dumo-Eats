@@ -17,8 +17,6 @@ import CuisineTabs from "./CuisineTabs";
 
 export default function RecipeListScreen({ navigation }: any) {
   const {
-    recipes,
-    setRecipes,
     query,
     cuisineType,
     minCalories,
@@ -28,6 +26,7 @@ export default function RecipeListScreen({ navigation }: any) {
     intolerances,
   } = useContext<any>(RecipeContext);
 
+  const [recipes, setRecipes] = useState(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [totalRecipes, setTotalRecipes] = useState<number>(0);
@@ -51,7 +50,7 @@ export default function RecipeListScreen({ navigation }: any) {
           intolerances: intolerances.toString(),
           includeIngredients: includeIngredients.split(" ").toString(),
           excludeIngredients: excludeIngredients.split(" ").toString(),
-          number: 1,
+          number: 2,
         },
       })
       .then((response) => {

@@ -32,6 +32,7 @@ export default function SocialTabs({
             <Ionicons name="chatbubble-outline" size={25} color="black" />
           </TouchableOpacity>
         </View>
+
         <View style={styles.rightFooter}>
           <TouchableOpacity onPress={saveButtonHandler}>
             {saved ? (
@@ -42,11 +43,8 @@ export default function SocialTabs({
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.description}>
-        <Text style={styles.caption}>
-          {likes === 1 ? `${likes} like` : `${likes} likes`}
-        </Text>
-      </View>
+
+      <Text>{likes === 1 ? `${likes} like` : `${likes} likes`}</Text>
     </>
   );
 }
@@ -64,9 +62,5 @@ const styles = StyleSheet.create({
   rightFooter: {
     flex: 1,
     alignItems: "flex-end",
-  },
-  description: {},
-  caption: {
-    // paddingLeft: 5,
   },
 });

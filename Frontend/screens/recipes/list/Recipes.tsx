@@ -1,10 +1,8 @@
 import { View, StyleSheet, FlatList, RefreshControl } from "react-native";
-import React, { useContext, useState } from "react";
-import { RecipeContext } from "@/screens/recipes/RecipeProvider";
+import React, { useState } from "react";
 import RecipeDisplay from "./RecipeDisplay";
 
-export default function Recipe({ getRecipes, navigation }: any) {
-  const { recipes } = useContext<any>(RecipeContext);
+export default function Recipes({ recipes, getRecipes, navigation }: any) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const onRefresh = () => {

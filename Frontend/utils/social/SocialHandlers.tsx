@@ -6,7 +6,6 @@ import {
   DocumentReference,
   DocumentData,
 } from "firebase/firestore";
-import { AUTH } from "@/firebaseCONFIG";
 import { getUserId, getUserDocSnap, getUserRef } from "./User";
 
 const likeHandler = async (
@@ -35,6 +34,7 @@ const recipesSaveHandler = async (
   recipeId: string
 ) => {
   setSaved((prev) => !prev);
+
   const userData = (await getUserDocSnap()).data();
   if (userData?.savedRecipes.includes(recipeId)) {
     await updateDoc(getUserRef(), {

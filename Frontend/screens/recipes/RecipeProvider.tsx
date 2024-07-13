@@ -1,11 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
 type StateContextType = {
-  capitalizeFirstLetter: (string: string) => string;
-  recipes: any;
-  setRecipes: React.Dispatch<React.SetStateAction<any>>;
-  recipe: any;
-  setRecipe: React.Dispatch<React.SetStateAction<any>>;
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
   cuisineType: string;
@@ -24,13 +19,7 @@ type StateContextType = {
 
 const RecipeContext = createContext<null | StateContextType>(null);
 
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function RecipeProvider({ children }: any) {
-  const [recipes, setRecipes] = useState(null);
-  const [recipe, setRecipe] = useState(null);
+function RecipeProvider({ children }: { children: React.ReactNode }) {
   const [query, setQuery] = useState<string>("");
   const [cuisineType, setCuisineType] = useState<string>("");
   const [minCalories, setMinCalories] = useState<number>(50);
@@ -42,11 +31,6 @@ function RecipeProvider({ children }: any) {
   return (
     <RecipeContext.Provider
       value={{
-        capitalizeFirstLetter,
-        recipes,
-        setRecipes,
-        recipe,
-        setRecipe,
         query,
         setQuery,
         cuisineType,
