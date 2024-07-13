@@ -1,24 +1,12 @@
 import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import {
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  doc,
-  DocumentData,
-  collection,
-  getDocs,
-  getDoc,
-  DocumentReference,
-  FieldValue,
-  setDoc,
-} from "firebase/firestore";
+import { DATA_BASE } from "@/firebaseCONFIG";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { RecipeContext } from "@/screens/recipes/RecipeProvider";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
-import { getUserID } from "@/utils/social/User";
+import { getUserId, getUserDocSnap } from "@/utils/social/User";
 import SocialTabs from "@/components/social/SocialTabs";
-import { DATA_BASE } from "@/firebaseCONFIG";
-import { likeHandler } from "@/utils/social/SocialHandlers";
+import { likeHandler, recipesSaveHandler } from "@/utils/social/SocialHandlers";
 
 type docData = {
   likes: string[];
@@ -29,31 +17,26 @@ export default function RecipeDisplay({ navigation, item }: any) {
   const [heart, setHeart] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
+  const itemId = String(item.id);
 
   const handlePress = (item: any) => {
     setRecipe(item);
     navigation.navigate("indiv");
   };
 
-  console.log("Querying FOR recipe ref");
-  const recipesRef = doc(DATA_BASE, "Recipes", String(item.id));
-  console.log("Successfully queried FOR recipe ref");
+  const recipesRef = doc(DATA_BASE, "Recipes", itemId);
 
-  const getRecipeSocials = async () => {
-    console.log("Querying using recipe ref");
+  const setRecipeLikes = async () => {
     const recipe = await getDoc(recipesRef);
-    console.log("Successfully queried using recipe ref");
     if (recipe.exists()) {
-      console.log("Recipe already exists");
       const data: any = recipe.data();
-      if (data.likes.includes(getUserID())) {
+      if (data.likes.includes(getUserId())) {
         setHeart(true);
       } else {
         setHeart(false);
       }
       setLikes(data.likes.length);
     } else {
-      console.log("Creation of new recipe");
       const docData: docData = {
         likes: [],
       };
@@ -63,12 +46,26 @@ export default function RecipeDisplay({ navigation, item }: any) {
     }
   };
 
+  const setRecipeSaved = async () => {
+    const userData = (await getUserDocSnap()).data();
+    if (userData?.savedRecipes.includes(itemId)) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  };
+
   useEffect(() => {
-    getRecipeSocials();
+    setRecipeLikes();
+    setRecipeSaved();
   }, []);
 
   const likeButtonHandler = () => {
     likeHandler(setHeart, setLikes, recipesRef);
+  };
+
+  const saveButtonHandler = () => {
+    recipesSaveHandler(setSaved, itemId);
   };
 
   return (
@@ -87,13 +84,10 @@ export default function RecipeDisplay({ navigation, item }: any) {
 
         <SocialTabs
           heart={heart}
-          setHeart={setHeart}
           saved={saved}
-          setSaved={setSaved}
           likes={likes}
-          setLikes={setLikes}
-          itemRef={recipesRef}
           likeButtonHandler={likeButtonHandler}
+          saveButtonHandler={saveButtonHandler}
         />
       </View>
 

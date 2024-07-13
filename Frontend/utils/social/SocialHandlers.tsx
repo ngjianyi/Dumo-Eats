@@ -7,7 +7,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { AUTH } from "@/firebaseCONFIG";
-import { getUserID } from "./User";
+import { getUserId, getUserDocSnap, getUserRef } from "./User";
 
 const likeHandler = async (
   setHeart: React.Dispatch<React.SetStateAction<boolean>>,
@@ -17,17 +17,34 @@ const likeHandler = async (
   setHeart((prev: boolean) => !prev);
 
   const currentDoc = (await getDoc(itemRef)).data();
-  if (currentDoc?.likes.includes(getUserID())) {
+  if (currentDoc?.likes.includes(getUserId())) {
     setLikes(currentDoc?.likes.length - 1);
     await updateDoc(itemRef, {
-      likes: arrayRemove(AUTH.currentUser?.uid),
+      likes: arrayRemove(getUserId()),
     });
   } else {
     setLikes(currentDoc?.likes.length + 1);
     await updateDoc(itemRef, {
-      likes: arrayUnion(AUTH.currentUser?.uid),
+      likes: arrayUnion(getUserId()),
     });
   }
 };
 
-export { likeHandler };
+const recipesSaveHandler = async (
+  setSaved: React.Dispatch<React.SetStateAction<boolean>>,
+  recipeId: string
+) => {
+  setSaved((prev) => !prev);
+  const userData = (await getUserDocSnap()).data();
+  if (userData?.savedRecipes.includes(recipeId)) {
+    await updateDoc(getUserRef(), {
+      savedRecipes: arrayRemove(recipeId),
+    });
+  } else {
+    await updateDoc(getUserRef(), {
+      savedRecipes: arrayUnion(recipeId),
+    });
+  }
+};
+
+export { likeHandler, recipesSaveHandler };

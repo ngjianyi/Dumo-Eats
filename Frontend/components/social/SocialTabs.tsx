@@ -1,41 +1,21 @@
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  doc,
-  DocumentData,
-  collection,
-  getDocs,
-  getDoc,
-  DocumentReference,
-  FieldValue,
-  setDoc,
-} from "firebase/firestore";
 import { SIZES } from "@/constants/Theme";
-import { likeHandler } from "@/utils/social/SocialHandlers";
 
 type Props = {
   heart: boolean;
-  setHeart: React.Dispatch<React.SetStateAction<boolean>>;
   saved: boolean;
-  setSaved: React.Dispatch<React.SetStateAction<boolean>>;
   likes: number;
-  setLikes: React.Dispatch<React.SetStateAction<number>>;
-  itemRef: DocumentReference<DocumentData, DocumentData>;
   likeButtonHandler: () => void;
+  saveButtonHandler: () => void;
 };
 
 export default function SocialTabs({
   heart,
-  setHeart,
   saved,
-  setSaved,
   likes,
-  setLikes,
-  itemRef,
   likeButtonHandler,
+  saveButtonHandler,
 }: Props) {
   return (
     <>
@@ -53,7 +33,7 @@ export default function SocialTabs({
           </TouchableOpacity>
         </View>
         <View style={styles.rightFooter}>
-          <TouchableOpacity onPress={() => setSaved((prev) => !prev)}>
+          <TouchableOpacity onPress={saveButtonHandler}>
             {saved ? (
               <Ionicons name="bookmark" size={25} color="gold" />
             ) : (
@@ -63,11 +43,9 @@ export default function SocialTabs({
         </View>
       </View>
       <View style={styles.description}>
-        <Text style={styles.caption}>{likes} likes</Text>
-        {/* <Text style={styles.caption}>
-          <Text style={{ fontWeight: "bold" }}>{item.userName}</Text>
-          <Text>{" " + item.caption}</Text>
-        </Text> */}
+        <Text style={styles.caption}>
+          {likes === 1 ? `${likes} like` : `${likes} likes`}
+        </Text>
       </View>
     </>
   );
