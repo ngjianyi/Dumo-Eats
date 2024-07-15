@@ -20,27 +20,29 @@ type Props = {
 export default function CommentsList({ setVisible, commentRefs }: Props) {
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.detailsContainer}>
-        <View style={{ flexDirection: "row" }}>
+      <SafeAreaView style={styles.commentBox}>
+        <View style={styles.header}>
           <Text style={styles.title}>Comments</Text>
 
           <TouchableOpacity
             onPress={() => setVisible(false)}
-            style={styles.closeBtn}
+            style={styles.closeButton}
           >
             <Ionicons name="close" size={25} color="black" />
           </TouchableOpacity>
         </View>
 
-        {commentRefs ? (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={commentRefs}
-            renderItem={({ item }) => <Comment commentRef={item} />}
-          />
-        ) : (
-          <Text style={styles.empty}>No comments</Text>
-        )}
+        <View style={{ flex: 1 }}>
+          {commentRefs ? (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={commentRefs}
+              renderItem={({ item }) => <Comment commentRef={item} />}
+            />
+          ) : (
+            <Text style={styles.empty}>No comments</Text>
+          )}
+        </View>
       </SafeAreaView>
     </View>
   );
@@ -52,15 +54,23 @@ const styles = StyleSheet.create({
     marginTop: "auto",
     backgroundColor: COLORS.white,
   },
-  detailsContainer: {
+  commentBox: {
     flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    marginTop: SIZES.xSmall,
+    width: "95%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     textAlign: "center",
-    margin: SIZES.xSmall,
+    fontSize: SIZES.medium,
   },
-  closeBtn: {
-    paddingRight: SIZES.medium,
+  closeButton: {
+    position: "absolute",
+    right: 0,
   },
   empty: {
     textAlign: "center",
