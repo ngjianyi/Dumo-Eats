@@ -5,24 +5,27 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { DATA_BASE } from "@/firebaseCONFIG";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { RecipeContext } from "@/screens/recipes/RecipeProvider";
+import { doc, getDoc, setDoc, DocumentReference } from "firebase/firestore";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 import { getUserId, getUserDocSnap } from "@/utils/social/User";
 import SocialTabs from "@/components/social/SocialTabs";
 import { likeHandler, recipesSaveHandler } from "@/utils/social/SocialHandlers";
 import RecipeIndivScreen from "../indiv/RecipeIndivScreen";
+import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { CommentType } from "@/utils/social/SocialTypes";
 
-export default function RecipeDisplay({ navigation, item }: any) {
-  //   const { setRecipe } = useContext<any>(RecipeContext);
+type Props = {
+  item: Recipe;
+};
+
+export default function RecipeDisplay({ item }: Props) {
   const [heart, setHeart] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<DocumentReference[]>([]);
   const itemId = String(item.id);
   const [detailsVisible, setDetailsVisible] = useState<boolean>(false);
 
@@ -64,24 +67,23 @@ export default function RecipeDisplay({ navigation, item }: any) {
     const recipe = await getDoc(recipesRef);
     if (recipe.exists()) {
       const data = recipe.data();
-      setComments(data.comments);
+      setComments(data.comments.reverse());
     } else {
       setComments([]);
-      // ref is wrong?
-      //   setDoc(
-      //     recipesRef,
-      //     {
-      //       comments: [],
-      //     },
-      //     { merge: true }
-      //   );
+      setDoc(
+        recipesRef,
+        {
+          comments: [],
+        },
+        { merge: true }
+      );
     }
   };
 
   useEffect(() => {
     getRecipeLikes();
     getRecipeSaved();
-    // getRecipeComments();
+    getRecipeComments();
   }, []);
 
   const likeButtonHandler = () => {
@@ -112,6 +114,7 @@ export default function RecipeDisplay({ navigation, item }: any) {
           likes={likes}
           likeButtonHandler={likeButtonHandler}
           saveButtonHandler={saveButtonHandler}
+          commentRefs={comments}
         />
       </View>
 

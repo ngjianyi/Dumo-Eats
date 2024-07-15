@@ -12,8 +12,8 @@ const likeHandler = async (
   setHeart: React.Dispatch<React.SetStateAction<boolean>>,
   setLikes: React.Dispatch<React.SetStateAction<number>>,
   itemRef: DocumentReference<DocumentData, DocumentData>
-) => {
-  setHeart((prev: boolean) => !prev);
+): Promise<void> => {
+  setHeart((prev) => !prev);
 
   const currentDoc = (await getDoc(itemRef)).data();
   if (currentDoc?.likes.includes(getUserId())) {
@@ -32,7 +32,7 @@ const likeHandler = async (
 const recipesSaveHandler = async (
   setSaved: React.Dispatch<React.SetStateAction<boolean>>,
   recipeId: string
-) => {
+): Promise<void> => {
   setSaved((prev) => !prev);
 
   const userData = (await getUserDocSnap()).data();

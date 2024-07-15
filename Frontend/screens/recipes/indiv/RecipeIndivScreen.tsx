@@ -11,6 +11,7 @@ import { RecipeContext } from "../RecipeProvider";
 import Tabs from "./Tabs";
 import RecipeHeader from "./RecipeHeader";
 import { COLORS, SIZES } from "@/constants/Theme";
+import { Recipe } from "@/utils/recipes/RecipesTypes";
 import Nutrients from "./Nutrients";
 import Ingredients from "./Ingredients";
 import Instructions from "./Instructions";
@@ -18,15 +19,13 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 type Props = {
   setDetailsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  recipe: any;
+  recipe: Recipe;
 };
 
 export default function RecipeIndivScreen({
   setDetailsVisible,
   recipe,
 }: Props) {
-  // const { recipe } = useContext<any>(RecipeContext);
-
   const tabs = ["Nutrition", "Ingredients", "Instructions"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
@@ -49,7 +48,7 @@ export default function RecipeIndivScreen({
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
-        onPress={() => setDetailsVisible((prev) => !prev)}
+        onPress={() => setDetailsVisible(false)}
         style={styles.backButton}
       >
         <Ionicons name="arrow-back" size={25} color="black" />

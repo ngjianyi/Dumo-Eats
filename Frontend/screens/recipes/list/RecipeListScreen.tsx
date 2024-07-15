@@ -11,9 +11,9 @@ import React, { useState, useEffect, useContext } from "react";
 import axios, { AxiosError } from "axios";
 import { RecipeContext } from "../RecipeProvider";
 import Recipes from "@/screens/recipes/list/Recipes";
-import { SIZES } from "@/constants/Theme";
 import Header from "./Header";
 import CuisineTabs from "./CuisineTabs";
+import { SIZES } from "@/constants/Theme";
 
 export default function RecipeListScreen({ navigation }: any) {
   const {

@@ -1,11 +1,11 @@
 import { DocumentReference, Timestamp } from "firebase/firestore";
 
-type Likes = string[];
+type LikesType = string[];
 
-type Comment = {
+type CommentType = {
   user: DocumentReference;
   body: string;
   time: Timestamp;
 };
 
-export { Likes, Comment };
+export { LikesType, CommentType };
