@@ -11,6 +11,7 @@ import {
   Keyboard,
   TextInput,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useState } from "react";
 import { DocumentReference, DocumentData } from "firebase/firestore";
@@ -27,16 +28,25 @@ export default function CommentCreate({ recipeRef, getComments }: Props) {
   const [body, setBody] = useState<string>("");
 
   const commentButtonHandler = async () => {
-    setBody("");
-    await recipeCommentHandler(body, recipeRef);
-    getComments();
+    const trimmedBody = body.trim();
+    if (trimmedBody) {
+      setBody("");
+      await recipeCommentHandler(trimmedBody, recipeRef);
+      getComments();
+    } else {
+      setBody("");
+    }
   };
 
   return (
-    <KeyboardAvoidingView style={styles.inputContainer} behavior="position">
+    <SafeAreaView style={styles.inputContainer}>
       <View style={styles.input}>
         <View
-          style={{ marginRight: 5, width: "100%", borderRadius: SIZES.medium }}
+          style={{
+            marginRight: 5,
+            width: "100%",
+            borderRadius: SIZES.medium,
+          }}
         >
           <TextInput
             style={{
@@ -59,7 +69,7 @@ export default function CommentCreate({ recipeRef, getComments }: Props) {
           <Ionicons name="send" size={25} color="black" />
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -94,6 +104,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: "100%",
     borderRadius: SIZES.medium,
+    // flex: 1,
   },
   input: {
     backgroundColor: "gainsboro",

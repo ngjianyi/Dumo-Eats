@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   Text,
   SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { getDoc, DocumentReference, DocumentData } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
@@ -26,7 +28,7 @@ export default function CommentsList({ setVisible, recipeRef }: Props) {
   const getRecipeComments = async () => {
     const recipe = await getDoc(recipeRef);
     const data = recipe.data();
-    setComments(data?.comments);
+    setComments(data?.comments.reverse());
   };
 
   useEffect(() => {
@@ -34,35 +36,38 @@ export default function CommentsList({ setVisible, recipeRef }: Props) {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={styles.commentBox}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Comments</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <View style={styles.container}>
+        <SafeAreaView style={styles.commentBox}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Comments</Text>
 
-          <TouchableOpacity
-            onPress={() => setVisible(false)}
-            style={styles.closeButton}
-          >
-            <Ionicons name="close" size={25} color="black" />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              onPress={() => setVisible(false)}
+              style={styles.closeButton}
+            >
+              <Ionicons name="close" size={25} color="black" />
+            </TouchableOpacity>
+          </View>
 
-        <View style={{ flex: 1 }}>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={comments}
-            renderItem={({ item }) => <Comment commentRef={item} />}
-            inverted
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: "flex-end",
-            }}
+          <View style={{ flex: 1 }}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={comments}
+              renderItem={({ item }) => <Comment commentRef={item} />}
+            />
+          </View>
+
+          <CommentCreate
+            recipeRef={recipeRef}
+            getComments={getRecipeComments}
           />
-        </View>
-
-        <CommentCreate recipeRef={recipeRef} getComments={getRecipeComments} />
-      </SafeAreaView>
-    </View>
+        </SafeAreaView>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 

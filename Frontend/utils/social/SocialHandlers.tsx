@@ -54,7 +54,7 @@ const recipeSaveHandler = async (
 
 const recipeCommentCreate = async (
   body: string
-): Promise<DocumentReference<DocumentData, DocumentData>> => {
+): Promise<DocumentReference<DocumentData, DocumentData> | null> => {
   const recipesCommentsRef: CollectionReference<DocumentData, DocumentData> =
     collection(DATA_BASE, "RecipesComments");
   const commentRef: DocumentReference<DocumentData, DocumentData> =
