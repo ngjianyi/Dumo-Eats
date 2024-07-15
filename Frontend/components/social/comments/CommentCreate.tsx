@@ -47,6 +47,7 @@ export default function CommentCreate({ commentButtonHandler }: Props) {
             multiline={true}
             onChangeText={(val) => setBody(val)}
             autoCapitalize="none"
+            autoCorrect={false}
           />
         </View>
 

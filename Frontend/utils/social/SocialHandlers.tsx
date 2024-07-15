@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import {
   getDoc,
   addDoc,
@@ -14,8 +15,8 @@ import { DATA_BASE } from "@/firebaseCONFIG";
 import { getUserId, getUserDocSnap, getUserRef } from "./User";
 
 const likeHandler = async (
-  setHeart: React.Dispatch<React.SetStateAction<boolean>>,
-  setLikes: React.Dispatch<React.SetStateAction<number>>,
+  setHeart: Dispatch<SetStateAction<boolean>>,
+  setLikes: Dispatch<SetStateAction<number>>,
   itemRef: DocumentReference<DocumentData, DocumentData>
 ): Promise<void> => {
   setHeart((prev) => !prev);
@@ -35,7 +36,7 @@ const likeHandler = async (
 };
 
 const recipeSaveHandler = async (
-  setSaved: React.Dispatch<React.SetStateAction<boolean>>,
+  setSaved: Dispatch<SetStateAction<boolean>>,
   recipeId: string
 ): Promise<void> => {
   setSaved((prev) => !prev);
