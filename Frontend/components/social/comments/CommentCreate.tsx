@@ -6,41 +6,21 @@ import {
   TextInput,
 } from "react-native";
 import { useState } from "react";
-import { DocumentReference, DocumentData } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
-import { recipeCommentHandler } from "@/utils/social/SocialHandlers";
 import { SIZES } from "@/constants/Theme";
 
 type Props = {
-  //   recipeRef: DocumentReference<DocumentData, DocumentData>;
-  //   getComments: () => Promise<void>;
   commentButtonHandler: (trimmedBody: string) => Promise<void>;
 };
 
-export default function CommentCreate({
-  //   recipeRef,
-  //   getComments,
-  commentButtonHandler,
-}: Props) {
+export default function CommentCreate({ commentButtonHandler }: Props) {
   const [body, setBody] = useState<string>("");
 
-  //   const commentButtonHandler = async () => {
-  //     const trimmedBody = body.trim();
-  //     if (trimmedBody) {
-  //       setBody("");
-  //       await recipeCommentHandler(trimmedBody, recipeRef);
-  //       getComments();
-  //     } else {
-  //       setBody("");
-  //     }
-  //   };
   const commentHandler = async () => {
     const trimmedBody = body.trim();
     if (trimmedBody) {
       setBody("");
-      //   recipeCommentHandler(trimmedBody, recipeRef).then();
       commentButtonHandler(trimmedBody);
-      //   getComments();
     } else {
       setBody("");
     }
@@ -70,11 +50,7 @@ export default function CommentCreate({
           />
         </View>
 
-        <TouchableOpacity
-          //   onPress={commentButtonHandler}
-          onPress={commentHandler}
-          style={styles.sendButton}
-        >
+        <TouchableOpacity onPress={commentHandler} style={styles.sendButton}>
           <Ionicons name="send" size={25} color="black" />
         </TouchableOpacity>
       </View>

@@ -8,46 +8,23 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { getDoc, DocumentReference, DocumentData } from "firebase/firestore";
+import { DocumentReference, DocumentData } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "@/constants/Theme";
 import Comment from "./Comment";
 import CommentCreate from "./CommentCreate";
-import { useEffect, useState } from "react";
 
 type Props = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  // recipeRef: DocumentReference<DocumentData, DocumentData>;
-  // getComments: () => Promise<DocumentReference<DocumentData, DocumentData>[]>;
-  commentRefs: any;
+  commentRefs: DocumentReference<DocumentData, DocumentData>[];
   commentButtonHandler: (trimmedBody: string) => Promise<void>;
 };
 
 export default function CommentsList({
   setVisible,
-  // recipeRef,
-  // getComments,
   commentRefs,
   commentButtonHandler,
 }: Props) {
-  // const [comments, setComments] = useState<
-  //   DocumentReference<DocumentData, DocumentData>[]
-  // >([]);
-
-  // const getRecipeComments = async () => {
-  // const recipe = await getDoc(recipeRef);
-  // const data = recipe.data();
-  // setComments(data?.comments.reverse());
-  // };
-
-  // const getRecipeComments = async () => {
-  //   getComments().then((commentRefs) => setComments(commentRefs));
-  // };
-
-  // useEffect(() => {
-  //   getRecipeComments();
-  // }, []);
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -74,11 +51,7 @@ export default function CommentsList({
             />
           </View>
 
-          <CommentCreate
-            // recipeRef={recipeRef}
-            // getComments={getRecipeComments}
-            commentButtonHandler={commentButtonHandler}
-          />
+          <CommentCreate commentButtonHandler={commentButtonHandler} />
         </SafeAreaView>
       </View>
     </KeyboardAvoidingView>

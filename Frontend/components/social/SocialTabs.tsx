@@ -2,9 +2,8 @@ import { Modal, View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useState } from "react";
 import { DocumentReference, DocumentData } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLORS, SIZES } from "@/constants/Theme";
+import { SIZES } from "@/constants/Theme";
 import CommentsList from "./comments/CommentsList";
-import { CommentType } from "@/utils/social/SocialTypes";
 
 type Props = {
   heart: boolean;
@@ -12,9 +11,7 @@ type Props = {
   likes: number;
   likeButtonHandler: () => void;
   saveButtonHandler: () => void;
-  recipeRef: DocumentReference<DocumentData, DocumentData>;
-  //   getComments: () => Promise<DocumentReference<DocumentData, DocumentData>[]>;
-  commentRefs: any;
+  commentRefs: DocumentReference<DocumentData, DocumentData>[];
   commentButtonHandler: (trimmedBody: string) => Promise<void>;
 };
 
@@ -24,8 +21,6 @@ export default function SocialTabs({
   likes,
   likeButtonHandler,
   saveButtonHandler,
-  recipeRef,
-  //   getComments,
   commentRefs,
   commentButtonHandler,
 }: Props) {
@@ -70,8 +65,6 @@ export default function SocialTabs({
       >
         <CommentsList
           setVisible={setVisible}
-          //   recipeRef={recipeRef}
-          //   getComments={getComments}
           commentRefs={commentRefs}
           commentButtonHandler={commentButtonHandler}
         />

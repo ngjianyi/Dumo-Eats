@@ -125,8 +125,6 @@ export default function RecipeDisplay({ item }: Props) {
           likes={likes}
           likeButtonHandler={likeButtonHandler}
           saveButtonHandler={saveButtonHandler}
-          recipeRef={recipeRef}
-          //   getComments={getRecipeComments}
           commentRefs={commentRefs}
           commentButtonHandler={commentButtonHandler}
         />
