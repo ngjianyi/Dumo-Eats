@@ -7,9 +7,9 @@ import CommentsList from "./comments/CommentsList";
 
 type Props = {
   heart: boolean;
-  saved: boolean;
   likes: number;
   likeButtonHandler: () => void;
+  saved: boolean;
   saveButtonHandler: () => void;
   commentRefs: DocumentReference<DocumentData, DocumentData>[];
   commentButtonHandler: (trimmedBody: string) => Promise<void>;
@@ -17,9 +17,9 @@ type Props = {
 
 export default function SocialTabs({
   heart,
-  saved,
   likes,
   likeButtonHandler,
+  saved,
   saveButtonHandler,
   commentRefs,
   commentButtonHandler,

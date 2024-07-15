@@ -16,7 +16,7 @@ export default function Recipes({ recipes, getRecipes, navigation }: any) {
       <FlatList
         data={recipes}
         renderItem={({ item }) => {
-          return <RecipeDisplay navigation={navigation} item={item} />;
+          return <RecipeDisplay item={item} />;
         }}
         showsVerticalScrollIndicator={false}
         refreshControl={
