@@ -31,9 +31,6 @@ export default function RecipeDisplay({ item }: Props) {
   const [heart, setHeart] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
-  const [comments, setComments] = useState<
-    DocumentReference<DocumentData, DocumentData>[]
-  >([]);
   const itemId = String(item.id);
   const [detailsVisible, setDetailsVisible] = useState<boolean>(false);
 
@@ -60,6 +57,7 @@ export default function RecipeDisplay({ item }: Props) {
         recipeRef,
         {
           likes: [],
+          comments: [],
         },
         { merge: true }
       );
@@ -75,27 +73,9 @@ export default function RecipeDisplay({ item }: Props) {
     }
   };
 
-  const getRecipeComments = async () => {
-    const recipe = await getDoc(recipeRef);
-    if (recipe.exists()) {
-      const data = recipe.data();
-      setComments(data.comments.reverse());
-    } else {
-      setComments([]);
-      setDoc(
-        recipeRef,
-        {
-          comments: [],
-        },
-        { merge: true }
-      );
-    }
-  };
-
   useEffect(() => {
     getRecipeLikes();
     getRecipeSaved();
-    getRecipeComments();
   }, []);
 
   const likeButtonHandler = () => {
@@ -126,7 +106,6 @@ export default function RecipeDisplay({ item }: Props) {
           likes={likes}
           likeButtonHandler={likeButtonHandler}
           saveButtonHandler={saveButtonHandler}
-          commentRefs={comments}
           recipeRef={recipeRef}
         />
       </View>

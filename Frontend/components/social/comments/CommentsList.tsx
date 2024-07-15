@@ -6,23 +6,33 @@ import {
   Text,
   SafeAreaView,
 } from "react-native";
-import { DocumentReference, DocumentData } from "firebase/firestore";
+import { getDoc, DocumentReference, DocumentData } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "@/constants/Theme";
 import Comment from "./Comment";
 import CommentCreate from "./CommentCreate";
+import { useEffect, useState } from "react";
 
 type Props = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  commentRefs: DocumentReference<DocumentData, DocumentData>[];
   recipeRef: DocumentReference<DocumentData, DocumentData>;
 };
 
-export default function CommentsList({
-  setVisible,
-  commentRefs,
-  recipeRef,
-}: Props) {
+export default function CommentsList({ setVisible, recipeRef }: Props) {
+  const [comments, setComments] = useState<
+    DocumentReference<DocumentData, DocumentData>[]
+  >([]);
+
+  const getRecipeComments = async () => {
+    const recipe = await getDoc(recipeRef);
+    const data = recipe.data();
+    setComments(data?.comments);
+  };
+
+  useEffect(() => {
+    getRecipeComments();
+  }, []);
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.commentBox}>
@@ -40,12 +50,17 @@ export default function CommentsList({
         <View style={{ flex: 1 }}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={commentRefs}
+            data={comments}
             renderItem={({ item }) => <Comment commentRef={item} />}
+            inverted
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: "flex-end",
+            }}
           />
         </View>
 
-        <CommentCreate recipeRef={recipeRef} />
+        <CommentCreate recipeRef={recipeRef} getComments={getRecipeComments} />
       </SafeAreaView>
     </View>
   );
@@ -56,6 +71,7 @@ const styles = StyleSheet.create({
     height: "55%",
     marginTop: "auto",
     backgroundColor: COLORS.white,
+    borderRadius: SIZES.small, // NEW
   },
   commentBox: {
     flex: 1,

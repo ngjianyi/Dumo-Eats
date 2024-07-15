@@ -71,7 +71,7 @@ const recipeCommentHandler = async (
   recipeRef: DocumentReference
 ) => {
   const recipeCommentRef = await recipeCommentCreate(body);
-  updateDoc(recipeRef, {
+  await updateDoc(recipeRef, {
     comments: arrayUnion(recipeCommentRef),
   });
 };

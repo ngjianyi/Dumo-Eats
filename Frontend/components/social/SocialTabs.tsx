@@ -12,7 +12,6 @@ type Props = {
   likes: number;
   likeButtonHandler: () => void;
   saveButtonHandler: () => void;
-  commentRefs: DocumentReference<DocumentData, DocumentData>[];
   recipeRef: DocumentReference<DocumentData, DocumentData>;
 };
 
@@ -22,7 +21,6 @@ export default function SocialTabs({
   likes,
   likeButtonHandler,
   saveButtonHandler,
-  commentRefs,
   recipeRef,
 }: Props) {
   const [visible, setVisible] = useState<boolean>(false);
@@ -64,11 +62,7 @@ export default function SocialTabs({
           () => setVisible(false);
         }}
       >
-        <CommentsList
-          setVisible={setVisible}
-          commentRefs={commentRefs}
-          recipeRef={recipeRef}
-        />
+        <CommentsList setVisible={setVisible} recipeRef={recipeRef} />
       </Modal>
     </>
   );

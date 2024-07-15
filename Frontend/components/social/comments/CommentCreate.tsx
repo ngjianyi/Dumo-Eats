@@ -20,14 +20,16 @@ import { SIZES } from "@/constants/Theme";
 
 type Props = {
   recipeRef: DocumentReference<DocumentData, DocumentData>;
+  getComments: () => Promise<void>;
 };
 
-export default function CommentCreate({ recipeRef }: Props) {
+export default function CommentCreate({ recipeRef, getComments }: Props) {
   const [body, setBody] = useState<string>("");
 
-  const commentButtonHandler = () => {
+  const commentButtonHandler = async () => {
     setBody("");
-    recipeCommentHandler(body, recipeRef);
+    await recipeCommentHandler(body, recipeRef);
+    getComments();
   };
 
   return (
