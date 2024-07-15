@@ -1,11 +1,16 @@
 import {
+  getDoc,
+  addDoc,
   updateDoc,
   arrayUnion,
   arrayRemove,
-  getDoc,
   DocumentReference,
   DocumentData,
+  CollectionReference,
+  collection,
+  Timestamp,
 } from "firebase/firestore";
+import { DATA_BASE } from "@/firebaseCONFIG";
 import { getUserId, getUserDocSnap, getUserRef } from "./User";
 
 const likeHandler = async (
@@ -29,7 +34,7 @@ const likeHandler = async (
   }
 };
 
-const recipesSaveHandler = async (
+const recipeSaveHandler = async (
   setSaved: React.Dispatch<React.SetStateAction<boolean>>,
   recipeId: string
 ): Promise<void> => {
@@ -47,4 +52,28 @@ const recipesSaveHandler = async (
   }
 };
 
-export { likeHandler, recipesSaveHandler };
+const recipeCommentCreate = async (
+  body: string
+): Promise<DocumentReference<DocumentData, DocumentData>> => {
+  const recipesCommentsRef: CollectionReference<DocumentData, DocumentData> =
+    collection(DATA_BASE, "RecipesComments");
+  const commentRef: DocumentReference<DocumentData, DocumentData> =
+    await addDoc(recipesCommentsRef, {
+      body: body,
+      time: Timestamp.now(),
+      user: getUserRef(),
+    });
+  return commentRef;
+};
+
+const recipeCommentHandler = async (
+  body: string,
+  recipeRef: DocumentReference
+) => {
+  const recipeCommentRef = await recipeCommentCreate(body);
+  updateDoc(recipeRef, {
+    comments: arrayUnion(recipeCommentRef),
+  });
+};
+
+export { likeHandler, recipeSaveHandler, recipeCommentHandler };

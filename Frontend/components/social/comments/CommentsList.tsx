@@ -5,19 +5,24 @@ import {
   TouchableOpacity,
   Text,
   SafeAreaView,
-  ScrollView,
 } from "react-native";
-import { COLORS, SIZES } from "@/constants/Theme";
+import { DocumentReference, DocumentData } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
+import { COLORS, SIZES } from "@/constants/Theme";
 import Comment from "./Comment";
-import { DocumentReference } from "firebase/firestore";
+import CommentCreate from "./CommentCreate";
 
 type Props = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  commentRefs: DocumentReference[];
+  commentRefs: DocumentReference<DocumentData, DocumentData>[];
+  recipeRef: DocumentReference<DocumentData, DocumentData>;
 };
 
-export default function CommentsList({ setVisible, commentRefs }: Props) {
+export default function CommentsList({
+  setVisible,
+  commentRefs,
+  recipeRef,
+}: Props) {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.commentBox}>
@@ -33,16 +38,14 @@ export default function CommentsList({ setVisible, commentRefs }: Props) {
         </View>
 
         <View style={{ flex: 1 }}>
-          {commentRefs ? (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={commentRefs}
-              renderItem={({ item }) => <Comment commentRef={item} />}
-            />
-          ) : (
-            <Text style={styles.empty}>No comments</Text>
-          )}
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={commentRefs}
+            renderItem={({ item }) => <Comment commentRef={item} />}
+          />
         </View>
+
+        <CommentCreate recipeRef={recipeRef} />
       </SafeAreaView>
     </View>
   );
@@ -50,7 +53,7 @@ export default function CommentsList({ setVisible, commentRefs }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    height: "60%",
+    height: "55%",
     marginTop: "auto",
     backgroundColor: COLORS.white,
   },

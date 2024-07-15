@@ -8,11 +8,17 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { DATA_BASE } from "@/firebaseCONFIG";
-import { doc, getDoc, setDoc, DocumentReference } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  DocumentReference,
+  DocumentData,
+} from "firebase/firestore";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 import { getUserId, getUserDocSnap } from "@/utils/social/User";
 import SocialTabs from "@/components/social/SocialTabs";
-import { likeHandler, recipesSaveHandler } from "@/utils/social/SocialHandlers";
+import { likeHandler, recipeSaveHandler } from "@/utils/social/SocialHandlers";
 import RecipeIndivScreen from "../indiv/RecipeIndivScreen";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
 import { CommentType } from "@/utils/social/SocialTypes";
@@ -25,14 +31,20 @@ export default function RecipeDisplay({ item }: Props) {
   const [heart, setHeart] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
-  const [comments, setComments] = useState<DocumentReference[]>([]);
+  const [comments, setComments] = useState<
+    DocumentReference<DocumentData, DocumentData>[]
+  >([]);
   const itemId = String(item.id);
   const [detailsVisible, setDetailsVisible] = useState<boolean>(false);
 
-  const recipesRef = doc(DATA_BASE, "Recipes", itemId);
+  const recipeRef: DocumentReference<DocumentData, DocumentData> = doc(
+    DATA_BASE,
+    "Recipes",
+    itemId
+  );
 
   const getRecipeLikes = async () => {
-    const recipe = await getDoc(recipesRef);
+    const recipe = await getDoc(recipeRef);
     if (recipe.exists()) {
       const data = recipe.data();
       if (data.likes.includes(getUserId())) {
@@ -45,7 +57,7 @@ export default function RecipeDisplay({ item }: Props) {
       setHeart(false);
       setLikes(0);
       setDoc(
-        recipesRef,
+        recipeRef,
         {
           likes: [],
         },
@@ -64,14 +76,14 @@ export default function RecipeDisplay({ item }: Props) {
   };
 
   const getRecipeComments = async () => {
-    const recipe = await getDoc(recipesRef);
+    const recipe = await getDoc(recipeRef);
     if (recipe.exists()) {
       const data = recipe.data();
       setComments(data.comments.reverse());
     } else {
       setComments([]);
       setDoc(
-        recipesRef,
+        recipeRef,
         {
           comments: [],
         },
@@ -87,11 +99,11 @@ export default function RecipeDisplay({ item }: Props) {
   }, []);
 
   const likeButtonHandler = () => {
-    likeHandler(setHeart, setLikes, recipesRef);
+    likeHandler(setHeart, setLikes, recipeRef);
   };
 
   const saveButtonHandler = () => {
-    recipesSaveHandler(setSaved, itemId);
+    recipeSaveHandler(setSaved, itemId);
   };
 
   return (
@@ -115,6 +127,7 @@ export default function RecipeDisplay({ item }: Props) {
           likeButtonHandler={likeButtonHandler}
           saveButtonHandler={saveButtonHandler}
           commentRefs={comments}
+          recipeRef={recipeRef}
         />
       </View>
 

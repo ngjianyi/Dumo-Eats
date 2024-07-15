@@ -1,6 +1,6 @@
 import { Modal, View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useState } from "react";
-import { DocumentReference, Timestamp } from "firebase/firestore";
+import { DocumentReference, DocumentData } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { COLORS, SIZES } from "@/constants/Theme";
 import CommentsList from "./comments/CommentsList";
@@ -12,7 +12,8 @@ type Props = {
   likes: number;
   likeButtonHandler: () => void;
   saveButtonHandler: () => void;
-  commentRefs: DocumentReference[];
+  commentRefs: DocumentReference<DocumentData, DocumentData>[];
+  recipeRef: DocumentReference<DocumentData, DocumentData>;
 };
 
 export default function SocialTabs({
@@ -22,6 +23,7 @@ export default function SocialTabs({
   likeButtonHandler,
   saveButtonHandler,
   commentRefs,
+  recipeRef,
 }: Props) {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -62,7 +64,11 @@ export default function SocialTabs({
           () => setVisible(false);
         }}
       >
-        <CommentsList setVisible={setVisible} commentRefs={commentRefs} />
+        <CommentsList
+          setVisible={setVisible}
+          commentRefs={commentRefs}
+          recipeRef={recipeRef}
+        />
       </Modal>
     </>
   );
