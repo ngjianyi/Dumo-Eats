@@ -13,6 +13,9 @@ type Props = {
   likeButtonHandler: () => void;
   saveButtonHandler: () => void;
   recipeRef: DocumentReference<DocumentData, DocumentData>;
+  //   getComments: () => Promise<DocumentReference<DocumentData, DocumentData>[]>;
+  commentRefs: any;
+  commentButtonHandler: (trimmedBody: string) => Promise<void>;
 };
 
 export default function SocialTabs({
@@ -22,6 +25,9 @@ export default function SocialTabs({
   likeButtonHandler,
   saveButtonHandler,
   recipeRef,
+  //   getComments,
+  commentRefs,
+  commentButtonHandler,
 }: Props) {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -62,7 +68,13 @@ export default function SocialTabs({
           () => setVisible(false);
         }}
       >
-        <CommentsList setVisible={setVisible} recipeRef={recipeRef} />
+        <CommentsList
+          setVisible={setVisible}
+          //   recipeRef={recipeRef}
+          //   getComments={getComments}
+          commentRefs={commentRefs}
+          commentButtonHandler={commentButtonHandler}
+        />
       </Modal>
     </>
   );

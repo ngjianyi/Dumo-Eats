@@ -17,23 +17,36 @@ import { useEffect, useState } from "react";
 
 type Props = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  recipeRef: DocumentReference<DocumentData, DocumentData>;
+  // recipeRef: DocumentReference<DocumentData, DocumentData>;
+  // getComments: () => Promise<DocumentReference<DocumentData, DocumentData>[]>;
+  commentRefs: any;
+  commentButtonHandler: (trimmedBody: string) => Promise<void>;
 };
 
-export default function CommentsList({ setVisible, recipeRef }: Props) {
-  const [comments, setComments] = useState<
-    DocumentReference<DocumentData, DocumentData>[]
-  >([]);
+export default function CommentsList({
+  setVisible,
+  // recipeRef,
+  // getComments,
+  commentRefs,
+  commentButtonHandler,
+}: Props) {
+  // const [comments, setComments] = useState<
+  //   DocumentReference<DocumentData, DocumentData>[]
+  // >([]);
 
-  const getRecipeComments = async () => {
-    const recipe = await getDoc(recipeRef);
-    const data = recipe.data();
-    setComments(data?.comments.reverse());
-  };
+  // const getRecipeComments = async () => {
+  // const recipe = await getDoc(recipeRef);
+  // const data = recipe.data();
+  // setComments(data?.comments.reverse());
+  // };
 
-  useEffect(() => {
-    getRecipeComments();
-  }, []);
+  // const getRecipeComments = async () => {
+  //   getComments().then((commentRefs) => setComments(commentRefs));
+  // };
+
+  // useEffect(() => {
+  //   getRecipeComments();
+  // }, []);
 
   return (
     <KeyboardAvoidingView
@@ -56,14 +69,15 @@ export default function CommentsList({ setVisible, recipeRef }: Props) {
           <View style={{ flex: 1 }}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={comments}
+              data={commentRefs}
               renderItem={({ item }) => <Comment commentRef={item} />}
             />
           </View>
 
           <CommentCreate
-            recipeRef={recipeRef}
-            getComments={getRecipeComments}
+            // recipeRef={recipeRef}
+            // getComments={getRecipeComments}
+            commentButtonHandler={commentButtonHandler}
           />
         </SafeAreaView>
       </View>
@@ -76,7 +90,7 @@ const styles = StyleSheet.create({
     height: "55%",
     marginTop: "auto",
     backgroundColor: COLORS.white,
-    borderRadius: SIZES.small, // NEW
+    borderRadius: SIZES.small,
   },
   commentBox: {
     flex: 1,

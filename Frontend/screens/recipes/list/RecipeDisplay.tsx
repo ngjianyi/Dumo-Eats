@@ -18,7 +18,11 @@ import {
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 import { getUserId, getUserDocSnap } from "@/utils/social/User";
 import SocialTabs from "@/components/social/SocialTabs";
-import { likeHandler, recipeSaveHandler } from "@/utils/social/SocialHandlers";
+import {
+  likeHandler,
+  recipeSaveHandler,
+  recipeCommentHandler,
+} from "@/utils/social/SocialHandlers";
 import RecipeIndivScreen from "../indiv/RecipeIndivScreen";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
 import { CommentType } from "@/utils/social/SocialTypes";
@@ -31,6 +35,9 @@ export default function RecipeDisplay({ item }: Props) {
   const [heart, setHeart] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
+  const [commentRefs, setCommentRefs] = useState<
+    DocumentReference<DocumentData, DocumentData>[]
+  >([]);
   const itemId = String(item.id);
   const [detailsVisible, setDetailsVisible] = useState<boolean>(false);
 
@@ -73,9 +80,16 @@ export default function RecipeDisplay({ item }: Props) {
     }
   };
 
+  const getRecipeComments = async (): Promise<void> => {
+    const recipe = await getDoc(recipeRef);
+    const data = recipe.data();
+    setCommentRefs(data?.comments.reverse());
+  };
+
   useEffect(() => {
     getRecipeLikes();
     getRecipeSaved();
+    getRecipeComments();
   }, []);
 
   const likeButtonHandler = () => {
@@ -84,6 +98,11 @@ export default function RecipeDisplay({ item }: Props) {
 
   const saveButtonHandler = () => {
     recipeSaveHandler(setSaved, itemId);
+  };
+
+  const commentButtonHandler = async (trimmedBody: string): Promise<void> => {
+    await recipeCommentHandler(trimmedBody, recipeRef);
+    getRecipeComments();
   };
 
   return (
@@ -107,6 +126,9 @@ export default function RecipeDisplay({ item }: Props) {
           likeButtonHandler={likeButtonHandler}
           saveButtonHandler={saveButtonHandler}
           recipeRef={recipeRef}
+          //   getComments={getRecipeComments}
+          commentRefs={commentRefs}
+          commentButtonHandler={commentButtonHandler}
         />
       </View>
 

@@ -1,17 +1,9 @@
 import {
-  ScrollView,
-  Text,
   View,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-  TouchableWithoutFeedback,
-  Keyboard,
   TextInput,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { useState } from "react";
 import { DocumentReference, DocumentData } from "firebase/firestore";
@@ -20,19 +12,35 @@ import { recipeCommentHandler } from "@/utils/social/SocialHandlers";
 import { SIZES } from "@/constants/Theme";
 
 type Props = {
-  recipeRef: DocumentReference<DocumentData, DocumentData>;
-  getComments: () => Promise<void>;
+  //   recipeRef: DocumentReference<DocumentData, DocumentData>;
+  //   getComments: () => Promise<void>;
+  commentButtonHandler: (trimmedBody: string) => Promise<void>;
 };
 
-export default function CommentCreate({ recipeRef, getComments }: Props) {
+export default function CommentCreate({
+  //   recipeRef,
+  //   getComments,
+  commentButtonHandler,
+}: Props) {
   const [body, setBody] = useState<string>("");
 
-  const commentButtonHandler = async () => {
+  //   const commentButtonHandler = async () => {
+  //     const trimmedBody = body.trim();
+  //     if (trimmedBody) {
+  //       setBody("");
+  //       await recipeCommentHandler(trimmedBody, recipeRef);
+  //       getComments();
+  //     } else {
+  //       setBody("");
+  //     }
+  //   };
+  const commentHandler = async () => {
     const trimmedBody = body.trim();
     if (trimmedBody) {
       setBody("");
-      await recipeCommentHandler(trimmedBody, recipeRef);
-      getComments();
+      //   recipeCommentHandler(trimmedBody, recipeRef).then();
+      commentButtonHandler(trimmedBody);
+      //   getComments();
     } else {
       setBody("");
     }
@@ -63,7 +71,8 @@ export default function CommentCreate({ recipeRef, getComments }: Props) {
         </View>
 
         <TouchableOpacity
-          onPress={commentButtonHandler}
+          //   onPress={commentButtonHandler}
+          onPress={commentHandler}
           style={styles.sendButton}
         >
           <Ionicons name="send" size={25} color="black" />
@@ -77,15 +86,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-  },
-  header: {
-    flexDirection: "row",
-    marginTop: 20,
-    width: "95%",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "turquoise",
   },
   title: {
     fontSize: 25,
