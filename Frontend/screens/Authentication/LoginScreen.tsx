@@ -88,6 +88,7 @@ export default function LoginScreen({ navigation }: any) {
             }}
             autoCapitalize="none"
             autoCorrect={false}
+            autoComplete="off"
           />
           <View style={{ justifyContent: "center" }}>
             <TextInput
@@ -101,6 +102,7 @@ export default function LoginScreen({ navigation }: any) {
               }}
               autoCapitalize="none"
               autoCorrect={false}
+              autoComplete="off"
             />
             <TouchableOpacity style={styles.visible} onPress={pressHandler}>
               {visible ? (

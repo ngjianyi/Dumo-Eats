@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { Dispatch, SetStateAction } from "react";
 import { DocumentReference, DocumentData } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "@/constants/Theme";
@@ -15,7 +16,7 @@ import Comment from "./Comment";
 import CommentCreate from "./CommentCreate";
 
 type Props = {
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setVisible: Dispatch<SetStateAction<boolean>>;
   commentRefs: DocumentReference<DocumentData, DocumentData>[];
   commentButtonHandler: (trimmedBody: string) => Promise<void>;
 };

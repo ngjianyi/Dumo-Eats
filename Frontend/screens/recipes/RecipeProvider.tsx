@@ -1,25 +1,31 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from "react";
 
 type StateContextType = {
   query: string;
-  setQuery: React.Dispatch<React.SetStateAction<string>>;
+  setQuery: Dispatch<SetStateAction<string>>;
   cuisineType: string;
-  setCuisineType: React.Dispatch<React.SetStateAction<string>>;
+  setCuisineType: Dispatch<SetStateAction<string>>;
   minCalories: number;
-  setMinCalories: React.Dispatch<React.SetStateAction<number>>;
+  setMinCalories: Dispatch<SetStateAction<number>>;
   maxCalories: number;
-  setMaxCalories: React.Dispatch<React.SetStateAction<number>>;
+  setMaxCalories: Dispatch<SetStateAction<number>>;
   includeIngredients: string;
-  setIncludeIngredients: React.Dispatch<React.SetStateAction<string>>;
+  setIncludeIngredients: Dispatch<SetStateAction<string>>;
   excludeIngredients: string;
-  setExcludeIngredients: React.Dispatch<React.SetStateAction<string>>;
+  setExcludeIngredients: Dispatch<SetStateAction<string>>;
   intolerances: string[];
-  setIntolerances: React.Dispatch<React.SetStateAction<string[]>>;
+  setIntolerances: Dispatch<SetStateAction<string[]>>;
 };
 
 const RecipeContext = createContext<null | StateContextType>(null);
 
-function RecipeProvider({ children }: { children: React.ReactNode }) {
+function RecipeProvider({ children }: { children: ReactNode }) {
   const [query, setQuery] = useState<string>("");
   const [cuisineType, setCuisineType] = useState<string>("");
   const [minCalories, setMinCalories] = useState<number>(50);

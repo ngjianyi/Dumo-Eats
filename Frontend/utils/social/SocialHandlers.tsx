@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import {
+  doc,
   getDoc,
-  addDoc,
+  setDoc,
   updateDoc,
   arrayUnion,
   arrayRemove,
@@ -24,12 +25,12 @@ const likeHandler = async (
   const currentDoc = (await getDoc(itemRef)).data();
   if (currentDoc?.likes.includes(getUserId())) {
     setLikes(currentDoc?.likes.length - 1);
-    await updateDoc(itemRef, {
+    updateDoc(itemRef, {
       likes: arrayRemove(getUserId()),
     });
   } else {
     setLikes(currentDoc?.likes.length + 1);
-    await updateDoc(itemRef, {
+    updateDoc(itemRef, {
       likes: arrayUnion(getUserId()),
     });
   }
@@ -43,35 +44,35 @@ const recipeSaveHandler = async (
 
   const userData = (await getUserDocSnap()).data();
   if (userData?.savedRecipes.includes(recipeId)) {
-    await updateDoc(getUserRef(), {
+    updateDoc(getUserRef(), {
       savedRecipes: arrayRemove(recipeId),
     });
   } else {
-    await updateDoc(getUserRef(), {
+    updateDoc(getUserRef(), {
       savedRecipes: arrayUnion(recipeId),
     });
   }
 };
 
-const recipeCommentCreate = async (
+const recipeCommentCreate = (
   body: string
-): Promise<DocumentReference<DocumentData, DocumentData>> => {
+): DocumentReference<DocumentData, DocumentData> => {
   const recipesCommentsRef: CollectionReference<DocumentData, DocumentData> =
     collection(DATA_BASE, "RecipesComments");
-  const commentRef: DocumentReference<DocumentData, DocumentData> =
-    await addDoc(recipesCommentsRef, {
-      body: body,
-      time: Timestamp.now(),
-      user: getUserRef(),
-    });
+  const commentRef = doc(recipesCommentsRef);
+  setDoc(commentRef, {
+    body: body,
+    time: Timestamp.now(),
+    user: getUserRef(),
+  });
   return commentRef;
 };
 
 const recipeCommentHandler = async (
   body: string,
   recipeRef: DocumentReference
-) => {
-  const recipeCommentRef = await recipeCommentCreate(body);
+): Promise<void> => {
+  const recipeCommentRef = recipeCommentCreate(body);
   await updateDoc(recipeRef, {
     comments: arrayUnion(recipeCommentRef),
   });

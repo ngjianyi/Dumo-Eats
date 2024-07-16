@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { SIZES } from "@/constants/Theme";
+import { SIZES, COLORS } from "@/constants/Theme";
 
 type Props = {
   commentButtonHandler: (trimmedBody: string) => Promise<void>;
@@ -29,13 +29,7 @@ export default function CommentCreate({ commentButtonHandler }: Props) {
   return (
     <SafeAreaView style={styles.inputContainer}>
       <View style={styles.input}>
-        <View
-          style={{
-            marginRight: 5,
-            width: "100%",
-            borderRadius: SIZES.medium,
-          }}
-        >
+        <View style={styles.textInput}>
           <TextInput
             style={{
               marginRight: 10,
@@ -60,36 +54,17 @@ export default function CommentCreate({ commentButtonHandler }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 25,
-    textAlign: "center",
-  },
-  closeButton: {
-    position: "absolute",
-    backgroundColor: "red",
-    borderRadius: 5,
-    right: 2,
-  },
-  commentsSection: {
-    flex: 1,
-    width: "100%",
-  },
   inputContainer: {
-    width: "100%",
     borderRadius: SIZES.medium,
-    // flex: 1,
   },
   input: {
-    backgroundColor: "gainsboro",
-    padding: 10,
-    width: "100%",
+    backgroundColor: COLORS.gray2,
+    padding: SIZES.small,
     alignSelf: "center",
     flexDirection: "row",
-    alignItems: "center",
+  },
+  textInput: {
+    width: "100%",
   },
   sendButton: {
     position: "absolute",

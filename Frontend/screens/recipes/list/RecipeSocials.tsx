@@ -48,14 +48,10 @@ export default function RecipeSocials({ recipe }: Props) {
     } else {
       setHeart(false);
       setLikes(0);
-      setDoc(
-        recipeRef,
-        {
-          likes: [],
-          comments: [],
-        },
-        { merge: true }
-      );
+      setDoc(recipeRef, {
+        likes: [],
+        comments: [],
+      });
     }
   }, []);
 
