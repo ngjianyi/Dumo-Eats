@@ -17,50 +17,53 @@ import { updateDoc, arrayUnion, arrayRemove, doc, DocumentData, collection, getD
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import CommentsScreen from "@/screens/Home/Feed/Comments/CommentsScreen";
 const profilepic = require("@/assets/images/SampleProfile.png")
-interface PostItem {
-    caption: string;
-    image: string;
-    userName: string;
-    time: string;
-    likes: [string];
-    comments: [string];
-    postRef: DocumentReference;
+// interface PostItem {
+//     caption: string;
+//     image: string;
+//     userName: string;
+//     time: string;
+//     likes: [string];
+//     comments: [string];
+//     postRef: DocumentReference;
+// }
+
+interface Props {
+    item: DocumentReference;
 }
 
-interface PostProps {
-    item: PostItem;
-}
-
-export default function SavedPost({item} : PostProps) {
-    const postref = item.postRef;
+export default function SavedPost({item} : Props) {
     const[temp, setTemp] = useState(false)
     const[visible, setVisible] = useState(false)
-    const[comments, setComments] = useState<DocumentData[]>([]);
-
-
+    const[comments, setComments] = useState<DocumentReference[]>([]);
     const[refreshComment, setRefresh] = useState(false)
     const[likes, setLikes] = useState(0)
     const[heart, setHeart] = useState(false)
-    
+    const[caption, setCaption] = useState<string>("")
+    const[username, setUsername] = useState<string>("")
+    const[time, setTime] = useState<string>("")
+    const [URI, setURI] = useState<string>("default")
           
      const setInitialStates = async () => {
-        const updatedDoc = (await getDoc(postref)).data()
-        const docSnap = (await getDoc(doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid))).data();
+        const updatedDoc = (await getDoc(item)).data()
         setLikes(updatedDoc?.likes.length)
         setHeart(updatedDoc?.likes.includes(AUTH.currentUser?.uid))
-     }
-     const getAllComments = async () => {
-        setComments([])
-        const updatedDoc = (await getDoc(postref)).data()
-        //acts like a stack, last in first to be displayed
         setComments(updatedDoc?.comments)
+        setURI(updatedDoc?.image)
+        setUsername(updatedDoc?.userName)
+        setCaption(updatedDoc?.caption)
+        setTime(updatedDoc?.time)
      }
+    //  const getAllComments = async () => {
+    //     setComments([])
+    //     const updatedDoc = (await getDoc(postref)).data()
+    //     //acts like a stack, last in first to be displayed
+    //     setComments(updatedDoc?.comments)
+    //  }
 
     // to keep previous state of likes when refreshed / logged in 
     // to keep previous state of comments
      useEffect(() => {
-        setInitialStates().catch((val) => {return})
-        getAllComments().catch((val) => {return})
+        setInitialStates()
      }, [])
 
      
@@ -76,13 +79,13 @@ export default function SavedPost({item} : PostProps) {
                 <View style={styles.userinfo}>
                     <Image source={profilepic} style={styles.profilePic}/>
                     <View>
-                        <Text style={styles.username}>{item.userName}</Text>
-                        <Text style={styles.username}>{item.time}</Text>
+                        <Text style={styles.username}>{username}</Text>
+                        <Text style={styles.username}>{time}</Text>
                     </View>
                 </View>   
             </View> 
             <View style={styles.imageHolder}>
-                <Image source={{uri: item.image}} style={styles.image}/>
+                <Image source={{uri: URI}} style={styles.image}/>
             </View>
             <View style={styles.footer}>
                 <View style={styles.leftFooter}>
@@ -105,10 +108,10 @@ export default function SavedPost({item} : PostProps) {
                 </Text>
                 <Text style={styles.caption}>
                     <Text style={{fontWeight:"bold"}}>
-                        {item.userName}
+                        {username}
                     </Text>
                     <Text>
-                        {" " + item.caption}
+                        {" " + caption}
                     </Text>
                 </Text>
                 

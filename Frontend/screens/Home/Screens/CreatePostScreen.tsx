@@ -27,6 +27,7 @@ import {
   setDoc,
   updateDoc,
   arrayUnion,
+  DocumentReference,
 } from "firebase/firestore";
 import moment from "moment";
 import RefreshBadgeContext from "@/contexts/RefreshBadge";
@@ -46,7 +47,7 @@ export default function CreatePostScreen({
     time: string;
     likes: [];
     comments: [];
-    postRef: string;
+    postRef: DocumentReference | null;
   }
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<string | null>(null);
@@ -102,11 +103,7 @@ export default function CreatePostScreen({
             if (firstTime) {
               temp[2] = true;
             }
-            //user's own posts will be added to saved collection
-            await updateDoc(docRefUser, {
-              collection: arrayUnion(value),
-              badges: temp,
-            });
+            
             const docSnapTest = await getDoc(docRefUser);
 
             console.log(docSnapTest.data()?.collection);
@@ -131,10 +128,17 @@ export default function CreatePostScreen({
               value.userName + "'s posts"
             );
             //create a doc reference for each post
-            const postref = doc(subcollectionRef);
+            const postref : DocumentReference = doc(subcollectionRef);
             value.postRef = postref;
             //add the whole post data as a document in sub collection
             await setDoc(postref, value);
+
+            //user's own posts will be added to saved collection
+            await updateDoc(docRefUser, {
+              collection: arrayUnion(postref),
+              badges: temp,
+            });
+
             // const postDoc = await addDoc(subcollectionRef, value);
             console.log("Document written with UID: ");
             setLoading(false);
@@ -176,7 +180,7 @@ export default function CreatePostScreen({
               time: "",
               likes: [],
               comments: [],
-              postRef: "",
+              postRef: null,
             }}
             //the val is initialValues after being updated with new values
             onSubmit={(val, { resetForm }) => {

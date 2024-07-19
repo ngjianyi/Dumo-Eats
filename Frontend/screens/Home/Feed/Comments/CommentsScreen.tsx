@@ -12,7 +12,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, Dispatch, SetStateAction } from "react";
 import {
   doc,
   DocumentData,
@@ -21,12 +21,21 @@ import {
   getDoc,
   updateDoc,
   arrayUnion,
+  DocumentReference,
 } from "firebase/firestore";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import { commentHandler } from "@/utils/social/SocialHandlers";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CommentsList from "./CommentsList";
 import moment from "moment";
-
+interface Props {
+  item: DocumentData,
+  visible: boolean,
+  setVisible: Dispatch<SetStateAction<boolean>>,
+  comments: DocumentReference<DocumentData, DocumentData>[],
+  setRefresh : Dispatch<SetStateAction<boolean>>,
+  refreshComment: boolean
+}
 export default function CommentsScreen({
   item,
   visible,
@@ -34,24 +43,40 @@ export default function CommentsScreen({
   comments,
   setRefresh,
   refreshComment,
-}: any) {
+}: Props) {
   const [input, setInput] = useState("");
   const postref = item.postRef;
   const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
   //add comment to comments array field, and then change dependency of useEffect
-  const onPost = async () => {
-    //add new comment to comments array
-    const docsnap = await getDoc(userRef);
-    const posterName = docsnap.data()?.userName;
-    const time = moment().format("LLL");
-    await updateDoc(postref, {
-      comments: arrayUnion(posterName + "|" + time + "|" + input),
-    });
-    //set back to ""
-    setInput("");
-    setRefresh(!refreshComment);
-    Keyboard.dismiss();
-  };
+
+
+
+  // const onPost = async () => {
+  //   //add new comment to comments array
+  //   const docsnap = await getDoc(userRef);
+  //   const posterName = docsnap.data()?.userName;
+  //   const time = moment().format("LLL");
+  //   await updateDoc(postref, {
+  //     comments: arrayUnion(posterName + "|" + time + "|" + input),
+  //   });
+  //   //set back to ""
+  //   setRefresh(!refreshComment);
+  // };
+
+
+  //this will create a comment inside the postcomments collection
+  //and then add the new comment ref into the comments array insdie post
+  
+  const commentButtonHandler = useCallback(
+    async (trimmedBody: string): Promise<void> => {
+      await commentHandler(trimmedBody, postref, "PostsComments");
+      setRefresh(refreshComment => !refreshComment);
+      setInput("");
+      Keyboard.dismiss();
+    },
+    []
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -66,7 +91,7 @@ export default function CommentsScreen({
         </TouchableOpacity>
       </View>
       <View style={styles.commentsSection}>
-        <CommentsList comments={comments} details={item} />
+        <CommentsList comments={comments} />
       </View>
 
       <KeyboardAvoidingView style={styles.inputContainer} behavior="position">
@@ -81,7 +106,7 @@ export default function CommentsScreen({
             />
           </View>
 
-          <TouchableOpacity onPress={onPost} style={styles.sendButton}>
+          <TouchableOpacity onPress={() => commentButtonHandler(input)} style={styles.sendButton}>
             <Ionicons name="send" size={24} color="black" />
           </TouchableOpacity>
         </View>

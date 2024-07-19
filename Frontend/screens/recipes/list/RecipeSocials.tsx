@@ -11,11 +11,11 @@ import { Recipe } from "@/utils/recipes/RecipesTypes";
 import { getUserId, getUserDocSnap } from "@/utils/social/User";
 import {
   likeHandler,
+  saveHandler,
   recipeSaveHandler,
-  recipeCommentHandler,
+  commentHandler,
 } from "@/utils/social/SocialHandlers";
 import SocialTabs from "@/components/social/SocialTabs";
-
 type Props = {
   recipe: Recipe;
 };
@@ -34,7 +34,6 @@ export default function RecipeSocials({ recipe }: Props) {
     "Recipes",
     recipeId
   );
-
   const getRecipeLikes = useCallback(async () => {
     const recipe = await getDoc(recipeRef);
     if (recipe.exists()) {
@@ -81,12 +80,14 @@ export default function RecipeSocials({ recipe }: Props) {
   }, []);
 
   const saveButtonHandler = useCallback(() => {
-    recipeSaveHandler(setSaved, recipeId);
+    // recipeSaveHandler(setSaved, recipeId);
+    saveHandler(setSaved, recipeId, "savedRecipes")
   }, []);
 
   const commentButtonHandler = useCallback(
     async (trimmedBody: string): Promise<void> => {
-      await recipeCommentHandler(trimmedBody, recipeRef);
+      // await recipeCommentHandler(trimmedBody, recipeRef);
+      await commentHandler(trimmedBody, recipeRef, "RecipesComments")
       getRecipeComments();
     },
     []

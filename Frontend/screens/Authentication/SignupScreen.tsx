@@ -65,6 +65,7 @@ export default function SignupScreen({ navigation }: any) {
         DOB: "",
         streak:[],
         lastUpdatedAt: "",
+        savedRecipes: [],
       })
 
 

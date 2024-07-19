@@ -13,13 +13,13 @@ import {
 import React, { useState } from "react";
 import Comment from "./Comment";
 
-export default function CommentsList({ comments, details }: any) {
+export default function CommentsList({ comments }: any) {
   return (
     <FlatList
       showsVerticalScrollIndicator={true}
       data={comments}
-      renderItem={({ item, index }) => (
-        <Comment comment={item} details={details} />
+      renderItem={({ item }) => (
+        <Comment commentRef={item} />
       )}
     />
   );
