@@ -25,7 +25,17 @@ import {
   import RefreshCalorieContext from "@/contexts/RefreshCalorie";
   import { Propsmain } from "@/components/navigation/PropTypes";
   const profilePic = require("@/assets/images/SampleProfile.png");
-  
+
+  export const checkDate = (val: string) => {
+    const array = val.split("/")
+    if (array.length != 3) {
+      return false
+    } else if (Number(array[0]) > 31 || Number(array[1]) > 12 || Number(array[2]) > 2024) {
+      return false
+    } else {
+      return true
+    }
+  }
   export default function ProfileScreen({ navigation }: Propsmain) {
     const userRef = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
     const calorieContext = useContext(CalorieGoal);
@@ -96,16 +106,7 @@ import {
       setCollection(!collection);
     }
   
-    const checkDate = (val: string) => {
-      const array = val.split("/")
-      if (array.length != 3) {
-        return false
-      } else if (Number(array[0]) > 31 || Number(array[1]) > 12 || Number(array[2]) > 2024) {
-        return false
-      } else {
-        return true
-      }
-    }
+    
     
     useEffect(() => {
       getAllDetails();

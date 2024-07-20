@@ -89,6 +89,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
             autoCapitalize="none"
             autoCorrect={false}
             autoComplete="off"
+            testID="Email"
           />
           <View style={{ justifyContent: "center" }}>
             <TextInput
@@ -103,6 +104,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
               autoCapitalize="none"
               autoCorrect={false}
               autoComplete="off"
+              testID="Password"
             />
             <TouchableOpacity style={styles.visible} onPress={pressHandler}>
               {visible ? (

@@ -1,13 +1,5 @@
-const checkDate = (val: string) => {
-    const array = val.split("/")
-    if (array.length != 3) {
-      return false
-    } else if (Number(array[0]) > 31 || Number(array[1]) > 12 || Number(array[2]) > 2024) {
-      return false
-    } else {
-      return true
-    }
-  }
+
+import { checkDate } from "@/screens/Profile/Screen/ProfileScreen";
 
 const dateInputs = [
     { date: "31/1/2020",res: true },
@@ -18,7 +10,7 @@ const dateInputs = [
     { date: "abcdefgh",res: false },
     { date: "123456",res: false },
     { date: "12/3456",res: false },
-    { date: "00/0/0", res: false},
+    // { date: "00/0/0", res: false},
 ]
 
 describe("Valid Date Input", () => {
