@@ -17,22 +17,24 @@ import { createUserWithEmailAndPassword, onAuthStateChanged,sendEmailVerificatio
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import { doc, setDoc } from "firebase/firestore"; 
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
-export default function SignupScreen({ navigation }: any) {
-  const haveAccountHandler: any = () => navigation.navigate("login");
-  const [visible1, setVisibility1] = useState(false);
-  const [visible2, setVisibility2] = useState(false);
+import { PropsSignup } from "@/components/navigation/PropTypes";
+
+export default function SignupScreen({ navigation }: PropsSignup) {
+  const haveAccountHandler: () => void = () => navigation.navigate("login");
+  const [visible1, setVisibility1] = useState<boolean>(false);
+  const [visible2, setVisibility2] = useState<boolean>(false);
   const userLoggedInContext = useContext(UserLoggedInContext)
 
   const pressHandler1 = () => setVisibility1(!visible1);
   const pressHandler2 = () => setVisibility2(!visible2);
 
-  const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const[loading, setLoading] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password1, setPassword1] = useState<string>("");
+  const [password2, setPassword2] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const[loading, setLoading] = useState<boolean>(false);
   const auth = AUTH;
 
   const handleSubmit = async () => {

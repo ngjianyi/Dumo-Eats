@@ -21,11 +21,11 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
+import { PropsLogin } from "@/components/navigation/PropTypes";
 const logoImg = require("@/assets/images/logo.png");
 
-export default function LoginScreen({ navigation }: any) {
+export default function LoginScreen({ navigation }: PropsLogin) {
   const userLoggedInContext = useContext(UserLoggedInContext);
-
   const signupHandler = () => navigation.navigate("signup");
   const forgetHandler = () => navigation.navigate("forget");
   const [visible, setVisibility] = useState(false);

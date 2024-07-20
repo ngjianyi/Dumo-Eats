@@ -11,8 +11,9 @@ import {
   import React, { useState } from "react";
   import {AUTH} from "@/firebaseCONFIG";
   import {  sendPasswordResetEmail } from "firebase/auth";
-  
-  export default function ForgotScreen({ navigation }: any) {
+  import { Propsforget } from "@/components/navigation/PropTypes";
+
+  export default function ForgotScreen({ navigation }: Propsforget) {
     const backHandler = () => navigation.navigate("login");
     const [email, setEmail] = useState("");
     const sendReset = () => {

@@ -23,9 +23,10 @@ import {
   import RefreshBadgeContext from "@/contexts/RefreshBadge";
   import UserLoggedInContext from "@/contexts/UserLoggedIn";
   import RefreshCalorieContext from "@/contexts/RefreshCalorie";
+  import { Propsmain } from "@/components/navigation/PropTypes";
   const profilePic = require("@/assets/images/SampleProfile.png");
   
-  export default function ProfileScreen({ navigation }: any) {
+  export default function ProfileScreen({ navigation }: Propsmain) {
     const userRef = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
     const calorieContext = useContext(CalorieGoal);
     const refreshBadgeContext = useContext(RefreshBadgeContext)
@@ -87,7 +88,7 @@ import {
   
     const logOutHandler = () => {
       userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn)
-      AUTH.signOut().then(navigation.navigate("login"));
+      AUTH.signOut().then(()=>navigation.navigate("login"));
     };
   
     const collectionsHandler = ()=> {
