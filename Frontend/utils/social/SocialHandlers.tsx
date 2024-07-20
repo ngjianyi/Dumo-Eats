@@ -36,24 +36,53 @@ const likeHandler = async (
   }
 };
 
+// const saveHandler = async (
+//   setSaved: Dispatch<SetStateAction<boolean>>,
+//   ref: DocumentReference | string,
+//   field: string
+// ): Promise<void> => {
+//   setSaved((prev) => !prev);
+//   const userData = (await getUserDocSnap()).data();
+//   if (userData && userData[field]) {
+//     const refArray : (DocumentReference | string)[] = userData[field]
+//     const refstring: string = typeof ref === 'string' ? ref : ref.path;
+//     const refStringArray = refArray.map(ref => typeof ref === 'string' ? ref : ref.path);
+//     if (refStringArray.includes(refstring)) {
+//       updateDoc(getUserRef(), {
+//         [field]: arrayRemove(ref),
+//       });
+//     } else {
+//       updateDoc(getUserRef(), {
+//         [field]: arrayUnion(ref),
+//       });
+//     }
+//   }
+// };
 const saveHandler = async (
   setSaved: Dispatch<SetStateAction<boolean>>,
-  ref: DocumentReference | string,
+  itemRef: DocumentReference,
   field: string
 ): Promise<void> => {
   setSaved((prev) => !prev);
+
   const userData = (await getUserDocSnap()).data();
   if (userData && userData[field]) {
-    const refArray : (DocumentReference | string)[] = userData[field]
-    const refstring: string = typeof ref === 'string' ? ref : ref.path;
-    const refStringArray = refArray.map(ref => typeof ref === 'string' ? ref : ref.path);
-    if (refStringArray.includes(refstring)) {
+    const refArray: DocumentReference[] = userData[field];
+    // const refstring: string = ref.path;
+    // const refStringArray = refArray.map((ref) => ref.path);
+    // if (refStringArray.includes(refstring)) {
+    if (
+      refArray.some(
+        (ref: DocumentReference<DocumentData, DocumentData>) =>
+          ref.path === itemRef.path
+      )
+    ) {
       updateDoc(getUserRef(), {
-        [field]: arrayRemove(ref),
+        [field]: arrayRemove(itemRef),
       });
     } else {
       updateDoc(getUserRef(), {
-        [field]: arrayUnion(ref),
+        [field]: arrayUnion(itemRef),
       });
     }
   }
@@ -78,7 +107,7 @@ const commentCreate = (
 const commentHandler = async (
   body: string,
   ref: DocumentReference,
-  collectionName:string
+  collectionName: string
 ): Promise<void> => {
   const commentRef = commentCreate(body, collectionName);
   await updateDoc(ref, {
@@ -127,5 +156,4 @@ const recipeSaveHandler = async (
   }
 };
 
-
-export { likeHandler, recipeSaveHandler,commentHandler, saveHandler };
+export { likeHandler, recipeSaveHandler, commentHandler, saveHandler };
