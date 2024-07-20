@@ -12,7 +12,6 @@ import { getUserId, getUserDocSnap } from "@/utils/social/User";
 import {
   likeHandler,
   saveHandler,
-  recipeSaveHandler,
   commentHandler,
 } from "@/utils/social/SocialHandlers";
 import SocialTabs from "@/components/social/SocialTabs";

@@ -6,8 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState, useContext } from "react";
-import { RecipeContext } from "../RecipeProvider";
+import React, { useState } from "react";
 import Tabs from "./Tabs";
 import RecipeHeader from "./RecipeHeader";
 import { COLORS, SIZES } from "@/constants/Theme";
@@ -28,22 +27,6 @@ export default function RecipeIndivScreen({
 }: Props) {
   const tabs = ["Nutrition", "Ingredients", "Instructions"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
-
-  const displayTabContent = () => {
-    switch (activeTab) {
-      case "Nutrition":
-        return <Nutrients recipe={recipe} />;
-
-      case "Ingredients":
-        return <Ingredients recipe={recipe} />;
-
-      case "Instructions":
-        return <Instructions recipe={recipe} />;
-
-      default:
-        return <Text>Something went wrong</Text>;
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,7 +52,15 @@ export default function RecipeIndivScreen({
               setActiveTab={setActiveTab}
             />
 
-            {displayTabContent()}
+            {activeTab === "Nutrition" ? (
+              <Nutrients recipe={recipe} />
+            ) : activeTab === "Ingredients" ? (
+              <Ingredients recipe={recipe} />
+            ) : activeTab === "Instructions" ? (
+              <Instructions recipe={recipe} />
+            ) : (
+              <Text>Something went wrong</Text>
+            )}
           </View>
         </SafeAreaView>
       </ScrollView>
