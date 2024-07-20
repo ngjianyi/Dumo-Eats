@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import { View, Text, Image } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
 import { StyleSheet } from "react-native";
@@ -9,7 +9,7 @@ type Props = {
   recipeCalories: number;
 };
 
-const Recipe = memo(({ recipeImage, recipeTitle, recipeCalories }: Props) => {
+const RecipeHeader = ({ recipeImage, recipeTitle, recipeCalories }: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoBox}>
@@ -27,7 +27,7 @@ const Recipe = memo(({ recipeImage, recipeTitle, recipeCalories }: Props) => {
       </View>
     </View>
   );
-});
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -62,20 +62,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  companyName: {
-    fontSize: SIZES.medium - 2,
-    color: COLORS.primary,
-    // fontFamily: FONT.medium,
-  },
   locationBox: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-  },
-  locationImage: {
-    width: 14,
-    height: 14,
-    tintColor: COLORS.gray,
   },
   locationName: {
     fontSize: SIZES.medium - 2,
@@ -85,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Recipe;
+export default RecipeHeader;

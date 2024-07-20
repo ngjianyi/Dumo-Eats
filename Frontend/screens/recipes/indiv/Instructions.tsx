@@ -1,50 +1,24 @@
-import { useContext } from "react";
-import { RecipeContext } from "../RecipeProvider";
 import { View, Text, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
+import capitaliseFirstLetter from "@/utils/functions/Capitalise";
+import { Recipe } from "@/utils/recipes/RecipesTypes";
 
-type step = {
-  equipment: {
-    id: number;
-    image: string;
-    name: string;
-    temperature: {
-      number: number;
-      unit: string;
-    };
-    length: {
-      number: number;
-      unit: string;
-    };
-  }[];
-  ingredients: {
-    id: number;
-    image: string;
-    name: string;
-  }[];
-  number: number;
-  step: string;
+type Props = {
+  recipe: Recipe;
 };
 
-type item = {
-  name: string;
-  steps: step[];
-};
-
-export default function Instructions() {
-  const { recipe, capitalizeFirstLetter } = useContext<any>(RecipeContext);
-
+export default function Instructions({ recipe }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
-        {recipe?.analyzedInstructions.map((item: item) => (
+        {recipe?.analyzedInstructions.map((item) => (
           <View key={item.name}>
             <View>{item.name}</View>
-            {item?.steps?.map((step: step) => (
+            {item?.steps?.map((step) => (
               <View style={styles.pointWrapper} key={item.name + step.number}>
                 <View style={styles.pointDot} />
                 <Text style={styles.pointText}>
-                  {step.number}. {capitalizeFirstLetter(step.step)}
+                  {step.number}. {capitaliseFirstLetter(step.step)}
                 </Text>
               </View>
             ))}

@@ -7,7 +7,14 @@ import ForgotScreen from "@/screens/Authentication/ForgotPWScreen";
 import TabNavigation from "@/components/navigation/TabNavigation";
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
 
-const Stack = createNativeStackNavigator();
+
+export type RootStackParamList = {
+  signup: undefined;
+  login: undefined
+  forget: undefined
+  main: undefined
+};
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Index() {
   const [UserLoggedIn, setUser] = useState(false)
