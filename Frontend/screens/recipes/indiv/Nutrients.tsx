@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { FlatList, View, Text, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
 import capitaliseFirstLetter from "@/utils/functions/Capitalise";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
@@ -11,15 +11,21 @@ export default function Nutrients({ recipe }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
-        {recipe?.nutrition.nutrients.map((nutrient) => (
-          <View style={styles.pointWrapper} key={nutrient.name}>
-            <View style={styles.pointDot} />
-            <Text style={styles.pointText}>
-              {capitaliseFirstLetter(nutrient.name)}: {nutrient.amount}
-              {nutrient.unit} ({nutrient.percentOfDailyNeeds}% of daily needs)
-            </Text>
-          </View>
-        ))}
+        <FlatList
+          data={recipe?.nutrition.nutrients}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.pointWrapper} key={item.name}>
+                <View style={styles.pointDot} />
+                <Text style={styles.pointText}>
+                  {capitaliseFirstLetter(item.name)}: {item.amount}
+                  {item.unit} ({item.percentOfDailyNeeds}% of daily needs)
+                </Text>
+              </View>
+            );
+          }}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
   );
@@ -30,14 +36,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderRadius: SIZES.medium,
     paddingHorizontal: SIZES.medium,
-  },
-  title: {
-    fontSize: SIZES.large,
-    color: COLORS.primary,
-    // fontFamily: FONT.bold,
+    flex: 1,
   },
   pointsContainer: {
     marginVertical: SIZES.small,
+    flex: 1,
   },
   pointWrapper: {
     flexDirection: "row",
@@ -55,7 +58,6 @@ const styles = StyleSheet.create({
   pointText: {
     fontSize: SIZES.medium - 2,
     color: COLORS.gray,
-    // fontFamily: FONT.regular,
     marginLeft: SIZES.small,
   },
 });

@@ -1,39 +1,20 @@
-import {
-  TextInput,
-  Text,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  ActivityIndicator,
-  Modal,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { Dispatch, SetStateAction } from "react";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-import {
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  doc,
-  DocumentData,
-  collection,
-  getDocs,
-  getDoc,
-  DocumentReference,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Tabs from "@/components/tabs/Tabs";
 import RecipeList from "../Collections/RecipeList";
 import CollectionList from "../Collections/CollectionList";
-import { COLORS } from "@/constants/Theme";
+import { COLORS, SIZES } from "@/constants/Theme";
 
-export default function CollectionScreen({
-  collection,
-  setCollection,
-  refresh,
-}: any) {
+type Props = {
+  setCollection: Dispatch<SetStateAction<boolean>>;
+  refresh: boolean;
+};
+
+export default function CollectionScreen({ setCollection, refresh }: Props) {
   const tabs = ["Recipes", "Posts"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [collectionArray, setArray] = useState<string[]>([]);
@@ -55,7 +36,7 @@ export default function CollectionScreen({
 
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => setCollection(!collection)}
+          onPress={() => setCollection((prev) => !prev)}
         >
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
@@ -85,10 +66,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     justifyContent: "center",
     backgroundColor: "gold",
-    padding: 20,
+    padding: SIZES.medium,
     alignItems: "center",
     borderRadius: 10,
-    marginBottom: 40,
   },
   title: {
     fontSize: 20,

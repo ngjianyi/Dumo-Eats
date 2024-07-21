@@ -198,12 +198,9 @@ export default function ProfileScreen({ navigation }: Propsmain) {
             </TouchableOpacity>
           </View>
         </ScrollView>
+
         <Modal visible={collection}>
-          <CollectionScreen
-            refresh={refresh}
-            collection={collection}
-            setCollection={setCollection}
-          />
+          <CollectionScreen refresh={refresh} setCollection={setCollection} />
         </Modal>
       </SafeAreaView>
     </TouchableWithoutFeedback>

@@ -15,12 +15,12 @@ export default function RecipeList() {
 
   const getRecipes = async () => {
     const userDocSnap = await getUserDocSnap();
-    var recipeIds = [];
+    var recipeIds: string = "";
     if (userDocSnap.exists()) {
       const userData = userDocSnap.data();
-      recipeIds = userData.savedRecipes.map(
-        (ref: DocumentReference<DocumentData, DocumentData>) => ref.id
-      );
+      recipeIds = userData.savedRecipes
+        .map((ref: DocumentReference<DocumentData, DocumentData>) => ref.id)
+        .toString();
     } else {
       console.log("Error has occured when getting user data for saved recipes");
       setError(true);
@@ -34,7 +34,7 @@ export default function RecipeList() {
       .get(URL, {
         params: {
           apiKey: KEY,
-          ids: recipeIds.toString(),
+          ids: recipeIds,
           includeNutrition: true,
         },
       })
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   error: {
-    // fontFamily: FONT.bold,
     textAlign: "center",
     margin: SIZES.xLarge,
   },
