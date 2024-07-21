@@ -23,6 +23,21 @@ const renderWithContext = (
   );
 };
 
+const intolerancesList = [
+  "Dairy",
+  "Egg",
+  "Gluten",
+  "Grain",
+  "Peanut",
+  "Seafood",
+  "Sesame",
+  "Shellfish",
+  "Soy",
+  "Sulfite",
+  "Tree Nut",
+  "Wheat",
+];
+
 describe("Renders intolerances filters correctly", () => {
   it("Renders intolerances filter title", () => {
     const { getByText } = renderWithContext(<IntolerancesFilter />, {
@@ -71,17 +86,8 @@ describe("Renders intolerances filters correctly", () => {
       },
     });
 
-    expect(getByText("Dairy")).toBeTruthy();
-    expect(getByText("Egg")).toBeTruthy();
-    expect(getByText("Gluten")).toBeTruthy();
-    expect(getByText("Grain")).toBeTruthy();
-    expect(getByText("Peanut")).toBeTruthy();
-    expect(getByText("Seafood")).toBeTruthy();
-    expect(getByText("Sesame")).toBeTruthy();
-    expect(getByText("Shellfish")).toBeTruthy();
-    expect(getByText("Soy")).toBeTruthy();
-    expect(getByText("Sulfite")).toBeTruthy();
-    expect(getByText("Tree Nut")).toBeTruthy();
-    expect(getByText("Wheat")).toBeTruthy();
+    intolerancesList.forEach((item) => {
+      expect(getByText(item)).toBeTruthy();
+    });
   });
 });
