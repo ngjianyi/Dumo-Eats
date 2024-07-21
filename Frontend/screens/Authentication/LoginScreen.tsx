@@ -48,8 +48,22 @@ export default function LoginScreen({ navigation }: PropsLogin) {
         userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
       }
     } catch (error: any) {
-      console.log(error);
-      alert("log in failed: " + error.message);
+      const errorCode = error.code
+      console.log(errorCode)
+      if (errorCode == "auth/invalid-email") {
+        alert("Invalid email provided")
+      }
+      else if (errorCode == "auth/invalid-credential") {
+        alert("Invalid credentials provided")
+      }
+      else if (errorCode == "auth/missing-password") {
+        alert("Please enter password")
+      }
+      else {
+        alert("Login failed, invalid credentials")
+      }
+
+      // alert("log in failed: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -89,6 +103,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
             autoCapitalize="none"
             autoCorrect={false}
             autoComplete="off"
+            aria-label="Email"
           />
           <View style={{ justifyContent: "center" }}>
             <TextInput
@@ -103,6 +118,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
               autoCapitalize="none"
               autoCorrect={false}
               autoComplete="off"
+              aria-label="Password"
             />
             <TouchableOpacity style={styles.visible} onPress={pressHandler}>
               {visible ? (
@@ -118,7 +134,11 @@ export default function LoginScreen({ navigation }: PropsLogin) {
             </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+        <TouchableOpacity 
+          style={styles.loginButton} 
+          onPress={handleSubmit}
+          aria-label="loginButton"
+          >
           <Text style={styles.login}>Log In</Text>
         </TouchableOpacity>
         {loading ? (
@@ -130,7 +150,11 @@ export default function LoginScreen({ navigation }: PropsLogin) {
           <Text style={{ textAlign: "center" }}>
             Don't have an account yet?
           </Text>
-          <TouchableOpacity style={styles.signupButton} onPress={signupHandler}>
+          <TouchableOpacity 
+            style={styles.signupButton} 
+            onPress={signupHandler}
+            aria-label="signupButton"
+            >
             <Text style={styles.signUp}>Sign Up</Text>
           </TouchableOpacity>
         </View>

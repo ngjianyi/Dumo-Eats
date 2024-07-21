@@ -25,21 +25,33 @@ import {
   updateDoc,
 } from "firebase/firestore";
 //   import AddUsersScreen from "./AddUsersScreen";
-import AddUsersScreen from "./AddUsersScreen";
-import CollectionScreen from "./CollectionScreen";
-import CalorieGoal from "@/contexts/CalorieGoal";
-import RefreshBadgeContext from "@/contexts/RefreshBadge";
-import UserLoggedInContext from "@/contexts/UserLoggedIn";
-import RefreshCalorieContext from "@/contexts/RefreshCalorie";
-import { Propsmain } from "@/components/navigation/PropTypes";
-const profilePic = require("@/assets/images/SampleProfile.png");
 
-export default function ProfileScreen({ navigation }: Propsmain) {
-  const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
-  const calorieContext = useContext(CalorieGoal);
-  const refreshBadgeContext = useContext(RefreshBadgeContext);
-  const userLoggedInContext = useContext(UserLoggedInContext);
-  const refreshCalorieContext = useContext(RefreshCalorieContext);
+  import AddUsersScreen from "./AddUsersScreen";
+  import CollectionScreen from "./CollectionScreen";
+  import CalorieGoal from "@/contexts/CalorieGoal";
+  import RefreshBadgeContext from "@/contexts/RefreshBadge";
+  import UserLoggedInContext from "@/contexts/UserLoggedIn";
+  import RefreshCalorieContext from "@/contexts/RefreshCalorie";
+  import { Propsmain } from "@/components/navigation/PropTypes";
+  const profilePic = require("@/assets/images/SampleProfile.png");
+
+  export const checkDate = (val: string) => {
+    const array = val.split("/")
+    if (array.length != 3) {
+      return false
+    } else if (Number(array[0]) > 31 || Number(array[1]) > 12 || Number(array[2]) > 2024) {
+      return false
+    } else {
+      return true
+    }
+  }
+  export default function ProfileScreen({ navigation }: Propsmain) {
+    const userRef = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
+    const calorieContext = useContext(CalorieGoal);
+    const refreshBadgeContext = useContext(RefreshBadgeContext)
+    const userLoggedInContext = useContext(UserLoggedInContext)
+    const refreshCalorieContext = useContext(RefreshCalorieContext)
+
 
   const getAllDetails = async () => {
     const docsnap = await getDoc(userRef);
@@ -73,6 +85,7 @@ export default function ProfileScreen({ navigation }: Propsmain) {
       refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge);
       alert("New Badge Strategic Visionary Unlocked!");
     }
+
     //for testing purposes
     // } else {
     //   temp[0] = false
@@ -102,21 +115,6 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   const collectionsHandler = () => {
     setRefresh(refresh);
     setCollection(!collection);
-  };
-
-  const checkDate = (val: string) => {
-    const array = val.split("/");
-    if (array.length != 3) {
-      return false;
-    } else if (
-      Number(array[0]) > 31 ||
-      Number(array[1]) > 12 ||
-      Number(array[2]) > 2024
-    ) {
-      return false;
-    } else {
-      return true;
-    }
   };
 
   useEffect(() => {
