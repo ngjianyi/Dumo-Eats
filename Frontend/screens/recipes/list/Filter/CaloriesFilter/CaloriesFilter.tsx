@@ -21,6 +21,7 @@ export default function CaloriesFilter() {
             keyboardType="numeric"
             maxLength={4}
             placeholderTextColor={COLORS.gray}
+            aria-label="minCaloriesInput"
           />
         </View>
 
@@ -35,6 +36,7 @@ export default function CaloriesFilter() {
             keyboardType="numeric"
             maxLength={4}
             placeholderTextColor={COLORS.gray}
+            aria-label="maxCaloriesInput"
           />
         </View>
       </View>

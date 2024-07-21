@@ -6,7 +6,7 @@ import React, {
   ReactNode,
 } from "react";
 
-type StateContextType = {
+type RecipeContextType = {
   query: string;
   setQuery: Dispatch<SetStateAction<string>>;
   cuisineType: string;
@@ -23,7 +23,7 @@ type StateContextType = {
   setIntolerances: Dispatch<SetStateAction<string[]>>;
 };
 
-const RecipeContext = createContext<null | StateContextType>(null);
+const RecipeContext = createContext<null | RecipeContextType>(null);
 
 function RecipeProvider({ children }: { children: ReactNode }) {
   const [query, setQuery] = useState<string>("");
@@ -58,4 +58,4 @@ function RecipeProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export { RecipeContext, RecipeProvider };
+export { RecipeContextType, RecipeContext, RecipeProvider };

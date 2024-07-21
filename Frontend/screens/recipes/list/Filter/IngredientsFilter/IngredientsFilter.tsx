@@ -24,7 +24,7 @@ export default function IngredientsFilter() {
             placeholder="Separate ingredients with a space"
             autoCapitalize="none"
             placeholderTextColor={COLORS.gray}
-            aria-label="includeIngredients"
+            aria-label="includeIngredientsInput"
           />
         </View>
 
@@ -38,7 +38,7 @@ export default function IngredientsFilter() {
             placeholder="Separate ingredients with a space"
             autoCapitalize="none"
             placeholderTextColor={COLORS.gray}
-            aria-label="excludeIngredients"
+            aria-label="excludeIngredientsInput"
           />
         </View>
       </View>
