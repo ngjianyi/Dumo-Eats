@@ -56,9 +56,6 @@ export default function LoginScreen({ navigation }: PropsLogin) {
       else if (errorCode == "auth/invalid-credential") {
         alert("Invalid credentials provided")
       }
-      else if (errorCode == "auth/wrong-password") {
-        alert("Wrong password provided")
-      }
       else if (errorCode == "auth/missing-password") {
         alert("Please enter password")
       }
