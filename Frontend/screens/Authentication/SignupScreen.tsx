@@ -76,6 +76,8 @@ export default function SignupScreen({ navigation }: PropsSignup) {
       const errorCode = error.code
       if (errorCode == "auth/email-already-in-use") {
         alert("Email already in used")
+      } else if (errorCode == "auth/invalid-email") {
+        alert("Invalid email")
       } else {
         alert("Sign up failed: " + error.message);
       }
@@ -103,6 +105,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             onChangeText={(val) => setUsername(val)}
             autoCapitalize="none"
             autoCorrect={false}
+            aria-label="Username"
           />
           <TextInput
             style={styles.input}
@@ -113,6 +116,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             }}
             autoCapitalize="none"
             autoCorrect={false}
+            aria-label="Firstname"
 
           />
           <TextInput
@@ -124,6 +128,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             }}
             autoCapitalize="none"
             autoCorrect={false}
+            aria-label="Lastname"
 
           />
           <TextInput
@@ -133,6 +138,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             onChangeText={(val) => setEmail(val)}
             autoCapitalize="none"
             autoCorrect={false}
+            aria-label="Email"
 
           />
           <View style={{ justifyContent: "center" }}>
@@ -147,6 +153,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
               textContentType="oneTimeCode"
               autoCapitalize="none"
               autoCorrect={false}
+              aria-label="Password1"
 
             />
             <TouchableOpacity style={styles.visible} onPress={pressHandler1}>
@@ -168,6 +175,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
               }}
               textContentType="oneTimeCode"
               autoCapitalize="none"
+              aria-label="Password2"
             />
             <TouchableOpacity onPress={pressHandler2} style={styles.visible}>
               {visible2 ? (
@@ -178,7 +186,10 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity style={styles.signUpButton} onPress={handleSubmit}>
+        <TouchableOpacity 
+          style={styles.signUpButton} 
+          onPress={handleSubmit} 
+          aria-label="SignupButton">
           <Text style={styles.signup}>Sign Up</Text>
         </TouchableOpacity>
         {loading ? (<ActivityIndicator size="large" color="deepskyblue"/>): true}

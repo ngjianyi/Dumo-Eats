@@ -9,6 +9,7 @@ import {
   Keyboard,
   Image,
   ActivityIndicator,
+  Alert
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useContext, useEffect, useState } from "react";
@@ -72,6 +73,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(AUTH, (user) => {
       if (user && userLoggedInContext?.UserLoggedIn) {
+        alert("success")
         navigation.navigate("main");
       } else if (user == null) {
       }
