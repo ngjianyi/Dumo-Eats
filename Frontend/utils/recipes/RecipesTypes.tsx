@@ -17,6 +17,7 @@ type Nutrient = {
 };
 
 type Ingredient = {
+  id: number;
   amount: number;
   unit: string;
   image: string;

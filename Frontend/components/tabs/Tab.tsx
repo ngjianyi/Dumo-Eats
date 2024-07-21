@@ -1,15 +1,15 @@
 import React from "react";
-import { TouchableOpacity, Text, View } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { StyleSheet } from "react-native";
-import { SIZES, COLORS, SHADOWS } from "../../../constants/Theme";
+import { SIZES, COLORS, SHADOWS } from "../../constants/Theme";
 
-type buttonProps = {
+type Props = {
   name: string;
   activeTab: string;
   onHandleSearchType: () => void;
 };
 
-function TabButton({ name, activeTab, onHandleSearchType }: buttonProps) {
+function TabButton({ name, activeTab, onHandleSearchType }: Props) {
   return (
     <TouchableOpacity
       style={{
@@ -30,34 +30,7 @@ function TabButton({ name, activeTab, onHandleSearchType }: buttonProps) {
   );
 }
 
-type tabProps = {
-  tabs: string[];
-  activeTab: string;
-  setActiveTab: (item: string) => void;
-};
-
-const Tabs = ({ tabs, activeTab, setActiveTab }: tabProps) => {
-  return (
-    <View style={styles.container}>
-      <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-        {tabs?.map((tab) => (
-          <TabButton
-            name={tab}
-            activeTab={activeTab}
-            onHandleSearchType={() => setActiveTab(tab)}
-            key={tab}
-          />
-        ))}
-      </View>
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
-  container: {
-    marginTop: SIZES.small,
-    marginBottom: SIZES.small / 2,
-  },
   btn: {
     paddingVertical: SIZES.medium,
     paddingHorizontal: SIZES.xLarge,
@@ -73,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Tabs;
+export default TabButton;
