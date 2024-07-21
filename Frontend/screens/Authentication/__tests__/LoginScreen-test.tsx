@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react-native';
 import LoginScreen from '../LoginScreen';
 import { RootStackParamList } from '@/app';
 import {NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -26,19 +26,29 @@ const mockNavigation: Partial<LoginScreenNavigationProp> = {
     goBack: jest.fn(),
   };
 describe('Renders loginscreen correctly', ()=> {
-    it ('renders username input box ', () => {
-        const { getByTestId } = render(<LoginScreen navigation={mockNavigation as LoginScreenNavigationProp} route={mockRoute} />);
-        const usernamebox = getByTestId("Email");
+    it ('Renders username input box ', () => {
+        render(<LoginScreen navigation={mockNavigation as LoginScreenNavigationProp} route={mockRoute} />);
+        const usernamebox = screen.getByLabelText("Email");
         expect(usernamebox).toBeTruthy()
         expect(usernamebox.props.placeholder).toBe(' Email')
     })
 
-    it ('renders password input box ', () => {
-        const { getByTestId } = render(<LoginScreen navigation={mockNavigation as LoginScreenNavigationProp} route={mockRoute} />);
-        const usernamebox = getByTestId("Password");
+    it ('Renders password input box ', () => {
+        render(<LoginScreen navigation={mockNavigation as LoginScreenNavigationProp} route={mockRoute} />);
+        const usernamebox = screen.getByLabelText("Password");
         expect(usernamebox).toBeTruthy()
         expect(usernamebox.props.placeholder).toBe(' Password')
     })
 
+    it ('Renders login button', () => {
+        render(<LoginScreen navigation={mockNavigation as LoginScreenNavigationProp} route={mockRoute} />);
+        const loginButton = screen.getByLabelText("loginButton");
+        expect(loginButton).toBeTruthy()
+    })
 
+    it ('Renders signup button', () => {
+        render(<LoginScreen navigation={mockNavigation as LoginScreenNavigationProp} route={mockRoute} />);
+        const signupButton = screen.getByLabelText("signupButton");
+        expect(signupButton).toBeTruthy()
+    })
 })
