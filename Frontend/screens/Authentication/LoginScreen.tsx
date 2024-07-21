@@ -48,8 +48,25 @@ export default function LoginScreen({ navigation }: PropsLogin) {
         userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
       }
     } catch (error: any) {
-      console.log(error);
-      alert("log in failed: " + error.message);
+      const errorCode = error.code
+      console.log(errorCode)
+      if (errorCode == "auth/invalid-email") {
+        alert("Invalid email provided")
+      }
+      else if (errorCode == "auth/invalid-credential") {
+        alert("Invalid credentials provided")
+      }
+      else if (errorCode == "auth/wrong-password") {
+        alert("Wrong password provided")
+      }
+      else if (errorCode == "auth/missing-password") {
+        alert("Please enter password")
+      }
+      else {
+        alert("Login failed, invalid credentials")
+      }
+
+      // alert("log in failed: " + error.message);
     } finally {
       setLoading(false);
     }

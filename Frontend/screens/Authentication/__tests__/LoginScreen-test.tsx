@@ -51,4 +51,11 @@ describe('Renders loginscreen correctly', ()=> {
         const signupButton = screen.getByLabelText("signupButton");
         expect(signupButton).toBeTruthy()
     })
+
+    it ('Renders signup button', () => {
+        render(<LoginScreen navigation={mockNavigation as LoginScreenNavigationProp} route={mockRoute} />);
+        const signupButton = screen.getByLabelText("signupButton");
+        expect(signupButton).toBeTruthy()
+    })
+
 })

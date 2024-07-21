@@ -72,8 +72,13 @@ export default function SignupScreen({ navigation }: PropsSignup) {
 
 
     } catch (error: any){
-      console.log(error);
-      alert("Sign up failed: " + error.message);
+      // console.log(error);
+      const errorCode = error.code
+      if (errorCode == "auth/email-already-in-use") {
+        alert("Email already in used")
+      } else {
+        alert("Sign up failed: " + error.message);
+      }
     } finally {
       setLoading(false);
       auth.signOut(); 
