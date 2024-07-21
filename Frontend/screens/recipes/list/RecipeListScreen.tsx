@@ -35,7 +35,6 @@ export default function RecipeListScreen({ navigation }: any) {
     setIsLoading(true);
     const KEY = "429fc2334b13424f9ab79a250d6d4a3c";
     const URL = `https://api.spoonacular.com/recipes/complexSearch`;
-    setIsLoading(true);
     await axios
       .get(URL, {
         params: {
@@ -88,11 +87,7 @@ export default function RecipeListScreen({ navigation }: any) {
       ) : totalRecipes == 0 ? (
         <Text style={styles.error}>No results</Text>
       ) : (
-        <Recipes
-          recipes={recipes}
-          navigation={navigation}
-          getRecipes={getRecipes}
-        />
+        <Recipes recipes={recipes} getRecipes={getRecipes} />
       )}
     </SafeAreaView>
   );

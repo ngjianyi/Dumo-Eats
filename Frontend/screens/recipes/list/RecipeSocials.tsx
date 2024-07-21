@@ -12,7 +12,6 @@ import { getUserId, getUserDocSnap } from "@/utils/social/User";
 import {
   likeHandler,
   saveHandler,
-  recipeSaveHandler,
   commentHandler,
 } from "@/utils/social/SocialHandlers";
 import SocialTabs from "@/components/social/SocialTabs";
@@ -56,7 +55,12 @@ export default function RecipeSocials({ recipe }: Props) {
 
   const getRecipeSaved = useCallback(async () => {
     const userData = (await getUserDocSnap()).data();
-    if (userData?.savedRecipes.includes(recipeId)) {
+    if (
+      userData?.savedRecipes.some(
+        (ref: DocumentReference<DocumentData, DocumentData>) =>
+          ref.path === recipeRef.path
+      )
+    ) {
       setSaved(true);
     } else {
       setSaved(false);
@@ -81,13 +85,13 @@ export default function RecipeSocials({ recipe }: Props) {
 
   const saveButtonHandler = useCallback(() => {
     // recipeSaveHandler(setSaved, recipeId);
-    saveHandler(setSaved, recipeId, "savedRecipes")
+    saveHandler(setSaved, recipeRef, "savedRecipes");
   }, []);
 
   const commentButtonHandler = useCallback(
     async (trimmedBody: string): Promise<void> => {
       // await recipeCommentHandler(trimmedBody, recipeRef);
-      await commentHandler(trimmedBody, recipeRef, "RecipesComments")
+      await commentHandler(trimmedBody, recipeRef, "RecipesComments");
       getRecipeComments();
     },
     []

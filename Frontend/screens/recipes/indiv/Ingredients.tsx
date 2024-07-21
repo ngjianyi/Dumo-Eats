@@ -1,25 +1,47 @@
-import { View, Text, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
 import capitaliseFirstLetter from "@/utils/functions/Capitalise";
-import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { Recipe, Ingredient } from "@/utils/recipes/RecipesTypes";
 
 type Props = {
   recipe: Recipe;
 };
 
 export default function ({ recipe }: Props) {
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+
+  // Filters duplicate ingredients
+  const getFilteredIngredients = () => {
+    setIngredients([
+      ...new Map(
+        recipe?.nutrition.ingredients.map((obj) => [
+          `${obj.id}:${obj.name}`,
+          obj,
+        ])
+      ).values(),
+    ]);
+  };
+
+  useEffect(getFilteredIngredients, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
-        {recipe?.nutrition.ingredients.map((ingredient) => (
-          <View style={styles.pointWrapper} key={ingredient.name}>
-            <View style={styles.pointDot} />
-            <Text style={styles.pointText}>
-              {capitaliseFirstLetter(ingredient.name)}: {ingredient.amount}{" "}
-              {ingredient.unit}
-            </Text>
-          </View>
-        ))}
+        <FlatList
+          data={ingredients}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.pointWrapper} key={item.name}>
+                <View style={styles.pointDot} />
+                <Text style={styles.pointText}>
+                  {capitaliseFirstLetter(item.name)}: {item.amount} {item.unit}
+                </Text>
+              </View>
+            );
+          }}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
   );
@@ -30,14 +52,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderRadius: SIZES.medium,
     paddingHorizontal: SIZES.medium,
-  },
-  title: {
-    fontSize: SIZES.large,
-    color: COLORS.primary,
-    // fontFamily: FONT.bold,
+    flex: 1,
   },
   pointsContainer: {
     marginVertical: SIZES.small,
+    flex: 1,
   },
   pointWrapper: {
     flexDirection: "row",
@@ -55,7 +74,6 @@ const styles = StyleSheet.create({
   pointText: {
     fontSize: SIZES.medium - 2,
     color: COLORS.gray,
-    // fontFamily: FONT.regular,
     marginLeft: SIZES.small,
   },
 });
