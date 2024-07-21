@@ -24,13 +24,18 @@ import {
   DocumentReference,
 } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Tabs from "@/components/tabs/Tabs";
+import RecipeList from "../Collections/RecipeList";
 import CollectionList from "../Collections/CollectionList";
+import { COLORS } from "@/constants/Theme";
 
 export default function CollectionScreen({
   collection,
   setCollection,
   refresh,
 }: any) {
+  const tabs = ["Recipes", "Posts"];
+  const [activeTab, setActiveTab] = useState(tabs[0]);
   const [collectionArray, setArray] = useState<string[]>([]);
   const getAllCollection = async () => {
     setArray([]);
@@ -47,6 +52,7 @@ export default function CollectionScreen({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Collection</Text>
+
         <TouchableOpacity
           style={styles.closeButton}
           onPress={() => setCollection(!collection)}
@@ -54,7 +60,16 @@ export default function CollectionScreen({
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
       </View>
-      <CollectionList collectionArray={collectionArray} />
+
+      <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      {activeTab === "Recipes" ? (
+        <RecipeList />
+      ) : activeTab === "Posts" ? (
+        <CollectionList collectionArray={collectionArray} />
+      ) : (
+        <Text>Something went wrong</Text>
+      )}
     </View>
   );
 }
@@ -62,6 +77,7 @@ export default function CollectionScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.lightWhite,
   },
   header: {
     marginTop: 70,

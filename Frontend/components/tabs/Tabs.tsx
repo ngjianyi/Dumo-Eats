@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { View, StyleSheet } from "react-native";
 import TabButton from "./Tab";
-import { SIZES } from "../../../constants/Theme";
+import { SIZES } from "../../constants/Theme";
 
 type Props = {
   tabs: string[];
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.small / 2,
   },
   tabs: {
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     flexDirection: "row",
   },
 });

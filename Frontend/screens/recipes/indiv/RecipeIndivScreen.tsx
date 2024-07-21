@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import Tabs from "./Tabs";
+import Tabs from "../../../components/tabs/Tabs";
 import RecipeHeader from "./RecipeHeader";
 import { COLORS, SIZES } from "@/constants/Theme";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
