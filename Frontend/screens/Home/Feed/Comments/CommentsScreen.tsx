@@ -12,7 +12,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState, useEffect, useCallback, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect, useCallback, Dispatch, SetStateAction, useContext } from "react";
 import {
   doc,
   DocumentData,
@@ -27,6 +27,7 @@ import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import { commentHandler } from "@/utils/social/SocialHandlers";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CommentsList from "./CommentsList";
+import RefreshCommentContext from "@/contexts/RefreshComment";
 import moment from "moment";
 interface Props {
   item: DocumentData,
@@ -47,6 +48,7 @@ export default function CommentsScreen({
   const [input, setInput] = useState("");
   const postref = item.postRef;
   const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
+  
   //add comment to comments array field, and then change dependency of useEffect
 
 
@@ -66,11 +68,12 @@ export default function CommentsScreen({
 
   //this will create a comment inside the postcomments collection
   //and then add the new comment ref into the comments array insdie post
-  
+  const refreshCommentContext = useContext(RefreshCommentContext)
   const commentButtonHandler = useCallback(
     async (trimmedBody: string): Promise<void> => {
       await commentHandler(trimmedBody, postref, "PostsComments");
-      setRefresh(refreshComment => !refreshComment);
+      // setRefresh(refreshComment => !refreshComment);
+      refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)
       setInput("");
       Keyboard.dismiss();
     },

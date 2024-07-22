@@ -9,9 +9,23 @@ export default function AddUsersScreen({searchUser, setSearch}:any) {
     const [followed, setFollow] = useState("")
     const refreshContext = useContext(AutoRefresh)
     const addHandler = async () => {
+        //check if username exists
+        const querySnapshot = await getDocs(collection(DATA_BASE, "Usernames"));
+        let status :boolean = false
+        querySnapshot.forEach((document) => {
+            if (document.data().username == followed) {
+                status = true
+            }
+        })
+
+        if (!status) {
+            alert("No such user")
+            return
+        }
         //add to data base
         const userRef = doc(DATA_BASE, "Users", ""+AUTH.currentUser?.uid)
         const array = (await getDoc(userRef)).data()?.following 
+
         if (array.includes(followed)) {
             alert("Already added friend")
             return

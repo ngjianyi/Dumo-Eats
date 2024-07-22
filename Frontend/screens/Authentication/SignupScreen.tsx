@@ -15,7 +15,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createUserWithEmailAndPassword, onAuthStateChanged,sendEmailVerification } from "firebase/auth";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-import { doc, setDoc } from "firebase/firestore"; 
+import { addDoc, collection, doc, getDocs, query, setDoc } from "firebase/firestore"; 
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
 import { PropsSignup } from "@/components/navigation/PropTypes";
 
@@ -37,9 +37,21 @@ export default function SignupScreen({ navigation }: PropsSignup) {
   const[loading, setLoading] = useState<boolean>(false);
   const auth = AUTH;
 
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      const querySnapshot = await getDocs(collection(DATA_BASE, "Usernames"));
+      let status :boolean = false
+      querySnapshot.forEach((document) => {
+        if (document.data().username == username) {
+          status = true
+        }
+      })
+      if (status) {
+        alert("Username is already taken")
+        return
+      }
       if (password1.length < 5) {
         alert("Password too short, must be at least 5 characters ")
         return;
@@ -70,17 +82,23 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         savedRecipes: [],
       })
 
+      await addDoc(collection(DATA_BASE, "Usernames"), {
+        username: username
+      })
+
 
     } catch (error: any){
       // console.log(error);
       const errorCode = error.code
       if (errorCode == "auth/email-already-in-use") {
         alert("Email already in used")
+        
       } else if (errorCode == "auth/invalid-email") {
         alert("Invalid email")
       } else {
         alert("Sign up failed: " + error.message);
       }
+      return
     } finally {
       setLoading(false);
       auth.signOut(); 
