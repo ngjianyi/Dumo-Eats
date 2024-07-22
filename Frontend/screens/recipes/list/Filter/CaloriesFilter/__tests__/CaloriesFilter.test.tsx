@@ -24,7 +24,7 @@ const renderWithContext = (
 };
 
 describe("Renders calorie filters correctly", () => {
-  it("Renders calories filter title", () => {
+  it("should render calories filter title", () => {
     const { getByText } = renderWithContext(<CaloriesFilter />, {
       providerProps: {
         value: {
@@ -49,7 +49,7 @@ describe("Renders calorie filters correctly", () => {
     expect(getByText("Calories:")).toBeTruthy();
   });
 
-  it("Renders minimum calorie input box", () => {
+  it("should render minimum calorie input box", () => {
     const { getByLabelText } = renderWithContext(<CaloriesFilter />, {
       providerProps: {
         value: {
@@ -76,7 +76,7 @@ describe("Renders calorie filters correctly", () => {
     expect(minCaloriesInput.props.placeholder).toBe("Min");
   });
 
-  it("Renders calories filter word in between inputs", () => {
+  it("should render calories filter word in between inputs", () => {
     const { getByText } = renderWithContext(<CaloriesFilter />, {
       providerProps: {
         value: {
@@ -101,7 +101,7 @@ describe("Renders calorie filters correctly", () => {
     expect(getByText("to")).toBeTruthy();
   });
 
-  it("Renders maximum calorie input box", () => {
+  it("should render maximum calorie input box", () => {
     const { getByLabelText } = renderWithContext(<CaloriesFilter />, {
       providerProps: {
         value: {

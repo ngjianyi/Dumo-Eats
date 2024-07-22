@@ -39,7 +39,7 @@ const intolerancesList = [
 ];
 
 describe("Renders intolerances filters correctly", () => {
-  it("Renders intolerances filter title", () => {
+  it("should render intolerances filter title", () => {
     const { getByText } = renderWithContext(<IntolerancesFilter />, {
       providerProps: {
         value: {
@@ -64,7 +64,7 @@ describe("Renders intolerances filters correctly", () => {
     expect(getByText("Allergens:")).toBeTruthy();
   });
 
-  it("Renders flatlist items correctly", () => {
+  it("should render flatlist items correctly", () => {
     const { getByText } = renderWithContext(<IntolerancesFilter />, {
       providerProps: {
         value: {

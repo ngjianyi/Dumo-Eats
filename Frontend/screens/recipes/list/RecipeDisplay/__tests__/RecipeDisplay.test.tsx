@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  render,
-  RenderOptions,
-  fireEvent,
-} from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import RecipeDisplay from "../RecipeDisplay";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
 
@@ -46,7 +42,7 @@ const item: Recipe = {
 };
 
 describe("Renders recipe box correctly", () => {
-  it("Renders title and calories correctly", () => {
+  it("should render title and calories correctly", () => {
     const { getByText } = render(<RecipeDisplay item={item} />, {});
 
     expect(getByText("Test title")).toBeTruthy();

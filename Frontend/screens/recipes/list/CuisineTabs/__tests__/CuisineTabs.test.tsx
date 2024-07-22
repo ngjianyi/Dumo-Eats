@@ -58,7 +58,7 @@ const cuisineTypes = [
 ];
 
 describe("Renders cuisine tabs correctly", () => {
-  it("Renders flatlist items correctly", () => {
+  it("should render flatlist items correctly", () => {
     const { getByLabelText, getByText } = renderWithContext(<CuisineTabs />, {
       providerProps: {
         value: {

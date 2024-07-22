@@ -24,7 +24,7 @@ const renderWithContext = (
 };
 
 describe("Renders ingredients filters correctly", () => {
-  it("Renders include ingredients title", () => {
+  it("should render include ingredients title", () => {
     const { getByText } = renderWithContext(<IngredientsFilter />, {
       providerProps: {
         value: {
@@ -49,7 +49,7 @@ describe("Renders ingredients filters correctly", () => {
     expect(getByText("Ingredients to include:")).toBeTruthy();
   });
 
-  it("Renders include ingredients input box", () => {
+  it("should render include ingredients input box", () => {
     const { getByLabelText } = renderWithContext(<IngredientsFilter />, {
       providerProps: {
         value: {
@@ -78,7 +78,7 @@ describe("Renders ingredients filters correctly", () => {
     );
   });
 
-  it("Renders exclude ingredients title", () => {
+  it("should render exclude ingredients title", () => {
     const { getByText } = renderWithContext(<IngredientsFilter />, {
       providerProps: {
         value: {
@@ -103,7 +103,7 @@ describe("Renders ingredients filters correctly", () => {
     expect(getByText("Ingredients to exclude:")).toBeTruthy();
   });
 
-  it("Renders exclude ingredients input box", () => {
+  it("should render exclude ingredients input box", () => {
     const { getByLabelText } = renderWithContext(<IngredientsFilter />, {
       providerProps: {
         value: {
