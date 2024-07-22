@@ -2,7 +2,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { DocumentReference, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { COLORS, SIZES } from "@/constants/Theme";
-import TimeElapsed from "@/utils/functions/TimeElapsed";
+import TimeElapsed from "@/utils/functions/TimeElapsed/TimeElapsed";
 
 type Props = {
   commentRef: DocumentReference;

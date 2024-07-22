@@ -46,16 +46,10 @@ const item: Recipe = {
 };
 
 describe("Renders recipe box correctly", () => {
-  it("Renders title correctly", () => {
+  it("Renders title and calories correctly", () => {
     const { getByText } = render(<RecipeDisplay item={item} />, {});
 
     expect(getByText("Test title")).toBeTruthy();
-    expect(getByText("Calories: 500")).toBeTruthy();
-  });
-
-  it("Renders calories correctly", () => {
-    const { getByText } = render(<RecipeDisplay item={item} />, {});
-
     expect(getByText("Calories: 500")).toBeTruthy();
   });
 });
