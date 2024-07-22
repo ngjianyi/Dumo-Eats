@@ -12,7 +12,7 @@ import axios, { AxiosError } from "axios";
 import { RecipeContext } from "../RecipeProvider";
 import Recipes from "@/screens/recipes/list/Recipes";
 import Header from "./Header";
-import CuisineTabs from "./CuisineTabs";
+import CuisineTabs from "./CuisineTabs/CuisineTabs";
 import { SIZES } from "@/constants/Theme";
 
 export default function RecipeListScreen({ navigation }: any) {

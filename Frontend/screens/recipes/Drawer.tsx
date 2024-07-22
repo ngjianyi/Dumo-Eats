@@ -3,7 +3,7 @@ import {
   createDrawerNavigator,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import Filter from "./list/Filter";
+import Filter from "./list/Filter/Filter";
 import { RecipeProvider } from "./RecipeProvider";
 import RecipeListScreen from "./list/RecipeListScreen";
 

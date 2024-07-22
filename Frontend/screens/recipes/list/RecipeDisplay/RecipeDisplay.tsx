@@ -7,8 +7,8 @@ import {
   Modal,
 } from "react-native";
 import React, { useState } from "react";
-import RecipeSocials from "./RecipeSocials";
-import RecipeIndivScreen from "../indiv/RecipeIndivScreen";
+import RecipeSocials from ".././RecipeSocials";
+import RecipeIndivScreen from "../../indiv/RecipeIndivScreen";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 

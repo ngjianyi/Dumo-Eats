@@ -1,6 +1,6 @@
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
-import capitaliseFirstLetter from "@/utils/functions/Capitalise";
+import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
 
 type Props = {
@@ -41,7 +41,6 @@ export default function Instructions({ recipe }: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF",
-    borderRadius: SIZES.medium,
     paddingHorizontal: SIZES.medium,
     flex: 1,
   },
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginVertical: SIZES.small / 1.25,
+    margin: SIZES.small / 1.25,
   },
   pointDot: {
     width: 6,

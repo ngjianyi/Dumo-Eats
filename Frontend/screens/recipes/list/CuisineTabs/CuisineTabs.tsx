@@ -6,7 +6,7 @@ import {
   FlatList,
 } from "react-native";
 import React, { useContext } from "react";
-import { RecipeContext } from "../RecipeProvider";
+import { RecipeContext } from "../../RecipeProvider";
 import { SIZES, COLORS } from "@/constants/Theme";
 
 export default function CuisineTabs() {
@@ -69,6 +69,9 @@ export default function CuisineTabs() {
         keyExtractor={(item) => item}
         horizontal
         showsHorizontalScrollIndicator={false}
+        initialNumToRender={cuisineTypes.length}
+        windowSize={cuisineTypes.length}
+        aria-label="cuisineTabs"
       />
     </View>
   );
@@ -88,7 +91,6 @@ const styles = StyleSheet.create({
     marginHorizontal: SIZES.xSmall / 2,
   },
   tabText: {
-    // fontFamily: FONT.medium,
     color: "#444262",
   },
 });
