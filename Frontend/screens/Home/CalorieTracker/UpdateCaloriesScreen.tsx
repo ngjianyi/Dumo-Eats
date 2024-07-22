@@ -51,6 +51,8 @@ export const checkStreak =  (prev: string, curr: string) : boolean => {
     // 6/26/2024
 
 } 
+
+let updateCalories : (x: string) => void = (x) => {};
 export default function UpdateCaloriesScreen({modalHandler}: any) {
     const docref = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid)
     const[calories, setCalories] = useState(0);
@@ -58,10 +60,10 @@ export default function UpdateCaloriesScreen({modalHandler}: any) {
     const refreshBadgeContext = useContext(RefreshBadgeContext)
     const refreshCalorieContext = useContext(RefreshCalorieContext)
 
-
-    const updateCalories = (input: string) => {
-        if (isNaN(Number(input)) || input =="0") {
-             Alert.alert("Error", "Input needs to be a number and greater than 0", [{text: "ok"}])
+    updateCalories = (input: string) => {
+        if (isNaN(Number(input)) || Number(input) <= 0) {
+            //  Alert.alert("Error", "Input needs to be a number and greater than 0", [{text: "ok"}])
+            alert("Error, input needs to be a number and greater than 0")
         } else {
             setCalories(Number(input))
         }
@@ -157,6 +159,7 @@ export default function UpdateCaloriesScreen({modalHandler}: any) {
                         placeholder="Add calories (kcal)"
                         keyboardType="numeric"
                         onChangeText={updateCalories}
+                        aria-label="InputBox"
                     /> 
                     <TouchableOpacity>
                         <Ionicons name="camera" size={35} color="black" />
@@ -166,6 +169,7 @@ export default function UpdateCaloriesScreen({modalHandler}: any) {
                 <TouchableOpacity 
                     style={styles.submitButton}
                     onPress={submitCalories}
+                    aria-label="SubmitButton"
                 >
                     <Text style={styles.submit}>Submit</Text>
                 </TouchableOpacity>
@@ -173,6 +177,7 @@ export default function UpdateCaloriesScreen({modalHandler}: any) {
         </TouchableWithoutFeedback>
     )
 }
+export {updateCalories}
 
 const styles = StyleSheet.create({
     container: {
