@@ -41,6 +41,8 @@ import {
       return false
     } else if (Number(array[0]) > 31 || Number(array[1]) > 12 || Number(array[2]) > 2024) {
       return false
+    } else if (Number(array[0]) <= 0 || Number(array[1]) <= 0 || Number(array[2]) <= 0){
+      return false
     } else {
       return true
     }
