@@ -11,7 +11,6 @@ import {
   FlatList,
 } from "react-native";
 import React, { useState } from "react";
-// import Comment from "./Comment";
 import Comment from "@/components/social/comments/Comment";
 
 export default function CommentsList({ comments }: any) {
