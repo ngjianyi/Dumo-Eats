@@ -31,6 +31,7 @@ import {
 } from "firebase/firestore";
 import moment from "moment";
 import RefreshBadgeContext from "@/contexts/RefreshBadge";
+import { getUserDocSnap, getUserRef } from "@/utils/social/User";
 
 export default function CreatePostScreen({
   upload,
@@ -43,11 +44,11 @@ export default function CreatePostScreen({
   interface FormValues {
     caption: string;
     image: string;
-    userName: string;
     time: string;
     likes: [];
     comments: [];
     postRef: DocumentReference | null;
+    userRef: DocumentReference | null;
   }
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<string | null>(null);
@@ -60,7 +61,6 @@ export default function CreatePostScreen({
       aspect: [4, 3],
       quality: 0,
     });
-    console.log(result);
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -71,6 +71,7 @@ export default function CreatePostScreen({
     value.image = image;
     Keyboard.dismiss();
     console.log(value);
+    const userName = (await getUserDocSnap()).data()?.userName
     try {
       //converting uri into blob, then upload into firebase storage, then get download url then save
       //formik form image value as download url
@@ -78,6 +79,7 @@ export default function CreatePostScreen({
       // to firestore data base after submitting the formik form
       const response = await fetch(value.image);
       const blob = await response.blob();
+      
       const storageRef = ref(STORAGE, "DumoEatsPosts/" + Date.now() + ".jpg");
       uploadBytes(storageRef, blob)
         .then((snapshot) => {
@@ -85,7 +87,7 @@ export default function CreatePostScreen({
         })
         .then((response) => {
           getDownloadURL(storageRef).then(async (dlURL) => {
-            console.log(dlURL);
+            
             value.image = dlURL;
             //add user name to each posts
             const docRefUser = doc(
@@ -94,7 +96,6 @@ export default function CreatePostScreen({
               "" + AUTH.currentUser?.uid
             );
             const docSnap = await getDoc(docRefUser);
-            value.userName = docSnap.data()?.userName;
             //add time
             value.time = moment().format("LLL"); // June 19, 2024 11:22 AM
             //check for whtehr its first post for necessary achievemtn
@@ -111,7 +112,7 @@ export default function CreatePostScreen({
             //create a reference for doc that will point to Subcollection eg
             const id: string = "" + AUTH.currentUser?.uid;
             // const subCollectionDocRef = doc(DATA_BASE, "Posts",id);
-            const subCollectionDocRef = doc(DATA_BASE, "Posts", value.userName);
+            const subCollectionDocRef = doc(DATA_BASE, "Posts", userName);
             const docSnapshot = await getDoc(subCollectionDocRef);
 
             //if first time uploading, set document
@@ -125,11 +126,12 @@ export default function CreatePostScreen({
             //create a reference for subcollection
             const subcollectionRef = collection(
               subCollectionDocRef,
-              value.userName + "'s posts"
+              userName + "'s posts"
             );
             //create a doc reference for each post
             const postref : DocumentReference = doc(subcollectionRef);
             value.postRef = postref;
+            value.userRef = getUserRef()
             //add the whole post data as a document in sub collection
             await setDoc(postref, value);
 
@@ -176,11 +178,11 @@ export default function CreatePostScreen({
             initialValues={{
               caption: "",
               image: "",
-              userName: "",
               time: "",
               likes: [],
               comments: [],
               postRef: null,
+              userRef: null,
             }}
             //the val is initialValues after being updated with new values
             onSubmit={(val, { resetForm }) => {
