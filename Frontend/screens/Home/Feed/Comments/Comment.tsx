@@ -31,6 +31,7 @@ export default function Comment({commentRef}: Props) {
     const [body, setBody] = useState<string>("");
     const [date, setDate] = useState<string>("");
   
+    
     const getComment = async () => {
       const commentDocSnap = await getDoc(commentRef);
       if (commentDocSnap.exists()) {

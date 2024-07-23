@@ -32,7 +32,7 @@ import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import CommentsScreen from "./Comments/CommentsScreen";
 import AddCollectionFunc from "@/contexts/AddCollectionFunc";
 import RefreshCommentContext from "@/contexts/RefreshComment";
-const profilepic = require("@/assets/images/SampleProfile.png");
+const profilepic = require("@/assets/images/defaultProfile.png");
 interface PostItem {
   caption: string;
   image: string;
@@ -56,12 +56,19 @@ export default function Post({ item }: PostProps) {
   const [likes, setLikes] = useState(0);
   const [heart, setHeart] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [image, setImage] = useState<string>("");
+  const[username, setUsername] = useState<string>("");
 
   const setInitialStates = async () => {
     const updatedDoc = (await getDoc(postref)).data();
     const docSnap = await getUserDocSnap();
+    const posterRef : DocumentReference = updatedDoc?.userRef
+    const posterDoc = (await getDoc(posterRef)).data()
+    setUsername(posterDoc?.userName)
+    setImage(posterDoc?.profilePic)
     setLikes(updatedDoc?.likes.length);
     setHeart(updatedDoc?.likes.includes(AUTH.currentUser?.uid));
+    // setImage(posterDoc?.userName)
     if (docSnap.exists()) {
       const refArray: DocumentReference[] = docSnap.data().collection;
       const refStringArray: string[] = refArray.map((ref) => ref.path);
@@ -106,9 +113,13 @@ export default function Post({ item }: PostProps) {
       </View>
       <View style={styles.header}>
         <View style={styles.userinfo}>
-          <Image source={profilepic} style={styles.profilePic} />
+          {
+            image != ""
+            ? <Image source={{uri: image}} style= {styles.profilePic}/>
+            : <Image source={profilepic} style={styles.profilePic}/>
+          }
           <View>
-            <Text style={styles.username}>{item.userName}</Text>
+            <Text style={styles.username}>{username}</Text>
             <Text style={styles.username}>{item.time}</Text>
           </View>
         </View>
@@ -172,7 +183,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     height: 40,
     width: 40,
-    borderWidth: 1.5,
     marginLeft: 5,
   },
 
@@ -183,6 +193,7 @@ const styles = StyleSheet.create({
   userinfo: {
     flexDirection: "row",
     alignItems: "center",
+    marginVertical:5,
   },
   imageHolder: {
     flex: 1,

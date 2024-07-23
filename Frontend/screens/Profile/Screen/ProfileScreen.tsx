@@ -13,7 +13,8 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
+import { StorageReference, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
   doc,
   DocumentData,
@@ -24,42 +25,58 @@ import {
   where,
   updateDoc,
 } from "firebase/firestore";
+import * as ImagePicker from "expo-image-picker";
+import Entypo from "@expo/vector-icons/Entypo";
+
 //   import AddUsersScreen from "./AddUsersScreen";
 
-  import AddUsersScreen from "./AddUsersScreen";
-  import CollectionScreen from "./CollectionScreen";
-  import CalorieGoal from "@/contexts/CalorieGoal";
-  import RefreshBadgeContext from "@/contexts/RefreshBadge";
-  import UserLoggedInContext from "@/contexts/UserLoggedIn";
-  import RefreshCalorieContext from "@/contexts/RefreshCalorie";
-  import { Propsmain } from "@/components/navigation/PropTypes";
-  const profilePic = require("@/assets/images/SampleProfile.png");
+import AddUsersScreen from "./AddUsersScreen";
+import CollectionScreen from "./CollectionScreen";
+import CalorieGoal from "@/contexts/CalorieGoal";
+import RefreshBadgeContext from "@/contexts/RefreshBadge";
+import UserLoggedInContext from "@/contexts/UserLoggedIn";
+import RefreshCalorieContext from "@/contexts/RefreshCalorie";
+import RefreshCommentContext from "@/contexts/RefreshComment";
+import { Propsmain } from "@/components/navigation/PropTypes";
 
-  export const checkDate = (val: string) => {
-    const array = val.split("/")
-    if (array.length != 3) {
-      return false
-    } else if (Number(array[0]) > 31 || Number(array[1]) > 12 || Number(array[2]) > 2024) {
-      return false
-    } else if (Number(array[0]) <= 0 || Number(array[1]) <= 0 || Number(array[2]) <= 0){
-      return false
-    } else {
-      return true
-    }
+const defaultProfilePic = require("@/assets/images/defaultProfile.png");
+
+export const checkDate = (val: string) => {
+  const array = val.split("/");
+  if (array.length != 3) {
+    return false;
+  } else if (
+    Number(array[0]) > 31 ||
+    Number(array[1]) > 12 ||
+    Number(array[2]) > 2024
+  ) {
+    return false;
+  } else if (
+    Number(array[0]) <= 0 ||
+    Number(array[1]) <= 0 ||
+    Number(array[2]) <= 0
+  ) {
+    return false;
+  } else {
+    return true;
   }
-  export default function ProfileScreen({ navigation }: Propsmain) {
-    const userRef = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
-    const calorieContext = useContext(CalorieGoal);
-    const refreshBadgeContext = useContext(RefreshBadgeContext)
-    const userLoggedInContext = useContext(UserLoggedInContext)
-    const refreshCalorieContext = useContext(RefreshCalorieContext)
+};
 
+export default function ProfileScreen({ navigation }: Propsmain) {
+  const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
+  const calorieContext = useContext(CalorieGoal);
+  const refreshBadgeContext = useContext(RefreshBadgeContext);
+  const userLoggedInContext = useContext(UserLoggedInContext);
+  const refreshCalorieContext = useContext(RefreshCalorieContext);
+  const refreshCommentContext = useContext(RefreshCommentContext);
 
   const getAllDetails = async () => {
     const docsnap = await getDoc(userRef);
     setName(docsnap.data()?.name);
     setGoal(docsnap.data()?.calorieGoal);
     setDate(docsnap.data()?.DOB);
+    setImage(docsnap.data()?.profilePic);
+    
   };
 
   const updateDetails = async () => {
@@ -68,15 +85,39 @@ import {
       alert("Invalid date please key in day/month/year only");
       return;
     }
+    setLoading(true)
     await updateDoc(userRef, {
       calorieGoal: caloriegoal,
       name: name,
       DOB: date,
     });
     //to change false value to true for set calorie goal badge
-
     Keyboard.dismiss();
     const docsnap = await getDoc(userRef);
+  
+
+    const prev: string = docsnap.data()?.profilePic
+    if (prev != image) {
+      try {
+        const response = await fetch(image)
+        const blob = await response.blob();
+        const storageRef : StorageReference = ref(STORAGE, "DumoEatsProfilePic/" + Date.now() + ".jpg");
+        uploadBytes(storageRef, blob)
+        .then((snapshot) => {
+          console.log("Uploaded a blob");
+        })
+        .then((response) => {
+          getDownloadURL(storageRef).then(async (dlURL: string) => {
+            await updateDoc(userRef, {
+              profilePic: dlURL
+            });
+          })})
+      } catch (error: any) {
+        setLoading(false)
+        alert("no image uploaded");
+      }
+    }
+    setLoading(false)
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal);
     const temp = docsnap.data()?.badges;
     if (!temp[0] && docsnap.data()?.calorieGoal > 0) {
@@ -87,19 +128,10 @@ import {
       refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge);
       alert("New Badge Strategic Visionary Unlocked!");
     }
-
-    //for testing purposes
-    // } else {
-    //   temp[0] = false
-    //   await updateDoc(userRef, {
-    //     badges: temp
-    //   })
-    //   refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge)
-
-    // }
     refreshCalorieContext?.setRefreshCalorie(
       !refreshCalorieContext?.refreshCalorie
     );
+    refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)
     alert("Updated Successfully!");
   };
   const [name, setName] = useState("");
@@ -108,6 +140,8 @@ import {
   const [searchUser, setSearch] = useState(false);
   const [collection, setCollection] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [image, setImage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false)
 
   const logOutHandler = () => {
     userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
@@ -117,6 +151,19 @@ import {
   const collectionsHandler = () => {
     setRefresh(refresh);
     setCollection(!collection);
+  };
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   };
 
   useEffect(() => {
@@ -131,7 +178,18 @@ import {
         </Modal>
         <View style={styles.header}>
           <Text style={styles.headerText}>Profile</Text>
-          <Image source={profilePic} style={styles.profilePic} />
+          <TouchableOpacity onPress={pickImage}>
+            <View style={styles.picContainer}>
+              {image != "" ? (
+                <Image source={{ uri: image }} style={styles.profilePic} />
+              ) : (
+                <Image source={defaultProfilePic} style={styles.profilePic} />
+              )}
+              <View style={styles.pencil}>
+                <Entypo name="edit" size={24} color="blue" />
+              </View>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -221,12 +279,29 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 
-  profilePic: {
+  picContainer: {
     height: 100,
     width: 100,
     borderRadius: 85,
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: "grey",
+  },
+
+  profilePic: {
+    height: "100%",
+    width: "100%",
+    borderRadius: 85,
+  },
+  pencil: {
+    position: "absolute",
+    bottom: 0,
+    right: 2,
+    backgroundColor: "white",
+    borderRadius: 15,
+    height: 28,
+    width: 28,
+    alignItems: "center",
+    justifyContent: "center",
   },
   details: {
     marginTop: 5,

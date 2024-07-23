@@ -80,6 +80,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         streak:[],
         lastUpdatedAt: "",
         savedRecipes: [],
+        profilePic: "",
       })
 
       await addDoc(collection(DATA_BASE, "Usernames"), {
