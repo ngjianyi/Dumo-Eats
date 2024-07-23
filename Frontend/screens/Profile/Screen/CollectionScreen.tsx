@@ -43,7 +43,7 @@ export default function CollectionScreen({ setCollection, refresh }: Props) {
       </View>
 
       <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-
+      
       {activeTab === "Recipes" ? (
         <RecipeList />
       ) : activeTab === "Posts" ? (

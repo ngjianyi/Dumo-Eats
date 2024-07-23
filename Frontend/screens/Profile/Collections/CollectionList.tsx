@@ -15,6 +15,7 @@ import {
   import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
   import AddCollectionFunc from "@/contexts/AddCollectionFunc";
   import SavedPost from "./SavedPost";
+  import SavePost from "./SavePost";
 
   export default function CollectionList({collectionArray} : any) {
 
@@ -24,7 +25,7 @@ import {
             data={collectionArray}
             renderItem={({item, index}) => (
                 // <Text>{index}</Text>
-                <SavedPost item={item}/>
+                <SavePost item={item}/>
                 // <Comment comment={item} details={details} />
             )}  
         />

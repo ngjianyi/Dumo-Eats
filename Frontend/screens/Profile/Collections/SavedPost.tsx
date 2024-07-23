@@ -42,7 +42,7 @@ export default function SavedPost({item} : Props) {
     const[username, setUsername] = useState<string>("")
     const[time, setTime] = useState<string>("")
     const [URI, setURI] = useState<string>("default")
-          
+    
      const setInitialStates = async () => {
         const updatedDoc = (await getDoc(item)).data()
         setLikes(updatedDoc?.likes.length)
@@ -62,12 +62,17 @@ export default function SavedPost({item} : Props) {
 
     // to keep previous state of likes when refreshed / logged in 
     // to keep previous state of comments
+    const getAllComments = async () => {
+        const updatedDoc = (await getDoc(item)).data();
+        setComments(updatedDoc?.comments);
+    };
+    
      useEffect(() => {
         setInitialStates()
-     }, [])
+        getAllComments
+     }, [refreshComment])
 
      
-
     return (
         <View style={styles.container}>
             <View>

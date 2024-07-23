@@ -50,7 +50,6 @@ export default function LoginScreen({ navigation }: PropsLogin) {
       }
     } catch (error: any) {
       const errorCode = error.code
-      console.log(errorCode)
       if (errorCode == "auth/invalid-email") {
         alert("Invalid email provided")
       }
@@ -73,7 +72,6 @@ export default function LoginScreen({ navigation }: PropsLogin) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(AUTH, (user) => {
       if (user && userLoggedInContext?.UserLoggedIn) {
-        alert("success")
         navigation.navigate("main");
       } else if (user == null) {
       }

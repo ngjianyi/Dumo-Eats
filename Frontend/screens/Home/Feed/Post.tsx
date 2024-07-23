@@ -28,19 +28,18 @@ import {
 import { getUserDocSnap } from "@/utils/social/User";
 import { likeHandler, saveHandler } from "@/utils/social/SocialHandlers";
 
-
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import CommentsScreen from "./Comments/CommentsScreen";
 import AddCollectionFunc from "@/contexts/AddCollectionFunc";
-
+import RefreshCommentContext from "@/contexts/RefreshComment";
 const profilepic = require("@/assets/images/SampleProfile.png");
 interface PostItem {
   caption: string;
   image: string;
   userName: string;
   time: string;
-  likes: [string];
-  comments: [string];
+  likes: string[];
+  comments: DocumentReference[];
   postRef: DocumentReference;
 }
 
@@ -49,77 +48,25 @@ interface PostProps {
 }
 
 export default function Post({ item }: PostProps) {
+  const refreshCommentContext = useContext(RefreshCommentContext)
   const postref = item.postRef;
-
   const [visible, setVisible] = useState(false);
   const [comments, setComments] = useState<DocumentReference[]>([]);
-
   const [refreshComment, setRefresh] = useState(false);
   const [likes, setLikes] = useState(0);
   const [heart, setHeart] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const onSaveHandler = async () => {
-    const docRefUser = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
-    const docSnap = await getDoc(docRefUser);
-    let array = docSnap.data()?.collection;
-    console.log(array);
-    let index = -1;
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].caption == item.caption) {
-        index = i;
-      }
-    }
-    console.log(index);
-    if (index == -1) {
-      await updateDoc(docRefUser, {
-        collection: arrayUnion(item),
-      });
-    } else {
-      if (array.length == 1) {
-        array = [];
-      } else {
-        const temp = [];
-        let count = 0;
-        for (let i = 0; i < array.length; i++) {
-          if (i == index) {
-            continue;
-          }
-          temp[count] = array[i];
-          count += 1;
-        }
-        array = temp;
-      }
-      await updateDoc(docRefUser, {
-        collection: array,
-      });
-    }
-    setSaved(!saved);
-  };
-
   const setInitialStates = async () => {
     const updatedDoc = (await getDoc(postref)).data();
-    // const docSnap = (
-    //   await getDoc(doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid))
-    // ).data();
-    const docSnap = (await getUserDocSnap())
+    const docSnap = await getUserDocSnap();
     setLikes(updatedDoc?.likes.length);
     setHeart(updatedDoc?.likes.includes(AUTH.currentUser?.uid));
-    // const array = docSnap?.collection;
-    // let index = -1;
-    // for (let i = 0; i < array.length; i++) {
-    //   if (array[i].caption == item.caption) {
-    //     index = i;
-    //   }
-    // }
-    // setSaved(index != -1);
     if (docSnap.exists()) {
-      const refArray : DocumentReference[] = docSnap.data().collection
-  
-      const refStringArray : string[] = refArray.map(ref => ref.path)
-      setSaved(refStringArray.includes(postref.path))
+      const refArray: DocumentReference[] = docSnap.data().collection;
+      const refStringArray: string[] = refArray.map((ref) => ref.path);
+      setSaved(refStringArray.includes(postref.path));
     }
-    
   };
 
   const getAllComments = async () => {
@@ -132,38 +79,16 @@ export default function Post({ item }: PostProps) {
   useEffect(() => {
     setInitialStates();
     getAllComments();
-  }, [refreshComment]);
+  }, [refreshCommentContext?.refreshComment]);
 
-  const likeButtonHandler = useCallback(() => {
-    likeHandler(setHeart, setLikes, postref);
+  const likeButtonHandler = useCallback(async () => {
+    await likeHandler(setHeart, setLikes, postref);
+    refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)
   }, []);
 
   const saveButtonhandler = useCallback(() => {
     saveHandler(setSaved, postref, "collection");
-  }, [])
-
-
-  // const likeHandler = async () => {
-  //   setHeart(!heart);
-  //   //ref for user post
-  //   //GET MOST UPDATED VERSION, cannot just use item.likes as it is outdated
-  //   const postCurr = (await getDoc(postref)).data();
-
-  //   //true if user already liked
-  //   const status = postCurr?.likes.includes("" + AUTH.currentUser?.uid);
-  //   //if liked post already, remove user.uid from likes array, else add to likes array
-  //   status
-  //     ? await updateDoc(postref, {
-  //         likes: arrayRemove(AUTH.currentUser?.uid),
-  //       })
-  //     : await updateDoc(postref, {
-  //         likes: arrayUnion(AUTH.currentUser?.uid),
-  //       });
-  //   //get updated copy once gain
-  //   const updatedDoc = (await getDoc(postref)).data();
-  //   console.log(updatedDoc?.likes);
-  //   setLikes(updatedDoc?.likes.length);
-  // };
+  }, []);
 
   return (
     <View style={styles.container}>

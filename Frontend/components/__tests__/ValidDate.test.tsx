@@ -10,7 +10,9 @@ const dateInputs = [
     { date: "abcdefgh",res: false },
     { date: "123456",res: false },
     { date: "12/3456",res: false },
-    // { date: "00/0/0", res: false},
+    { date: "00/0/0", res: false},
+    { date: "-1/-2024/2024", res: false},
+
 ]
 
 describe("Valid Date Input", () => {
