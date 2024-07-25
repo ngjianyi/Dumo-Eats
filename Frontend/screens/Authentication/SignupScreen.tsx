@@ -81,6 +81,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         lastUpdatedAt: "",
         savedRecipes: [],
         profilePic: "",
+        calorieHistory: new Map<string, number>()
       })
 
       await addDoc(collection(DATA_BASE, "Usernames"), {

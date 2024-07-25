@@ -38,7 +38,7 @@ import UserLoggedInContext from "@/contexts/UserLoggedIn";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import RefreshCommentContext from "@/contexts/RefreshComment";
 import { Propsmain } from "@/components/navigation/PropTypes";
-
+import CalorieGraphScreen from "./CalorieGraphScreen";
 const defaultProfilePic = require("@/assets/images/defaultProfile.png");
 
 export const checkDate = (val: string) => {
@@ -82,7 +82,7 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   const updateDetails = async () => {
     const validDate = checkDate(date);
     if (!validDate) {
-      alert("Invalid date please key in day/month/year only");
+      alert("Please enter Date of birth (day/month/year)");
       return;
     }
     setLoading(true)
@@ -102,7 +102,7 @@ export default function ProfileScreen({ navigation }: Propsmain) {
         const response = await fetch(image)
         const blob = await response.blob();
         const storageRef : StorageReference = ref(STORAGE, "DumoEatsProfilePic/" + Date.now() + ".jpg");
-        uploadBytes(storageRef, blob)
+        await uploadBytes(storageRef, blob)
         .then((snapshot) => {
           console.log("Uploaded a blob");
         })
@@ -125,13 +125,15 @@ export default function ProfileScreen({ navigation }: Propsmain) {
       await updateDoc(userRef, {
         badges: temp,
       });
+      console.log(refreshBadgeContext?.refreshBadge)
       refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge);
+      console.log(refreshBadgeContext?.refreshBadge)
       alert("New Badge Strategic Visionary Unlocked!");
     }
     refreshCalorieContext?.setRefreshCalorie(
       !refreshCalorieContext?.refreshCalorie
     );
-    refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)
+    refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)    
     alert("Updated Successfully!");
   };
   const [name, setName] = useState("");
@@ -141,6 +143,7 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   const [collection, setCollection] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [image, setImage] = useState<string>("");
+  const [graph, setGraph] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
   const logOutHandler = () => {
@@ -154,7 +157,6 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   };
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -192,13 +194,13 @@ export default function ProfileScreen({ navigation }: Propsmain) {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.logoutButton}
-            // onPress={() => navigation.navigate("login")}
-            onPress={logOutHandler}
-          >
-            <Text style={styles.logout}>Logout</Text>
-          </TouchableOpacity>
+          <TouchableOpacity 
+              onPress={() =>setGraph(true)}
+              style={styles.graphButton}
+              >
+              <Text style={styles.updateDetails}>Graph</Text>
+            </TouchableOpacity>
+          
 
           <TouchableOpacity
             style={styles.addButton}
@@ -254,11 +256,21 @@ export default function ProfileScreen({ navigation }: Propsmain) {
             >
               <Text style={styles.updateDetails}>Update</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+            style={styles.logoutButton}
+            // onPress={() => navigation.navigate("login")}
+            onPress={logOutHandler}
+          >
+            <Text style={styles.logout}>Logout</Text>
+          </TouchableOpacity>
           </View>
         </ScrollView>
 
         <Modal visible={collection}>
           <CollectionScreen refresh={refresh} setCollection={setCollection} />
+        </Modal>
+        <Modal visible={graph}>
+          <CalorieGraphScreen setGraph={setGraph}/>
         </Modal>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -329,7 +341,6 @@ const styles = StyleSheet.create({
 
   logoutButton: {
     backgroundColor: "maroon",
-    marginVertical: 10,
     paddingVertical: 8,
     borderRadius: 14,
     width: "25%",
@@ -360,11 +371,21 @@ const styles = StyleSheet.create({
 
   updateButton: {
     backgroundColor: "mediumseagreen",
-    marginVertical: 80,
+    marginVertical: 30,
     marginBottom: 20,
     paddingVertical: 8,
     borderRadius: 14,
     width: "25%",
+  },
+
+  graphButton: {
+    backgroundColor: "blue",
+    marginVertical: 10,
+    paddingVertical: 8,
+    borderRadius: 14,
+    width: "25%",
+
+    
   },
   updateDetails: {
     textAlign: "center",

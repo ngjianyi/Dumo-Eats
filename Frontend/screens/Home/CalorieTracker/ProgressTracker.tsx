@@ -69,11 +69,10 @@ export default function ProgressTracker() {
     if (streakArray == undefined) {
       return;
     }
-    const lastIndex: number = streakArray.length - 1;
     // const lastUploadDay: string = streakArray[lastIndex]
     const lastUploadDay: string = docsnap.data()?.lastUpdatedAt;
 
-    const todayDate: string = moment().format("l"); // 6/26/2024
+    const todayDate: string = moment().format('LL'); // July 24, 2024
     console.log(todayDate);
     //doesnt mattter when lastupload day is, its bound to be different
     //but make sure only reset if goal was reached previously
@@ -102,6 +101,7 @@ export default function ProgressTracker() {
         height={30}
         borderRadius={20}
         aria-label="caloriebar"
+        
       />
       <View style={styles.buttonsContainer}>
         <TouchableOpacity 

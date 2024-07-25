@@ -155,7 +155,7 @@ export default function Post({ item }: PostProps) {
           {likes} Likes
         </Text>
         <Text style={styles.caption}>
-          <Text style={{ fontWeight: "bold" }}>{item.userName}</Text>
+          <Text style={{ fontWeight: "bold" }}>{username}</Text>
           <Text>{" " + item.caption}</Text>
         </Text>
       </View>
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "95%",
     marginBottom: 0,
-    backgroundColor: "springgreen",
+    backgroundColor: "aliceblue",
     borderWidth: 1,
     borderBottomWidth: 0,
   },
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
 
   footer: {
     flexDirection: "row",
-    backgroundColor: "beige",
+    backgroundColor: "lavenderblush",
     width: "95%",
     borderWidth: 1,
     borderBottomWidth: 0,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
 
   description: {
     width: "95%",
-    backgroundColor: "beige",
+    backgroundColor: "lavenderblush",
     borderWidth: 1,
     borderTopWidth: 0,
   },
