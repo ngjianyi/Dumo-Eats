@@ -40,16 +40,16 @@ const getWidth = (prog: number): DimensionValue | undefined => {
 export default function CalorieBar({ calorie, prog, yLabel }: props) {
   return (
     <View style={styles.container}>
-      <View style={{ marginRight: 20 }}>
+      <View style={{ marginRight: 20, marginLeft:10, }}>
         <Text style={styles.word}>{yLabel}</Text>
       </View>
       <View style={{ width: getWidth(prog) }}>
         <Progress.Bar
           progress={1}
           width={null}
-          height={15}
+          height={20}
           borderRadius={10}
-          color="orange"
+          color="dodgerblue"
         />
       </View>
       <View style={{ marginLeft: 5 }}>
@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
 
   word: {
     fontSize: 14,
-    color: "white",
+    color: "black",
+    
   },
 
   barContainer: {

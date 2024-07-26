@@ -124,10 +124,7 @@ describe("Renders loginscreen correctly", () => {
     } catch(error) {
         console.log("error for invalid email")
     }
-    
   });
-
-
   it("Checks for invalid credentials", async () => {
     render(
       <LoginScreen
@@ -150,7 +147,6 @@ describe("Renders loginscreen correctly", () => {
     } catch(error) {
         console.log("error for invalid creds")
     }
-    
   });
 
   it("Checks for empty password", async () => {

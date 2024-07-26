@@ -52,8 +52,20 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         alert("Username is already taken")
         return
       }
-      if (password1.length < 5) {
-        alert("Password too short, must be at least 5 characters ")
+      if (username == "") {
+        alert("Missing username")
+        return
+      }
+      if (firstName == "" || lastName == "") {
+        alert("Missing name")
+        return
+      }
+      if (password1 == "") {
+        alert("Missing password")
+        return
+      }
+      if (password1.length < 6) {
+        alert("Password too short, must be at least 6 characters")
         return;
       }
       if (password1 != password2) {
@@ -65,7 +77,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         sendEmailVerification(auth.currentUser);
       }
       alert("Check Inbox for verification email")
-  
+
       //add user into firestore db
       await setDoc(doc(DATA_BASE,"Users", "" + auth.currentUser?.uid), {
         userName: username,
@@ -93,10 +105,12 @@ export default function SignupScreen({ navigation }: PropsSignup) {
       // console.log(error);
       const errorCode = error.code
       if (errorCode == "auth/email-already-in-use") {
-        alert("Email already in used")
+        alert("Email already in use")
         
       } else if (errorCode == "auth/invalid-email") {
         alert("Invalid email")
+      } else if (errorCode == "auth/missing-email"){
+        alert("Missing email")
       } else {
         alert("Sign up failed: " + error.message);
       }

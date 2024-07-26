@@ -54,6 +54,7 @@ export default function CalorieGraphScreen({ setGraph }: props) {
     for (let i = 0; i < 7; i += 1) {
       try {
         const calories: number | undefined = map[dates[i]];
+        
         if (calories != undefined) {
           widthsArray.push(calories);
           caloriesArray.push(calories);
@@ -88,6 +89,7 @@ export default function CalorieGraphScreen({ setGraph }: props) {
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
       </View>
+      
       <CalorieGraph
         widthArray={widthArray}
         dateArray={dateArray}
@@ -123,5 +125,5 @@ const styles = StyleSheet.create({
     left: 4,
   },
 
-  graph: {},
+  
 });

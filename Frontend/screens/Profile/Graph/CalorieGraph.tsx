@@ -74,11 +74,11 @@ export default function CalorieGraph({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-evenly",
-    backgroundColor: "black",
+    justifyContent: "space-around",
+    backgroundColor: "lavenderblush",
+    marginHorizontal:15,
+    borderRadius:15,
   },
 
-  bar: {
-    backgroundColor: "red",
-  },
+  
 });

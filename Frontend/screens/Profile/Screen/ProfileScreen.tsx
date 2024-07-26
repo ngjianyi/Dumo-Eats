@@ -14,7 +14,12 @@ import {
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
-import { StorageReference, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  StorageReference,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import {
   doc,
   DocumentData,
@@ -76,7 +81,6 @@ export default function ProfileScreen({ navigation }: Propsmain) {
     setGoal(docsnap.data()?.calorieGoal);
     setDate(docsnap.data()?.DOB);
     setImage(docsnap.data()?.profilePic);
-    
   };
 
   const updateDetails = async () => {
@@ -85,7 +89,7 @@ export default function ProfileScreen({ navigation }: Propsmain) {
       alert("Please enter Date of birth (day/month/year)");
       return;
     }
-    setLoading(true)
+    setLoading(true);
     await updateDoc(userRef, {
       calorieGoal: caloriegoal,
       name: name,
@@ -94,30 +98,33 @@ export default function ProfileScreen({ navigation }: Propsmain) {
     //to change false value to true for set calorie goal badge
     Keyboard.dismiss();
     const docsnap = await getDoc(userRef);
-  
 
-    const prev: string = docsnap.data()?.profilePic
+    const prev: string = docsnap.data()?.profilePic;
     if (prev != image) {
       try {
-        const response = await fetch(image)
+        const response = await fetch(image);
         const blob = await response.blob();
-        const storageRef : StorageReference = ref(STORAGE, "DumoEatsProfilePic/" + Date.now() + ".jpg");
+        const storageRef: StorageReference = ref(
+          STORAGE,
+          "DumoEatsProfilePic/" + Date.now() + ".jpg"
+        );
         await uploadBytes(storageRef, blob)
-        .then((snapshot) => {
-          console.log("Uploaded a blob");
-        })
-        .then((response) => {
-          getDownloadURL(storageRef).then(async (dlURL: string) => {
-            await updateDoc(userRef, {
-              profilePic: dlURL
+          .then((snapshot) => {
+            console.log("Uploaded a blob");
+          })
+          .then((response) => {
+            getDownloadURL(storageRef).then(async (dlURL: string) => {
+              await updateDoc(userRef, {
+                profilePic: dlURL,
+              });
             });
-          })})
+          });
       } catch (error: any) {
-        setLoading(false)
+        setLoading(false);
         alert("no image uploaded");
       }
     }
-    setLoading(false)
+    setLoading(false);
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal);
     const temp = docsnap.data()?.badges;
     if (!temp[0] && docsnap.data()?.calorieGoal > 0) {
@@ -125,15 +132,17 @@ export default function ProfileScreen({ navigation }: Propsmain) {
       await updateDoc(userRef, {
         badges: temp,
       });
-      console.log(refreshBadgeContext?.refreshBadge)
+      console.log(refreshBadgeContext?.refreshBadge);
       refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge);
-      console.log(refreshBadgeContext?.refreshBadge)
+      console.log(refreshBadgeContext?.refreshBadge);
       alert("New Badge Strategic Visionary Unlocked!");
     }
     refreshCalorieContext?.setRefreshCalorie(
       !refreshCalorieContext?.refreshCalorie
     );
-    refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)    
+    refreshCommentContext?.setRefreshComment(
+      (refreshComment) => !refreshComment
+    );
     alert("Updated Successfully!");
   };
   const [name, setName] = useState("");
@@ -143,8 +152,8 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   const [collection, setCollection] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [image, setImage] = useState<string>("");
-  const [graph, setGraph] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [graph, setGraph] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const logOutHandler = () => {
     userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
@@ -194,13 +203,12 @@ export default function ProfileScreen({ navigation }: Propsmain) {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-              onPress={() =>setGraph(true)}
-              style={styles.graphButton}
-              >
-              <Text style={styles.updateDetails}>Graph</Text>
-            </TouchableOpacity>
-          
+          <TouchableOpacity
+            onPress={() => setGraph(true)}
+            style={styles.graphButton}
+          >
+            <Text style={styles.updateDetails}>Graph</Text>
+          </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.addButton}
@@ -257,12 +265,12 @@ export default function ProfileScreen({ navigation }: Propsmain) {
               <Text style={styles.updateDetails}>Update</Text>
             </TouchableOpacity>
             <TouchableOpacity
-            style={styles.logoutButton}
-            // onPress={() => navigation.navigate("login")}
-            onPress={logOutHandler}
-          >
-            <Text style={styles.logout}>Logout</Text>
-          </TouchableOpacity>
+              style={styles.logoutButton}
+              // onPress={() => navigation.navigate("login")}
+              onPress={logOutHandler}
+            >
+              <Text style={styles.logout}>Logout</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
 
@@ -270,7 +278,7 @@ export default function ProfileScreen({ navigation }: Propsmain) {
           <CollectionScreen refresh={refresh} setCollection={setCollection} />
         </Modal>
         <Modal visible={graph}>
-          <CalorieGraphScreen setGraph={setGraph}/>
+          <CalorieGraphScreen setGraph={setGraph} />
         </Modal>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -384,8 +392,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 14,
     width: "25%",
-
-    
   },
   updateDetails: {
     textAlign: "center",
