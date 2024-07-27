@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
-
 import {
   Text,
   View,
   StyleSheet,
-  Button,
   SafeAreaView,
   TouchableOpacity,
   TextInput,
@@ -13,18 +11,26 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { createUserWithEmailAndPassword, onAuthStateChanged,sendEmailVerification } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-import { addDoc, collection, doc, getDocs, query, setDoc } from "firebase/firestore"; 
-import UserLoggedInContext from "@/contexts/UserLoggedIn";
+import {
+  DocumentData,
+  QuerySnapshot,
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 import { PropsSignup } from "@/components/navigation/PropTypes";
 
 export default function SignupScreen({ navigation }: PropsSignup) {
   const haveAccountHandler: () => void = () => navigation.navigate("login");
   const [visible1, setVisibility1] = useState<boolean>(false);
   const [visible2, setVisibility2] = useState<boolean>(false);
-  const userLoggedInContext = useContext(UserLoggedInContext)
-
   const pressHandler1 = () => setVisibility1(!visible1);
   const pressHandler2 = () => setVisibility2(!visible2);
 
@@ -34,52 +40,63 @@ export default function SignupScreen({ navigation }: PropsSignup) {
   const [username, setUsername] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const[loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const auth = AUTH;
-
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const querySnapshot = await getDocs(collection(DATA_BASE, "Usernames"));
-      let status :boolean = false
+      const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
+        await getDocs(collection(DATA_BASE, "Usernames"));
+      let status: boolean = false;
       querySnapshot.forEach((document) => {
         if (document.data().username == username) {
-          status = true
+          status = true;
         }
-      })
+      });
+
       if (status) {
-        alert("Username is already taken")
-        return
+        alert("Username is already taken");
+        return;
       }
+
       if (username == "") {
-        alert("Missing username")
-        return
+        alert("Missing username");
+        return;
       }
+
       if (firstName == "" || lastName == "") {
-        alert("Missing name")
-        return
+        alert("Missing name");
+        return;
       }
+
       if (password1 == "") {
-        alert("Missing password")
-        return
+        alert("Missing password");
+        return;
       }
+
       if (password1.length < 6) {
-        alert("Password too short, must be at least 6 characters")
+        alert("Password too short, must be at least 6 characters");
         return;
       }
+      
       if (password1 != password2) {
-        alert("Passwords do not match")
+        alert("Passwords do not match");
         return;
       }
-      const response = await createUserWithEmailAndPassword(auth, email, password1)
+
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password1
+      );
+
       if (auth.currentUser != null) {
         sendEmailVerification(auth.currentUser);
       }
-      alert("Check Inbox for verification email")
+      alert("Check Inbox for verification email");
 
-      //add user into firestore db
-      await setDoc(doc(DATA_BASE,"Users", "" + auth.currentUser?.uid), {
+      await setDoc(doc(DATA_BASE, "Users", "" + auth.currentUser?.uid), {
         userName: username,
         name: firstName + " " + lastName,
         email: email,
@@ -89,38 +106,34 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         currentCalorie: 0,
         badges: [false, false, false, false, false],
         DOB: "",
-        streak:[],
+        streak: [],
         lastUpdatedAt: "",
         savedRecipes: [],
         profilePic: "",
-        calorieHistory: new Map<string, number>()
-      })
+        calorieHistory: {"date": 0},
+      });
 
       await addDoc(collection(DATA_BASE, "Usernames"), {
-        username: username
-      })
-
-
-    } catch (error: any){
-      // console.log(error);
-      const errorCode = error.code
+        username: username,
+      });
+    } catch (error: any) {
+      const errorCode = error.code;
       if (errorCode == "auth/email-already-in-use") {
-        alert("Email already in use")
-        
+        alert("Email already in use");
       } else if (errorCode == "auth/invalid-email") {
-        alert("Invalid email")
-      } else if (errorCode == "auth/missing-email"){
-        alert("Missing email")
+        alert("Invalid email");
+      } else if (errorCode == "auth/missing-email") {
+        alert("Missing email");
       } else {
         alert("Sign up failed: " + error.message);
       }
-      return
+      return;
     } finally {
       setLoading(false);
-      auth.signOut(); 
+      auth.signOut();
     }
-    navigation.navigate("login")
-  }
+    navigation.navigate("login");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -151,7 +164,6 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             autoCapitalize="none"
             autoCorrect={false}
             aria-label="Firstname"
-
           />
           <TextInput
             style={styles.input}
@@ -163,7 +175,6 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             autoCapitalize="none"
             autoCorrect={false}
             aria-label="Lastname"
-
           />
           <TextInput
             style={styles.input}
@@ -173,7 +184,6 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             autoCapitalize="none"
             autoCorrect={false}
             aria-label="Email"
-
           />
           <View style={{ justifyContent: "center" }}>
             <TextInput
@@ -188,7 +198,6 @@ export default function SignupScreen({ navigation }: PropsSignup) {
               autoCapitalize="none"
               autoCorrect={false}
               aria-label="Password1"
-
             />
             <TouchableOpacity style={styles.visible} onPress={pressHandler1}>
               {visible1 ? (
@@ -220,13 +229,18 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity 
-          style={styles.signUpButton} 
-          onPress={handleSubmit} 
-          aria-label="SignupButton">
+        <TouchableOpacity
+          style={styles.signUpButton}
+          onPress={handleSubmit}
+          aria-label="SignupButton"
+        >
           <Text style={styles.signup}>Sign Up</Text>
         </TouchableOpacity>
-        {loading ? (<ActivityIndicator size="large" color="deepskyblue"/>): true}
+        {loading ? (
+          <ActivityIndicator size="large" color="deepskyblue" />
+        ) : (
+          true
+        )}
         <TouchableOpacity onPress={haveAccountHandler}>
           <Text style={styles.back}>Already have an account?</Text>
         </TouchableOpacity>

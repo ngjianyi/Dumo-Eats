@@ -1,6 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 
-interface UserLoggedInInterface {
+export interface UserLoggedInInterface {
   UserLoggedIn: boolean;
   setUser: React.Dispatch<React.SetStateAction<boolean>>;
 }

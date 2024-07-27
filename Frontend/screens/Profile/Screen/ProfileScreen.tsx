@@ -10,7 +10,7 @@ import {
   Image,
   Modal,
   ScrollView,
-  KeyboardAvoidingView,
+  ImageSourcePropType,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
@@ -21,19 +21,15 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import {
-  doc,
   DocumentData,
-  collection,
-  getDocs,
+  DocumentReference,
+  DocumentSnapshot,
+  doc,
   getDoc,
-  query,
-  where,
   updateDoc,
 } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import Entypo from "@expo/vector-icons/Entypo";
-
-//   import AddUsersScreen from "./AddUsersScreen";
 
 import AddUsersScreen from "./AddUsersScreen";
 import CollectionScreen from "./CollectionScreen";
@@ -42,11 +38,12 @@ import RefreshBadgeContext from "@/contexts/RefreshBadge";
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import RefreshCommentContext from "@/contexts/RefreshComment";
-import {Propsprofile } from "@/components/navigation/PropTypes";
+import { Propsprofile } from "@/components/navigation/PropTypes";
 import CalorieGraphScreen from "./CalorieGraphScreen";
-const defaultProfilePic = require("@/assets/images/defaultProfile.png");
+import { getUserDocSnap, getUserRef } from "@/utils/social/User";
+const defaultProfilePic: ImageSourcePropType = require("@/assets/images/defaultProfile.png");
 
-export const checkDate = (val: string) => {
+export const checkDate = (val: string): boolean => {
   const array = val.split("/");
   if (array.length != 3) {
     return false;
@@ -68,7 +65,7 @@ export const checkDate = (val: string) => {
 };
 
 export default function ProfileScreen({ navigation }: Propsprofile) {
-  const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
+  const userRef: DocumentReference = getUserRef();
   const calorieContext = useContext(CalorieGoal);
   const refreshBadgeContext = useContext(RefreshBadgeContext);
   const userLoggedInContext = useContext(UserLoggedInContext);
@@ -76,7 +73,8 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
   const refreshCommentContext = useContext(RefreshCommentContext);
 
   const getAllDetails = async () => {
-    const docsnap = await getDoc(userRef);
+    const docsnap: DocumentSnapshot<DocumentData, DocumentData> =
+      await getUserDocSnap();
     setName(docsnap.data()?.name);
     setGoal(docsnap.data()?.calorieGoal);
     setDate(docsnap.data()?.DOB);
@@ -95,15 +93,14 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
       name: name,
       DOB: date,
     });
-    //to change false value to true for set calorie goal badge
     Keyboard.dismiss();
-    const docsnap = await getDoc(userRef);
-
+    const docsnap: DocumentSnapshot<DocumentData, DocumentData> =
+      await getUserDocSnap();
     const prev: string = docsnap.data()?.profilePic;
     if (prev != image) {
       try {
         const response = await fetch(image);
-        const blob = await response.blob();
+        const blob: Blob = await response.blob();
         const storageRef: StorageReference = ref(
           STORAGE,
           "DumoEatsProfilePic/" + Date.now() + ".jpg"
@@ -126,7 +123,7 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
     }
     setLoading(false);
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal);
-    const temp = docsnap.data()?.badges;
+    const temp: boolean[] = docsnap.data()?.badges;
     if (!temp[0] && docsnap.data()?.calorieGoal > 0) {
       temp[0] = true;
       await updateDoc(userRef, {
@@ -145,12 +142,11 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
     );
     alert("Updated Successfully!");
   };
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [caloriegoal, setGoal] = useState(0);
-  const [searchUser, setSearch] = useState(false);
-  const [collection, setCollection] = useState(false);
-  // const [refresh, setRefresh] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [caloriegoal, setGoal] = useState<number>(0);
+  const [searchUser, setSearch] = useState<boolean>(false);
+  const [collection, setCollection] = useState<boolean>(false);
   const [image, setImage] = useState<string>("");
   const [graph, setGraph] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

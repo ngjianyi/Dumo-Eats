@@ -3,39 +3,15 @@ import {
   View,
   StyleSheet,
   SafeAreaView,
-  TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Image,
-  Modal,
-  ScrollView,
-  KeyboardAvoidingView,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
-import {
-  StorageReference,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Timestamp } from "firebase/firestore";
 import CalorieGraph from "../Graph/CalorieGraph";
-import {
-  doc,
-  DocumentData,
-  collection,
-  getDocs,
-  getDoc,
-  query,
-  where,
-  updateDoc,
-} from "firebase/firestore";
-import { getUserDocSnap, getUserRef } from "@/utils/social/User";
+import { getUserDocSnap } from "@/utils/social/User";
 import { Dates } from "@/utils/functions/Dates";
 import { dateFormat } from "@/utils/functions/dateFormat";
+import { DocumentData, DocumentSnapshot } from "firebase/firestore";
 interface props {
   setGraph: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -45,16 +21,15 @@ export default function CalorieGraphScreen({ setGraph }: props) {
   const [widthArray, setWidthArray] = useState<number[]>([]);
 
   const getData = async () => {
-    const dates = Dates();
+    const dates: string[] = Dates();
     const caloriesArray: number[] = [];
     const widthsArray: number[] = [];
-    const userDocSnap = await getUserDocSnap();
-    let max = 0;
+    const userDocSnap: DocumentSnapshot<DocumentData, DocumentData> = await getUserDocSnap();
+    let max: number = 0;
     const map = userDocSnap.data()?.calorieHistory;
     for (let i = 0; i < 7; i += 1) {
       try {
         const calories: number | undefined = map[dates[i]];
-        
         if (calories != undefined) {
           widthsArray.push(calories);
           caloriesArray.push(calories);
@@ -69,7 +44,7 @@ export default function CalorieGraphScreen({ setGraph }: props) {
     }
 
     max = Math.floor(max * 1.5);
-    const progArray = widthsArray.map((x) => x / max);
+    const progArray: number[] = widthsArray.map((x) => x / max);
     setCalorieArray(caloriesArray);
     setWidthArray(progArray);
     setDateArray(dateFormat(dates));

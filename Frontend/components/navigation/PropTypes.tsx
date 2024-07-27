@@ -6,22 +6,23 @@ import { CompositeScreenProps } from "@react-navigation/native";
 type PropsLogin = NativeStackScreenProps<
   RootStackParamList,
   "login",
-  "MyStack"
+  "Stack"
 >;
 type PropsSignup = NativeStackScreenProps<
   RootStackParamList,
   "signup",
-  "MyStack"
+  "Stack"
 >;
 type Propsforget = NativeStackScreenProps<
   RootStackParamList,
   "forget",
-  "MyStack"
+  "Stack"
 >;
-type Propsmain = NativeStackScreenProps<RootStackParamList, "main", "MyStack">;
+type Propsmain = NativeStackScreenProps<RootStackParamList, "main", "Stack">;
 
 type Propsprofile = CompositeScreenProps<
   BottomTabScreenProps<TabParamList, "Profile">,
   NativeStackScreenProps<RootStackParamList, "main">
 >;
+
 export { PropsLogin, PropsSignup, Propsforget, Propsmain, Propsprofile };

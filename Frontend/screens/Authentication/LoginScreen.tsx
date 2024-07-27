@@ -9,32 +9,26 @@ import {
   Keyboard,
   Image,
   ActivityIndicator,
-  Alert
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useContext, useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import * as SecureStore from "expo-secure-store";
 import { AUTH } from "@/firebaseCONFIG";
-import {
-  User,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
 import { PropsLogin } from "@/components/navigation/PropTypes";
+import { UserLoggedInInterface } from "@/contexts/UserLoggedIn";
 const logoImg = require("@/assets/images/logo.png");
 
 export default function LoginScreen({ navigation }: PropsLogin) {
-  const userLoggedInContext = useContext(UserLoggedInContext);
+  const userLoggedInContext: UserLoggedInInterface | undefined =
+    useContext(UserLoggedInContext);
   const signupHandler = () => navigation.navigate("signup");
   const forgetHandler = () => navigation.navigate("forget");
-  const [visible, setVisibility] = useState(false);
+  const [visible, setVisibility] = useState<boolean>(false);
   const pressHandler = () => setVisibility(!visible);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const auth = AUTH;
 
@@ -49,26 +43,21 @@ export default function LoginScreen({ navigation }: PropsLogin) {
         userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
       }
     } catch (error: any) {
-      const errorCode = error.code
+      const errorCode = error.code;
       if (errorCode == "auth/invalid-email") {
-        alert("Invalid email provided")
+        alert("Invalid email provided");
+      } else if (errorCode == "auth/invalid-credential") {
+        alert("Invalid credentials provided");
+      } else if (errorCode == "auth/missing-password") {
+        alert("Please enter password");
+      } else {
+        alert("Login failed, invalid credentials");
       }
-      else if (errorCode == "auth/invalid-credential") {
-        alert("Invalid credentials provided")
-      }
-      else if (errorCode == "auth/missing-password") {
-        alert("Please enter password")
-      }
-      else {
-        alert("Login failed, invalid credentials")
-      }
-
-      // alert("log in failed: " + error.message);
     } finally {
       setLoading(false);
     }
   };
-  //observer that listens for changes
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(AUTH, (user) => {
       if (user && userLoggedInContext?.UserLoggedIn) {
@@ -134,11 +123,11 @@ export default function LoginScreen({ navigation }: PropsLogin) {
             </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity 
-          style={styles.loginButton} 
+        <TouchableOpacity
+          style={styles.loginButton}
           onPress={handleSubmit}
           aria-label="loginButton"
-          >
+        >
           <Text style={styles.login}>Log In</Text>
         </TouchableOpacity>
         {loading ? (
@@ -150,11 +139,11 @@ export default function LoginScreen({ navigation }: PropsLogin) {
           <Text style={{ textAlign: "center" }}>
             Don't have an account yet?
           </Text>
-          <TouchableOpacity 
-            style={styles.signupButton} 
+          <TouchableOpacity
+            style={styles.signupButton}
             onPress={signupHandler}
             aria-label="signupButton"
-            >
+          >
             <Text style={styles.signUp}>Sign Up</Text>
           </TouchableOpacity>
         </View>

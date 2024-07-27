@@ -9,9 +9,7 @@ import LoginScreen from "../LoginScreen";
 import { RootStackParamList } from "@/app";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
-import HomeScreen from "@/screens/Home/Screens/HomeScreen";
-import ForgotScreen from "../ForgotPWScreen";
-import UserLoggedInContext from "@/contexts/UserLoggedIn";
+
 global.alert = jest.fn();
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
@@ -24,6 +22,7 @@ export interface PropsLogin {
   navigation: LoginScreenNavigationProp;
   route: LoginScreenRouteProp;
 }
+
 const mockRoute: LoginScreenRouteProp = {
   key: "login-key",
   name: "login",
@@ -35,17 +34,10 @@ const mockNavigation: Partial<LoginScreenNavigationProp> = {
   goBack: jest.fn(),
 };
 
-const mockNavigationTest = {
-    navigate: jest.fn(),
-};
-
-const navigate = jest.fn()
-
-
 describe("Renders loginscreen correctly", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  })
+  });
 
   it("Renders username input box ", () => {
     render(
@@ -115,14 +107,13 @@ describe("Renders loginscreen correctly", () => {
     const usernamebox = screen.getByLabelText("Email");
     const loginButton = screen.getByLabelText("loginButton");
     try {
-        await user.type(usernamebox, "nonsense");
-        await user.press(loginButton);
-        await waitFor(() => {
-            expect(global.alert).toHaveBeenCalledWith("Invalid email provided");
-        });
-
-    } catch(error) {
-        console.log("error for invalid email")
+      await user.type(usernamebox, "nonsense");
+      await user.press(loginButton);
+      await waitFor(() => {
+        expect(global.alert).toHaveBeenCalledWith("Invalid email provided");
+      });
+    } catch (error) {
+      console.log("error for invalid email");
     }
   });
   it("Checks for invalid credentials", async () => {
@@ -137,15 +128,16 @@ describe("Renders loginscreen correctly", () => {
     const passwordbox = screen.getByLabelText("Password");
     const loginButton = screen.getByLabelText("loginButton");
     try {
-        await user.type(usernamebox, "abcdef@gmail.com");
-        await user.type(passwordbox, "fakePassword");
-        await user.press(loginButton);
-        await waitFor(() => {
-            expect(global.alert).toHaveBeenCalledWith("Invalid credentials provided");
-        });
-
-    } catch(error) {
-        console.log("error for invalid creds")
+      await user.type(usernamebox, "abcdef@gmail.com");
+      await user.type(passwordbox, "fakePassword");
+      await user.press(loginButton);
+      await waitFor(() => {
+        expect(global.alert).toHaveBeenCalledWith(
+          "Invalid credentials provided"
+        );
+      });
+    } catch (error) {
+      console.log("error for invalid creds");
     }
   });
 
@@ -160,33 +152,13 @@ describe("Renders loginscreen correctly", () => {
     const usernamebox = screen.getByLabelText("Email");
     const loginButton = screen.getByLabelText("loginButton");
     try {
-        await user.type(usernamebox, "abcdef@gmail.com");
-        await user.press(loginButton);
-        await waitFor(() => {
-            expect(global.alert).toHaveBeenCalledWith("Please enter password");
-        });
+      await user.type(usernamebox, "abcdef@gmail.com");
+      await user.press(loginButton);
+      await waitFor(() => {
+        expect(global.alert).toHaveBeenCalledWith("Please enter password");
+      });
     } catch (error) {
-        console.log("error for empty password")
+      console.log("error for empty password");
     }
   });
-
-
-
-
-  // it("Checks that valid accounts are navigated to homescreen", async () => {
-  //   render(
-  //     <LoginScreen
-  //       navigation={mockNavigationTest as unknown as LoginScreenNavigationProp}
-  //       route={mockRoute}
-  //     />
-  //   );
-  //   const user = userEvent.setup();
-  //   const usernamebox = screen.getByLabelText("Email");
-  //   const passwordbox = screen.getByLabelText("Password");
-  //   const loginButton = screen.getByLabelText("loginButton");
-  //   await user.type(usernamebox, "cjianzhi23@gmail.com");
-  //   await user.type(passwordbox, "qwery");
-  //   await user.press(loginButton);
-  //   expect(HomeScreen).toHaveBeenCalled
-  // });
 });

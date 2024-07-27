@@ -1,31 +1,18 @@
-import {
-    Text,
-    View,
-    StyleSheet,
-    SafeAreaView,
-    TextInput,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Keyboard,
-    Image,
-    FlatList,
-  } from "react-native";
-  import React, { useState, useContext } from "react";
-  import { doc, DocumentData, collection, getDocs, getDoc, query, where } from "firebase/firestore";
-  import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-  import SavePost from "./SavePost";
+import { FlatList } from "react-native";
+import React from "react";
+import SavePost from "./SavePost";
+import { DocumentReference } from "firebase/firestore";
 
-  export default function CollectionList({collectionArray} : any) {
+interface Props {
+  collectionArray: DocumentReference[];
+}
 
-    return(
-        <FlatList
-            showsVerticalScrollIndicator={true}
-            data={collectionArray}
-            renderItem={({item, index}) => (
-                // <Text>{index}</Text>
-                <SavePost item={item}/>
-                // <Comment comment={item} details={details} />
-            )}  
-        />
-    )
-  }
+export default function CollectionList({ collectionArray }: Props) {
+  return (
+    <FlatList
+      showsVerticalScrollIndicator={true}
+      data={collectionArray}
+      renderItem={({ item }) => <SavePost item={item} />}
+    />
+  );
+}

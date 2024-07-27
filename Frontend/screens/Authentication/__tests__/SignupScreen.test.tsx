@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   render,
   screen,
@@ -12,7 +11,9 @@ import { RouteProp } from "@react-navigation/native";
 import SignupScreen from "../SignupScreen";
 import { getDocs } from "firebase/firestore";
 
-//mock firebase/firestore functions by declaring the getDocs as a mock jest function 
+/**
+ * mock firebase/firestore module by declaring the getDocs as a mock jest function
+ */
 jest.mock("firebase/firestore", () => {
   const originalModule = jest.requireActual("firebase/firestore");
   return {
@@ -21,22 +22,20 @@ jest.mock("firebase/firestore", () => {
   };
 });
 
-///implementation of the getDocs function
-//mock implementation of getDocs returns a Promise object
-//Promise object has a forEach method, which takes in a callback function as argument
-//the callback takes in a document as argument
-//callback function method signature (document: { data: () => { username: string } }) => void
-//its a must to declare field as data, since you neeed document.data().username
+/**
+ * Mock implementation of the getDocs function and declaration of forEach method
+ * forEach method takes in a callback method that handles each document in the mock collection
+ * @returns Instance of a Promise object which has a forEach method
+ */
 (getDocs as jest.Mock).mockImplementation(() =>
   Promise.resolve({
     forEach: (
       callback: (document: { data: () => { username: string } }) => void
     ) => {
-      callback({data: () => ({ username: "dudu" }) });
+      callback({ data: () => ({ username: "dudu" }) });
     },
   })
 );
-
 
 global.alert = jest.fn();
 
@@ -44,6 +43,7 @@ type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "signup"
 >;
+
 type SignUpScreenRouteProp = RouteProp<RootStackParamList, "signup">;
 
 export interface PropsLogin {
@@ -278,7 +278,9 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password2, "s");
     await user.press(signupbutton);
     await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith("Password too short, must be at least 6 characters");
+      expect(global.alert).toHaveBeenCalledWith(
+        "Password too short, must be at least 6 characters"
+      );
     });
   });
 

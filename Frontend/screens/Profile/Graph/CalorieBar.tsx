@@ -1,26 +1,5 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Image,
-  Modal,
-  ScrollView,
-  KeyboardAvoidingView,
-  DimensionValue,
-} from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
-import {
-  StorageReference,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { Text, View, StyleSheet, DimensionValue } from "react-native";
+import React from "react";
 import * as Progress from "react-native-progress";
 
 interface props {
@@ -40,7 +19,7 @@ const getWidth = (prog: number): DimensionValue | undefined => {
 export default function CalorieBar({ calorie, prog, yLabel }: props) {
   return (
     <View style={styles.container}>
-      <View style={{ marginRight: 20, marginLeft:10, }}>
+      <View style={{ marginRight: 20, marginLeft: 10 }}>
         <Text style={styles.word}>{yLabel}</Text>
       </View>
       <View style={{ width: getWidth(prog) }}>
@@ -67,7 +46,6 @@ const styles = StyleSheet.create({
   word: {
     fontSize: 14,
     color: "black",
-    
   },
 
   barContainer: {

@@ -1,31 +1,13 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Image,
-  Modal,
-  ScrollView,
-  KeyboardAvoidingView,
-} from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
-import {
-  StorageReference,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { View, StyleSheet } from "react-native";
+import React from "react";
 import CalorieBar from "./CalorieBar";
+
 interface props {
   widthArray: number[];
   dateArray: string[];
   calorieArray: number[];
 }
+
 export default function CalorieGraph({
   widthArray,
   dateArray,
@@ -76,9 +58,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around",
     backgroundColor: "lavenderblush",
-    marginHorizontal:15,
-    borderRadius:15,
+    marginHorizontal: 15,
+    borderRadius: 15,
   },
-
-  
 });

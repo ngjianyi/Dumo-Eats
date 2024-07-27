@@ -7,18 +7,12 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert,
 } from "react-native";
-import React, { useState, useEffect, useContext } from "react";
-import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import React, { useState, useContext } from "react";
 import {
-  doc,
   DocumentData,
-  collection,
-  getDocs,
-  getDoc,
-  query,
-  where,
+  DocumentReference,
+  DocumentSnapshot,
   updateDoc,
 } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -26,16 +20,17 @@ import RefreshBadgeContext from "@/contexts/RefreshBadge";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
 import moment from "moment";
+
 export const checkStreak = (prev: string, curr: string): boolean => {
-  const array1 = prev.split("/");
-  const array2 = curr.split("/");
-  const month1 = Number(array1[0]);
-  const month2 = Number(array2[0]);
-  const day1 = Number(array1[1]);
-  const day2 = Number(array2[1]);
-  const year1 = Number(array1[2]);
-  const year2 = Number(array2[2]);
-  const thirty = [4, 6, 9, 11];
+  const array1: string[] = prev.split("/");
+  const array2: string[] = curr.split("/");
+  const month1: number = Number(array1[0]);
+  const month2: number = Number(array2[0]);
+  const day1: number = Number(array1[1]);
+  const day2: number = Number(array2[1]);
+  const year1: number = Number(array1[2]);
+  const year2: number = Number(array2[2]);
+  const thirty: number[] = [4, 6, 9, 11];
   //same month
   if (year1 != year2) {
     return false;
@@ -58,27 +53,18 @@ export const checkStreak = (prev: string, curr: string): boolean => {
   } else {
     return false;
   }
-  // 6/26/2024
 };
 
 let updateCalories: (x: string) => void = (x) => {};
+
 export default function UpdateCaloriesScreen({ modalHandler }: any) {
-  const docref = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
-  const [calories, setCalories] = useState(0);
-  const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
+  const [calories, setCalories] = useState<number>(0);
   const refreshBadgeContext = useContext(RefreshBadgeContext);
   const refreshCalorieContext = useContext(RefreshCalorieContext);
-
-  const storeCalorie = async (date: string, number: number) => {
-    const docref = await getUserRef();
-    // const docsnap = await getUserDocSnap()
-    // const hashmap : Map<string, number> = docsnap.data()?.calorieHistory
-    await updateDoc(docref, {});
-  };
+  const userRef: DocumentReference<DocumentData, DocumentData> = getUserRef();
 
   updateCalories = (input: string) => {
-    if (isNaN(Number(input)) || Number(input) <= 0) {
-      //  Alert.alert("Error", "Input needs to be a number and greater than 0", [{text: "ok"}])
+    if (isNaN(Number(input)) || Number(input) < 0) {
       alert("Error, input needs to be a number and greater than 0");
     } else {
       setCalories(Number(input));
@@ -87,23 +73,24 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
 
   const submitCalories = async () => {
     modalHandler();
-    const doc = (await getDoc(userRef)).data();
-    const curr = doc?.currentCalorie;
-    const targetGoal = doc?.calorieGoal;
-    const date: string = moment().format('LL'); // Jul 24, 2024
+    const doc: DocumentData | undefined = (await getUserDocSnap()).data();
+    const curr: number = doc?.currentCalorie;
+    const targetGoal: number = doc?.calorieGoal;
+    const date: string = moment().format("LL"); // Jul 24, 2024
     await updateDoc(userRef, {
       currentCalorie: curr + calories,
       lastUpdatedAt: date,
       [`calorieHistory.${date}`]: curr + calories,
     });
-    const docsnap = await getDoc(userRef);
+    const docsnap: DocumentSnapshot<DocumentData, DocumentData> =
+      await getUserDocSnap();
     if (docsnap.data()?.currentCalorie >= targetGoal) {
-      let streakArray = docsnap.data()?.streak;
-      const currdate = moment().format("l"); // 6/26/2024
+      let streakArray: string[] = docsnap.data()?.streak;
+      const currdate: string = moment().format("l"); // 6/26/2024
       if (streakArray.length >= 1) {
-        const previousDayindex = streakArray.length - 1;
+        const previousDayindex: number = streakArray.length - 1;
         //check if streak is maintained
-        const prevDate = streakArray[previousDayindex];
+        const prevDate: string = streakArray[previousDayindex];
         const consistent: boolean = checkStreak(prevDate, currdate);
         if (consistent) {
           //increase streak
@@ -117,9 +104,9 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
         //no streak yet, add to streakArray
         streakArray.push(currdate);
       }
-      const temp = docsnap.data()?.badges;
+      const temp: boolean[] = docsnap.data()?.badges;
       //first time hiting goal when use app
-      const firstTime = !temp[1];
+      const firstTime: boolean = !temp[1];
       let newbadge: boolean = false;
       let badgeName: string = "";
       if (firstTime) {
@@ -142,7 +129,7 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
         badgeName = "Unstoppable Force";
       }
 
-      await updateDoc(docref, {
+      await updateDoc(userRef, {
         badges: temp,
         streak: streakArray,
       });
@@ -154,11 +141,9 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
         alert("New Badge " + badgeName + " unlocked!");
       }
     }
-    //setBar(!bar)
     refreshCalorieContext?.setRefreshCalorie(
       !refreshCalorieContext?.refreshCalorie
     );
-    // progressHandler(calories);
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

@@ -3,37 +3,26 @@ import React, { useState, useContext, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import * as Progress from "react-native-progress";
 import {
-  doc,
   DocumentData,
-  collection,
-  getDocs,
-  getDoc,
-  query,
-  where,
+  DocumentReference,
+  DocumentSnapshot,
   updateDoc,
 } from "firebase/firestore";
-import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import CalorieGoal from "@/contexts/CalorieGoal";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import moment from "moment";
+import { getUserDocSnap, getUserRef } from "@/utils/social/User";
 
 export default function ProgressTracker() {
-  const docref = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
+  const docref: DocumentReference<DocumentData, DocumentData> = getUserRef()
   const refreshCalorieContext = useContext(RefreshCalorieContext);
-
-  //store current calories from db to display
-  const [currentCal, setCal] = useState(0);
-  //ratio to maintain
-  const [prog, setProg] = useState(0);
-  const [open, setOpen] = useState(false);
-  //for target goal
+  const [currentCal, setCal] = useState<number>(0);
+  const [prog, setProg] = useState<number>(0);
+  const [open, setOpen] = useState<boolean>(false);
   const calorieContext = useContext(CalorieGoal);
-  //dependency to refresh bar after submiting calories
-  const [bar, setBar] = useState(false);
 
-  // to update total calories clocked and progress bar
   const getCalorieProgress = async () => {
-    const docsnap = await getDoc(docref);
+    const docsnap = await getUserDocSnap()
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal);
     const targetGoal: number = docsnap.data()?.calorieGoal;
     const curr: number = docsnap.data()?.currentCalorie;
@@ -43,40 +32,31 @@ export default function ProgressTracker() {
     if (isNaN(ratio)) {
       return;
     } else {
-      console.log(ratio);
       setProg(ratio);
     }
   };
 
   const resetHandler = async () => {
-    const docsnap = await getDoc(docref);
+    const date: string = moment().format("LL"); // Jul 24, 2024
     await updateDoc(docref, {
       currentCalorie: 0,
+      [`calorieHistory.${date}`]: 0
     });
     setCal(0);
     setProg(0);
-    console.log("test3");
   };
 
   const autoReset = async () => {
-    const docsnap = await getDoc(docref);
-    const streakArray = docsnap.data()?.streak;
-
-    //already reset and nvr upload any caloreis
+    const docsnap : DocumentSnapshot<DocumentData, DocumentData> = await getUserDocSnap();
+    const streakArray: string[] = docsnap.data()?.streak;
     if (docsnap.data()?.currentCalorie == 0) {
       return;
     }
     if (streakArray == undefined) {
       return;
     }
-    // const lastUploadDay: string = streakArray[lastIndex]
     const lastUploadDay: string = docsnap.data()?.lastUpdatedAt;
-
-    const todayDate: string = moment().format('LL'); // July 24, 2024
-    console.log(todayDate);
-    //doesnt mattter when lastupload day is, its bound to be different
-    //but make sure only reset if goal was reached previously
-    //if not threre will be a bug where everytime u update calories but havent rch goal it will reset to 0
+    const todayDate: string = moment().format("LL"); // July 24, 2024
     if (todayDate != lastUploadDay) {
       resetHandler();
     }
@@ -86,9 +66,7 @@ export default function ProgressTracker() {
     getCalorieProgress();
     autoReset();
   }, [refreshCalorieContext?.refreshCalorie]);
-  //[bar])
 
-  //to control the popup
   const modalHandler = () => {
     setOpen(!open);
   };
@@ -101,23 +79,21 @@ export default function ProgressTracker() {
         height={30}
         borderRadius={20}
         aria-label="caloriebar"
-        
       />
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity 
-            style={styles.resetButton} 
-            onPress={resetHandler}
-            aria-label="ResetButton"
-
-            >
+        <TouchableOpacity
+          style={styles.resetButton}
+          onPress={resetHandler}
+          aria-label="ResetButton"
+        >
           <Text style={styles.reset}>Reset</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-            style={styles.updateButton} 
-            onPress={modalHandler}
-            aria-label="UpdateButton"
-            >
+        <TouchableOpacity
+          style={styles.updateButton}
+          onPress={modalHandler}
+          aria-label="UpdateButton"
+        >
           <Text style={styles.update}>Update</Text>
         </TouchableOpacity>
       </View>
@@ -128,7 +104,6 @@ export default function ProgressTracker() {
       </View>
 
       <Modal visible={open}>
-        {/* <UpdateScreen modalHandler={modalHandler} progressHandler={progressHandler} /> */}
         <UpdateCaloriesScreen modalHandler={modalHandler} />
       </Modal>
     </View>
