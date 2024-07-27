@@ -27,7 +27,7 @@ export default function CollectionScreen({ setCollection }: Props) {
   };
   useEffect(() => {
     getAllCollection();
-  }, [refreshCollectionContext?.refershCollection]);
+  }, [refreshCollectionContext?.refreshCollection]);
 
   return (
     <View style={styles.container}>

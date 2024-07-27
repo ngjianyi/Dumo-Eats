@@ -1,9 +1,12 @@
-import { createContext, useState} from 'react';
+import { createContext, useState } from "react";
 
 interface AutoRefreshContextValue {
-    refreshComment: boolean;
-    setRefreshComment: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshComment: boolean;
+  setRefreshComment: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const RefreshCommentContext = createContext<AutoRefreshContextValue | undefined>(undefined)
+const RefreshCommentContext = createContext<
+  AutoRefreshContextValue | undefined
+>(undefined);
+
 export default RefreshCommentContext;
