@@ -13,8 +13,6 @@ import {
   import React, { useState, useContext } from "react";
   import { doc, DocumentData, collection, getDocs, getDoc, query, where } from "firebase/firestore";
   import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-  import AddCollectionFunc from "@/contexts/AddCollectionFunc";
-  import SavedPost from "./SavedPost";
   import SavePost from "./SavePost";
 
   export default function CollectionList({collectionArray} : any) {

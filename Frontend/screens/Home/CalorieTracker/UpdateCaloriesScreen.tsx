@@ -90,13 +90,10 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
     const doc = (await getDoc(userRef)).data();
     const curr = doc?.currentCalorie;
     const targetGoal = doc?.calorieGoal;
-
     const date: string = moment().format('LL'); // Jul 24, 2024
-
     await updateDoc(userRef, {
       currentCalorie: curr + calories,
       lastUpdatedAt: date,
-
       [`calorieHistory.${date}`]: curr + calories,
     });
     const docsnap = await getDoc(userRef);

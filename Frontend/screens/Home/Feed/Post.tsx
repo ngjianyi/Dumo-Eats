@@ -30,8 +30,9 @@ import { likeHandler, saveHandler } from "@/utils/social/SocialHandlers";
 
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 import CommentsScreen from "./Comments/CommentsScreen";
-import AddCollectionFunc from "@/contexts/AddCollectionFunc";
 import RefreshCommentContext from "@/contexts/RefreshComment";
+import RefreshCollectionContext from "@/contexts/RefreshCollection";
+
 const profilepic = require("@/assets/images/defaultProfile.png");
 interface PostItem {
   caption: string;
@@ -49,6 +50,7 @@ interface PostProps {
 
 export default function Post({ item }: PostProps) {
   const refreshCommentContext = useContext(RefreshCommentContext)
+  const refreshCollectionContext =useContext(RefreshCollectionContext)
   const postref = item.postRef;
   const [visible, setVisible] = useState(false);
   const [comments, setComments] = useState<DocumentReference[]>([]);
@@ -93,8 +95,10 @@ export default function Post({ item }: PostProps) {
     refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)
   }, []);
 
-  const saveButtonhandler = useCallback(() => {
-    saveHandler(setSaved, postref, "collection");
+  const saveButtonhandler = useCallback(async () => {
+    await saveHandler(setSaved, postref, "collection");
+    refreshCollectionContext?.setRefreshCollection(refreshCollection => !refreshCollection)
+    refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)
   }, []);
 
   return (

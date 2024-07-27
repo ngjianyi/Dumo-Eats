@@ -42,7 +42,7 @@ import RefreshBadgeContext from "@/contexts/RefreshBadge";
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import RefreshCommentContext from "@/contexts/RefreshComment";
-import { Propsmain } from "@/components/navigation/PropTypes";
+import {Propsprofile } from "@/components/navigation/PropTypes";
 import CalorieGraphScreen from "./CalorieGraphScreen";
 const defaultProfilePic = require("@/assets/images/defaultProfile.png");
 
@@ -67,7 +67,7 @@ export const checkDate = (val: string) => {
   }
 };
 
-export default function ProfileScreen({ navigation }: Propsmain) {
+export default function ProfileScreen({ navigation }: Propsprofile) {
   const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
   const calorieContext = useContext(CalorieGoal);
   const refreshBadgeContext = useContext(RefreshBadgeContext);
@@ -150,7 +150,7 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   const [caloriegoal, setGoal] = useState(0);
   const [searchUser, setSearch] = useState(false);
   const [collection, setCollection] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  // const [refresh, setRefresh] = useState(false);
   const [image, setImage] = useState<string>("");
   const [graph, setGraph] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -161,7 +161,6 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   };
 
   const collectionsHandler = () => {
-    setRefresh(refresh);
     setCollection(!collection);
   };
 
@@ -275,7 +274,7 @@ export default function ProfileScreen({ navigation }: Propsmain) {
         </ScrollView>
 
         <Modal visible={collection}>
-          <CollectionScreen refresh={refresh} setCollection={setCollection} />
+          <CollectionScreen setCollection={setCollection} />
         </Modal>
         <Modal visible={graph}>
           <CalorieGraphScreen setGraph={setGraph} />
