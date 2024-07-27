@@ -39,6 +39,7 @@ interface Props {
   refresh: boolean;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 export default function CreatePostScreen({
   upload,
   setUpload,
@@ -48,7 +49,6 @@ export default function CreatePostScreen({
 
   const refreshContext = useContext(RefreshBadgeContext);
   const img: ImageSourcePropType = require("@/assets/images/imagePlaceholder.png");
-
   interface FormValues {
     caption: string;
     image: string;

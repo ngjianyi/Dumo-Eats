@@ -1,6 +1,13 @@
 import UpdateCaloriesScreen from "@/screens/Home/CalorieTracker/UpdateCaloriesScreen";
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Alert,
+} from "react-native";
 import * as Progress from "react-native-progress";
 import {
   DocumentData,
@@ -14,7 +21,7 @@ import moment from "moment";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
 
 export default function ProgressTracker() {
-  const docref: DocumentReference<DocumentData, DocumentData> = getUserRef()
+  const docref: DocumentReference<DocumentData, DocumentData> = getUserRef();
   const refreshCalorieContext = useContext(RefreshCalorieContext);
   const [currentCal, setCal] = useState<number>(0);
   const [prog, setProg] = useState<number>(0);
@@ -22,7 +29,7 @@ export default function ProgressTracker() {
   const calorieContext = useContext(CalorieGoal);
 
   const getCalorieProgress = async () => {
-    const docsnap = await getUserDocSnap()
+    const docsnap = await getUserDocSnap();
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal);
     const targetGoal: number = docsnap.data()?.calorieGoal;
     const curr: number = docsnap.data()?.currentCalorie;
@@ -37,17 +44,28 @@ export default function ProgressTracker() {
   };
 
   const resetHandler = async () => {
-    const date: string = moment().format("LL"); // Jul 24, 2024
-    await updateDoc(docref, {
-      currentCalorie: 0,
-      [`calorieHistory.${date}`]: 0
-    });
-    setCal(0);
-    setProg(0);
+    Alert.alert("Reset Calories", "Click confirm to reset your calories for today", [
+      {text:"Cancel",
+        onPress: () => {return}
+      },
+      {
+        text: "Confirm",
+        onPress: async () =>  {
+          const date: string = moment().format("LL"); // Jul 24, 2024
+          await updateDoc(docref, {
+            currentCalorie: 0,
+            [`calorieHistory.${date}`]: 0,
+          });
+          setCal(0);
+          setProg(0);
+        }
+      }
+    ])
   };
 
   const autoReset = async () => {
-    const docsnap : DocumentSnapshot<DocumentData, DocumentData> = await getUserDocSnap();
+    const docsnap: DocumentSnapshot<DocumentData, DocumentData> =
+      await getUserDocSnap();
     const streakArray: string[] = docsnap.data()?.streak;
     if (docsnap.data()?.currentCalorie == 0) {
       return;
