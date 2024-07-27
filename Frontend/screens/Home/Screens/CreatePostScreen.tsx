@@ -165,7 +165,6 @@ export default function CreatePostScreen({
       console.log("error uploading post");
     }
   };
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView>
