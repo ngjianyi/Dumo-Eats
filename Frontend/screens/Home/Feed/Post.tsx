@@ -2,45 +2,36 @@ import {
   Text,
   View,
   StyleSheet,
-  SafeAreaView,
-  TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
   Image,
-  FlatList,
   Modal,
 } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  doc,
-  DocumentData,
-  collection,
-  getDocs,
   getDoc,
   DocumentReference,
-  FieldValue,
+  DocumentData,
+  DocumentSnapshot,
 } from "firebase/firestore";
 import { getUserDocSnap } from "@/utils/social/User";
 import { likeHandler, saveHandler } from "@/utils/social/SocialHandlers";
 
-import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
+import { AUTH } from "@/firebaseCONFIG";
 import CommentsScreen from "./Comments/CommentsScreen";
-import AddCollectionFunc from "@/contexts/AddCollectionFunc";
 import RefreshCommentContext from "@/contexts/RefreshComment";
+import RefreshCollectionContext from "@/contexts/RefreshCollection";
+
 const profilepic = require("@/assets/images/defaultProfile.png");
-interface PostItem {
+
+export interface PostItem {
   caption: string;
   image: string;
-  userName: string;
   time: string;
   likes: string[];
   comments: DocumentReference[];
   postRef: DocumentReference;
+  userRef: DocumentReference;
 }
 
 interface PostProps {
@@ -48,27 +39,29 @@ interface PostProps {
 }
 
 export default function Post({ item }: PostProps) {
-  const refreshCommentContext = useContext(RefreshCommentContext)
-  const postref = item.postRef;
-  const [visible, setVisible] = useState(false);
+  const refreshCommentContext = useContext(RefreshCommentContext);
+  const refreshCollectionContext = useContext(RefreshCollectionContext);
+  const postref: DocumentReference = item.postRef;
+  const [visible, setVisible] = useState<boolean>(false);
   const [comments, setComments] = useState<DocumentReference[]>([]);
-  const [refreshComment, setRefresh] = useState(false);
-  const [likes, setLikes] = useState(0);
-  const [heart, setHeart] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [likes, setLikes] = useState<number>(0);
+  const [heart, setHeart] = useState<boolean>(false);
+  const [saved, setSaved] = useState<boolean>(false);
   const [image, setImage] = useState<string>("");
-  const[username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
 
   const setInitialStates = async () => {
-    const updatedDoc = (await getDoc(postref)).data();
-    const docSnap = await getUserDocSnap();
-    const posterRef : DocumentReference = updatedDoc?.userRef
-    const posterDoc = (await getDoc(posterRef)).data()
-    setUsername(posterDoc?.userName)
-    setImage(posterDoc?.profilePic)
+    const updatedDoc: DocumentData | undefined = (await getDoc(postref)).data();
+    const docSnap: DocumentSnapshot<DocumentData, DocumentData> =
+      await getUserDocSnap();
+    const posterRef: DocumentReference = updatedDoc?.userRef;
+    const posterDoc: DocumentData | undefined = (
+      await getDoc(posterRef)
+    ).data();
+    setUsername(posterDoc?.userName);
+    setImage(posterDoc?.profilePic);
     setLikes(updatedDoc?.likes.length);
     setHeart(updatedDoc?.likes.includes(AUTH.currentUser?.uid));
-    // setImage(posterDoc?.userName)
     if (docSnap.exists()) {
       const refArray: DocumentReference[] = docSnap.data().collection;
       const refStringArray: string[] = refArray.map((ref) => ref.path);
@@ -77,7 +70,7 @@ export default function Post({ item }: PostProps) {
   };
 
   const getAllComments = async () => {
-    const updatedDoc = (await getDoc(postref)).data();
+    const updatedDoc: DocumentData | undefined = (await getDoc(postref)).data();
     setComments(updatedDoc?.comments);
   };
 
@@ -90,11 +83,19 @@ export default function Post({ item }: PostProps) {
 
   const likeButtonHandler = useCallback(async () => {
     await likeHandler(setHeart, setLikes, postref);
-    refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)
+    refreshCommentContext?.setRefreshComment(
+      (refreshComment) => !refreshComment
+    );
   }, []);
 
-  const saveButtonhandler = useCallback(() => {
-    saveHandler(setSaved, postref, "collection");
+  const saveButtonhandler = useCallback(async () => {
+    await saveHandler(setSaved, postref, "collection");
+    refreshCollectionContext?.setRefreshCollection(
+      (refreshCollection) => !refreshCollection
+    );
+    refreshCommentContext?.setRefreshComment(
+      (refreshComment) => !refreshComment
+    );
   }, []);
 
   return (
@@ -106,18 +107,16 @@ export default function Post({ item }: PostProps) {
             visible={visible}
             setVisible={setVisible}
             comments={comments}
-            refreshComment={refreshComment}
-            setRefresh={setRefresh}
           />
         </Modal>
       </View>
       <View style={styles.header}>
         <View style={styles.userinfo}>
-          {
-            image != ""
-            ? <Image source={{uri: image}} style= {styles.profilePic}/>
-            : <Image source={profilepic} style={styles.profilePic}/>
-          }
+          {image != "" ? (
+            <Image source={{ uri: image }} style={styles.profilePic} />
+          ) : (
+            <Image source={profilepic} style={styles.profilePic} />
+          )}
           <View>
             <Text style={styles.username}>{username}</Text>
             <Text style={styles.username}>{item.time}</Text>
@@ -155,7 +154,7 @@ export default function Post({ item }: PostProps) {
           {likes} Likes
         </Text>
         <Text style={styles.caption}>
-          <Text style={{ fontWeight: "bold" }}>{item.userName}</Text>
+          <Text style={{ fontWeight: "bold" }}>{username}</Text>
           <Text>{" " + item.caption}</Text>
         </Text>
       </View>
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "95%",
     marginBottom: 0,
-    backgroundColor: "springgreen",
+    backgroundColor: "aliceblue",
     borderWidth: 1,
     borderBottomWidth: 0,
   },
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
   userinfo: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical:5,
+    marginVertical: 5,
   },
   imageHolder: {
     flex: 1,
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
 
   footer: {
     flexDirection: "row",
-    backgroundColor: "beige",
+    backgroundColor: "lavenderblush",
     width: "95%",
     borderWidth: 1,
     borderBottomWidth: 0,
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
 
   description: {
     width: "95%",
-    backgroundColor: "beige",
+    backgroundColor: "lavenderblush",
     borderWidth: 1,
     borderTopWidth: 0,
   },

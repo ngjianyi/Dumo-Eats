@@ -7,50 +7,45 @@ import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Scan from "@/screens/Scan";
 import Drawer from "@/screens/recipes/Drawer";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "@/redux/reducer";
-import {useState} from "react"
-import {AUTH, DATA_BASE}  from "@/firebaseCONFIG";
-import {collection, doc,getDoc,addDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";  
-
-//REMEMBER TO REMOVEEEE
-//remove after testing
-//create redux store
-const store = configureStore({ reducer: rootReducer });
-
-const Tab = createBottomTabNavigator();
-//remove later
-
-import AddCollectionFunc from "@/contexts/AddCollectionFunc";
+import { useState } from "react";
 import AutoRefresh from "@/contexts/AutoRefresh";
 import CalorieGoal from "@/contexts/CalorieGoal";
 import RefreshBadgeContext from "@/contexts/RefreshBadge";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import RefreshCommentContext from "@/contexts/RefreshComment";
-export default function TabNavigation() {
-  
-  const addCollection = async (value: any) => {
-    const docRefUser = doc(DATA_BASE, "Users", ""+ AUTH.currentUser?.uid);
-    const docSnap = await getDoc(docRefUser);    
-    await updateDoc(docRefUser, {
-        collection: arrayUnion(value)
-    });
-  }
-  const [autoRefresh, setRefresh] = useState(false)
-  const [calorie, setCalorie] = useState(0);
-  const [refreshBadge, setRefreshBadge] = useState(false)
-  const [refreshCalorie, setRefreshCalorie] = useState(false)
-  const [refreshComment, setRefreshComment] = useState(false)
+import RefreshCollectionContext from "@/contexts/RefreshCollection";
 
-  
+export type TabParamList = {
+  Home: undefined;
+  Recipes: undefined;
+  Food: undefined;
+  Badges: undefined;
+  Profile: undefined;
+};
+const Tab = createBottomTabNavigator<TabParamList>();
+
+export default function TabNavigation() {
+  const [autoRefresh, setRefresh] = useState(false);
+  const [calorie, setCalorie] = useState(0);
+  const [refreshBadge, setRefreshBadge] = useState(false);
+  const [refreshCalorie, setRefreshCalorie] = useState(false);
+  const [refreshComment, setRefreshComment] = useState(false);
+  const [refreshCollection, setRefreshCollection] = useState(false);
   return (
-    <RefreshCommentContext.Provider value = {{refreshComment, setRefreshComment}}>
-      <RefreshCalorieContext.Provider value = {{refreshCalorie, setRefreshCalorie}}>
-        <RefreshBadgeContext.Provider value={{refreshBadge, setRefreshBadge}}>
-          <CalorieGoal.Provider value={{calorie, setCalorie}}>
-            <AutoRefresh.Provider value= {{autoRefresh, setRefresh}}>
-              <AddCollectionFunc.Provider value= {addCollection}>
+    <RefreshCollectionContext.Provider
+      value={{ refreshCollection, setRefreshCollection }}
+    >
+      <RefreshCommentContext.Provider
+        value={{ refreshComment, setRefreshComment }}
+      >
+        <RefreshCalorieContext.Provider
+          value={{ refreshCalorie, setRefreshCalorie }}
+        >
+          <RefreshBadgeContext.Provider
+            value={{ refreshBadge, setRefreshBadge }}
+          >
+            <CalorieGoal.Provider value={{ calorie, setCalorie }}>
+              <AutoRefresh.Provider value={{ autoRefresh, setRefresh }}>
                 <Tab.Navigator
                   screenOptions={{
                     headerShown: false,
@@ -72,7 +67,11 @@ export default function TabNavigation() {
                     component={Drawer}
                     options={{
                       tabBarIcon: ({ color }) => (
-                        <SimpleLineIcons name="compass" size={25} color={color} />
+                        <SimpleLineIcons
+                          name="compass"
+                          size={25}
+                          color={color}
+                        />
                       ),
                     }}
                   />
@@ -99,17 +98,20 @@ export default function TabNavigation() {
                     component={ProfileScreen}
                     options={{
                       tabBarIcon: ({ color }) => (
-                        <Ionicons name="person-circle-outline" size={33} color={color} />
+                        <Ionicons
+                          name="person-circle-outline"
+                          size={33}
+                          color={color}
+                        />
                       ),
                     }}
                   />
                 </Tab.Navigator>
-              </AddCollectionFunc.Provider>
-            </AutoRefresh.Provider>
-          </CalorieGoal.Provider>
-        </RefreshBadgeContext.Provider>
-      </RefreshCalorieContext.Provider>
-    </RefreshCommentContext.Provider>
-
+              </AutoRefresh.Provider>
+            </CalorieGoal.Provider>
+          </RefreshBadgeContext.Provider>
+        </RefreshCalorieContext.Provider>
+      </RefreshCommentContext.Provider>
+    </RefreshCollectionContext.Provider>
   );
 }

@@ -1,33 +1,34 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-import { doc, getDoc } from "firebase/firestore";
+import { DocumentData, DocumentReference, DocumentSnapshot, doc, getDoc } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Tabs from "@/components/tabs/Tabs";
 import RecipeList from "../Collections/RecipeList";
 import CollectionList from "../Collections/CollectionList";
 import { COLORS, SIZES } from "@/constants/Theme";
-
+import RefreshCollectionContext from "@/contexts/RefreshCollection";
+import { getUserDocSnap } from "@/utils/social/User";
 type Props = {
   setCollection: Dispatch<SetStateAction<boolean>>;
-  refresh: boolean;
 };
 
-export default function CollectionScreen({ setCollection, refresh }: Props) {
+export default function CollectionScreen({ setCollection }: Props) {
+  const refreshCollectionContext = useContext(RefreshCollectionContext)
   const tabs = ["Recipes", "Posts"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
-  const [collectionArray, setArray] = useState<string[]>([]);
+  const [collectionArray, setArray] = useState<DocumentReference[]>([]);
+
   const getAllCollection = async () => {
     setArray([]);
     const docref = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
-    const docsnap = (await getDoc(docref)).data();
+    const docsnap: DocumentData | undefined= (await getUserDocSnap()).data();
     setArray(docsnap?.collection);
   };
-
   useEffect(() => {
     getAllCollection();
-  }, [refresh]);
+  }, [refreshCollectionContext?.refreshCollection]);
 
   return (
     <View style={styles.container}>

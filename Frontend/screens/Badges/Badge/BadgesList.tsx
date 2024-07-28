@@ -1,20 +1,9 @@
 import {
-    Text,
-    View,
-    StyleSheet,
-    SafeAreaView,
-    TextInput,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Keyboard,
-    Image,
     FlatList,
     ImageURISource,
   } from "react-native";
 import BadgeColoured from "./BadgeColoured";
 import BadgeGrey from "./BadgeGrey";
-import { doc, DocumentData, collection, getDocs, getDoc, query, where } from "firebase/firestore";
-import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
 
 interface Item {
     title: string,
@@ -22,6 +11,7 @@ interface Item {
     img: ImageURISource,
     imgGrey: ImageURISource,
 }
+
 const badges: Item[] = [
     {   
         title: "Strategic Visionary",

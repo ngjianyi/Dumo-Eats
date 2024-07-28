@@ -1,9 +1,12 @@
-import { createContext, useState} from 'react';
+import { createContext } from "react";
 
-interface AutoRefreshContextValue {
-    refreshBadge: boolean;
-    setRefreshBadge: React.Dispatch<React.SetStateAction<boolean>>;
+export interface AutoRefreshContextValue {
+  refreshBadge: boolean;
+  setRefreshBadge: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const RefreshBadgeContext = createContext<AutoRefreshContextValue | undefined>(undefined)
+const RefreshBadgeContext = createContext<AutoRefreshContextValue | undefined>(
+  undefined
+);
+
 export default RefreshBadgeContext;

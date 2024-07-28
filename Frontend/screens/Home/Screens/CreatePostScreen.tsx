@@ -3,9 +3,7 @@ import {
   Text,
   View,
   StyleSheet,
-  SafeAreaView,
   TextInput,
-  Button,
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
@@ -13,6 +11,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Alert,
+  ImageSourcePropType,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { Formik, FormikProps } from "formik";
@@ -23,24 +22,33 @@ import {
   collection,
   doc,
   getDoc,
-  addDoc,
   setDoc,
   updateDoc,
   arrayUnion,
   DocumentReference,
+  DocumentSnapshot,
+  DocumentData,
 } from "firebase/firestore";
 import moment from "moment";
 import RefreshBadgeContext from "@/contexts/RefreshBadge";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
+
+interface Props {
+  upload: boolean;
+  setUpload: React.Dispatch<React.SetStateAction<boolean>>;
+  refresh: boolean;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export default function CreatePostScreen({
   upload,
   setUpload,
   refresh,
   setRefresh,
-}: any) {
+}: Props) {
+
   const refreshContext = useContext(RefreshBadgeContext);
-  const img = require("@/assets/images/imagePlaceholder.png");
+  const img: ImageSourcePropType = require("@/assets/images/imagePlaceholder.png");
   interface FormValues {
     caption: string;
     image: string;
@@ -50,11 +58,10 @@ export default function CreatePostScreen({
     postRef: DocumentReference | null;
     userRef: DocumentReference | null;
   }
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -70,16 +77,15 @@ export default function CreatePostScreen({
     setLoading(true);
     value.image = image;
     Keyboard.dismiss();
-    console.log(value);
-    const userName = (await getUserDocSnap()).data()?.userName
+    const userName = (await getUserDocSnap()).data()?.userName;
+    /**
+     * converting uri into blob, then upload into firebase storage, then get download url
+     * add the download url to value.image and send it to data base after submitting the formik form
+     */
     try {
-      //converting uri into blob, then upload into firebase storage, then get download url then save
-      //formik form image value as download url
-      //then add the download url to value.image and send it and value.caption
-      // to firestore data base after submitting the formik form
-      const response = await fetch(value.image);
-      const blob = await response.blob();
-      
+      const response: Response = await fetch(value.image);
+      const blob: Blob = await response.blob();
+
       const storageRef = ref(STORAGE, "DumoEatsPosts/" + Date.now() + ".jpg");
       uploadBytes(storageRef, blob)
         .then((snapshot) => {
@@ -87,27 +93,21 @@ export default function CreatePostScreen({
         })
         .then((response) => {
           getDownloadURL(storageRef).then(async (dlURL) => {
-            
             value.image = dlURL;
-            //add user name to each posts
             const docRefUser = doc(
               DATA_BASE,
               "Users",
               "" + AUTH.currentUser?.uid
             );
-            const docSnap = await getDoc(docRefUser);
-            //add time
+            const docSnap: DocumentSnapshot<DocumentData, DocumentData> =
+              await getUserDocSnap();
             value.time = moment().format("LLL"); // June 19, 2024 11:22 AM
             //check for whtehr its first post for necessary achievemtn
             const firstTime: boolean = !docSnap.data()?.badges[2];
-            const temp = docSnap.data()?.badges;
+            const temp: boolean[] = docSnap.data()?.badges;
             if (firstTime) {
               temp[2] = true;
             }
-            
-            const docSnapTest = await getDoc(docRefUser);
-
-            console.log(docSnapTest.data()?.collection);
 
             //create a reference for doc that will point to Subcollection eg
             const id: string = "" + AUTH.currentUser?.uid;
@@ -129,9 +129,9 @@ export default function CreatePostScreen({
               userName + "'s posts"
             );
             //create a doc reference for each post
-            const postref : DocumentReference = doc(subcollectionRef);
+            const postref: DocumentReference = doc(subcollectionRef);
             value.postRef = postref;
-            value.userRef = getUserRef()
+            value.userRef = getUserRef();
             //add the whole post data as a document in sub collection
             await setDoc(postref, value);
 
@@ -140,9 +140,6 @@ export default function CreatePostScreen({
               collection: arrayUnion(postref),
               badges: temp,
             });
-
-            // const postDoc = await addDoc(subcollectionRef, value);
-            console.log("Document written with UID: ");
             setLoading(false);
             Alert.alert("Uploaded", "post uploaded successfully", [
               {
@@ -168,7 +165,6 @@ export default function CreatePostScreen({
       console.log("error uploading post");
     }
   };
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView>
@@ -189,21 +185,11 @@ export default function CreatePostScreen({
               onSubmitHandler(val);
               resetForm();
             }}
-            // validate={(values) => {
-            //     const errors: { [key: string]: string } = {};
-            //      if (!values.image) {
-            //         errors.image = 'Image missing'
-            //         alert(errors.image)
-            //     }
-            //     return errors;
-            // }}
           >
             {({
               handleChange,
-              handleBlur,
               handleSubmit,
               values,
-              errors,
             }: FormikProps<FormValues>) => (
               <View>
                 <TouchableOpacity style={styles.image} onPress={pickImage}>

@@ -10,25 +10,26 @@ import {
   Image,
   Modal,
   ScrollView,
-  KeyboardAvoidingView,
+  ImageSourcePropType,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
-import { StorageReference, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
-  doc,
+  StorageReference,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import {
   DocumentData,
-  collection,
-  getDocs,
+  DocumentReference,
+  DocumentSnapshot,
+  doc,
   getDoc,
-  query,
-  where,
   updateDoc,
 } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import Entypo from "@expo/vector-icons/Entypo";
-
-//   import AddUsersScreen from "./AddUsersScreen";
 
 import AddUsersScreen from "./AddUsersScreen";
 import CollectionScreen from "./CollectionScreen";
@@ -37,11 +38,12 @@ import RefreshBadgeContext from "@/contexts/RefreshBadge";
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import RefreshCommentContext from "@/contexts/RefreshComment";
-import { Propsmain } from "@/components/navigation/PropTypes";
+import { Propsprofile } from "@/components/navigation/PropTypes";
+import CalorieGraphScreen from "./CalorieGraphScreen";
+import { getUserDocSnap, getUserRef } from "@/utils/social/User";
+const defaultProfilePic: ImageSourcePropType = require("@/assets/images/defaultProfile.png");
 
-const defaultProfilePic = require("@/assets/images/defaultProfile.png");
-
-export const checkDate = (val: string) => {
+export const checkDate = (val: string): boolean => {
   const array = val.split("/");
   if (array.length != 3) {
     return false;
@@ -62,8 +64,8 @@ export const checkDate = (val: string) => {
   }
 };
 
-export default function ProfileScreen({ navigation }: Propsmain) {
-  const userRef = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
+export default function ProfileScreen({ navigation }: Propsprofile) {
+  const userRef: DocumentReference = getUserRef();
   const calorieContext = useContext(CalorieGoal);
   const refreshBadgeContext = useContext(RefreshBadgeContext);
   const userLoggedInContext = useContext(UserLoggedInContext);
@@ -71,77 +73,83 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   const refreshCommentContext = useContext(RefreshCommentContext);
 
   const getAllDetails = async () => {
-    const docsnap = await getDoc(userRef);
+    const docsnap: DocumentSnapshot<DocumentData, DocumentData> =
+      await getUserDocSnap();
     setName(docsnap.data()?.name);
     setGoal(docsnap.data()?.calorieGoal);
     setDate(docsnap.data()?.DOB);
     setImage(docsnap.data()?.profilePic);
-    
   };
 
   const updateDetails = async () => {
     const validDate = checkDate(date);
     if (!validDate) {
-      alert("Invalid date please key in day/month/year only");
+      alert("Please enter Date of birth (day/month/year)");
       return;
     }
-    setLoading(true)
+    setLoading(true);
     await updateDoc(userRef, {
       calorieGoal: caloriegoal,
       name: name,
       DOB: date,
     });
-    //to change false value to true for set calorie goal badge
     Keyboard.dismiss();
-    const docsnap = await getDoc(userRef);
-  
-
-    const prev: string = docsnap.data()?.profilePic
+    const docsnap: DocumentSnapshot<DocumentData, DocumentData> =
+      await getUserDocSnap();
+    const prev: string = docsnap.data()?.profilePic;
     if (prev != image) {
       try {
-        const response = await fetch(image)
-        const blob = await response.blob();
-        const storageRef : StorageReference = ref(STORAGE, "DumoEatsProfilePic/" + Date.now() + ".jpg");
-        uploadBytes(storageRef, blob)
-        .then((snapshot) => {
-          console.log("Uploaded a blob");
-        })
-        .then((response) => {
-          getDownloadURL(storageRef).then(async (dlURL: string) => {
-            await updateDoc(userRef, {
-              profilePic: dlURL
+        const response = await fetch(image);
+        const blob: Blob = await response.blob();
+        const storageRef: StorageReference = ref(
+          STORAGE,
+          "DumoEatsProfilePic/" + Date.now() + ".jpg"
+        );
+        await uploadBytes(storageRef, blob)
+          .then((snapshot) => {
+            console.log("Uploaded a blob");
+          })
+          .then((response) => {
+            getDownloadURL(storageRef).then(async (dlURL: string) => {
+              await updateDoc(userRef, {
+                profilePic: dlURL,
+              });
             });
-          })})
+          });
       } catch (error: any) {
-        setLoading(false)
+        setLoading(false);
         alert("no image uploaded");
       }
     }
-    setLoading(false)
+    setLoading(false);
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal);
-    const temp = docsnap.data()?.badges;
+    const temp: boolean[] = docsnap.data()?.badges;
     if (!temp[0] && docsnap.data()?.calorieGoal > 0) {
       temp[0] = true;
       await updateDoc(userRef, {
         badges: temp,
       });
+      console.log(refreshBadgeContext?.refreshBadge);
       refreshBadgeContext?.setRefreshBadge(!refreshBadgeContext?.refreshBadge);
+      console.log(refreshBadgeContext?.refreshBadge);
       alert("New Badge Strategic Visionary Unlocked!");
     }
     refreshCalorieContext?.setRefreshCalorie(
       !refreshCalorieContext?.refreshCalorie
     );
-    refreshCommentContext?.setRefreshComment(refreshComment => !refreshComment)
+    refreshCommentContext?.setRefreshComment(
+      (refreshComment) => !refreshComment
+    );
     alert("Updated Successfully!");
   };
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [caloriegoal, setGoal] = useState(0);
-  const [searchUser, setSearch] = useState(false);
-  const [collection, setCollection] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [caloriegoal, setGoal] = useState<number>(0);
+  const [searchUser, setSearch] = useState<boolean>(false);
+  const [collection, setCollection] = useState<boolean>(false);
   const [image, setImage] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false)
+  const [graph, setGraph] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const logOutHandler = () => {
     userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
@@ -149,12 +157,10 @@ export default function ProfileScreen({ navigation }: Propsmain) {
   };
 
   const collectionsHandler = () => {
-    setRefresh(refresh);
     setCollection(!collection);
   };
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -193,11 +199,10 @@ export default function ProfileScreen({ navigation }: Propsmain) {
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.logoutButton}
-            // onPress={() => navigation.navigate("login")}
-            onPress={logOutHandler}
+            onPress={() => setGraph(true)}
+            style={styles.graphButton}
           >
-            <Text style={styles.logout}>Logout</Text>
+            <Text style={styles.updateDetails}>Graph</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -254,11 +259,21 @@ export default function ProfileScreen({ navigation }: Propsmain) {
             >
               <Text style={styles.updateDetails}>Update</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.logoutButton}
+              // onPress={() => navigation.navigate("login")}
+              onPress={logOutHandler}
+            >
+              <Text style={styles.logout}>Logout</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
 
         <Modal visible={collection}>
-          <CollectionScreen refresh={refresh} setCollection={setCollection} />
+          <CollectionScreen setCollection={setCollection} />
+        </Modal>
+        <Modal visible={graph}>
+          <CalorieGraphScreen setGraph={setGraph} />
         </Modal>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -329,7 +344,6 @@ const styles = StyleSheet.create({
 
   logoutButton: {
     backgroundColor: "maroon",
-    marginVertical: 10,
     paddingVertical: 8,
     borderRadius: 14,
     width: "25%",
@@ -360,8 +374,16 @@ const styles = StyleSheet.create({
 
   updateButton: {
     backgroundColor: "mediumseagreen",
-    marginVertical: 80,
+    marginVertical: 30,
     marginBottom: 20,
+    paddingVertical: 8,
+    borderRadius: 14,
+    width: "25%",
+  },
+
+  graphButton: {
+    backgroundColor: "blue",
+    marginVertical: 10,
     paddingVertical: 8,
     borderRadius: 14,
     width: "25%",

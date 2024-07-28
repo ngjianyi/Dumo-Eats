@@ -1,25 +1,31 @@
 import {
-  Text,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Image,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import Post from "./Post";
+import { DocumentReference } from "firebase/firestore";
 
-export default function Feed({ posts }: any) {
+interface PostItem {
+  caption: string;
+  image: string;
+  time: string;
+  likes: string[];
+  comments: DocumentReference[];
+  postRef: DocumentReference;
+  userRef: DocumentReference
+}
+
+interface Props {
+  posts: PostItem[]
+}
+
+export default function Feed({ posts }: Props ) {
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
       style={{ flex: 1 }}
       data={posts}
-      renderItem={({ item, index }) => <Post item={item} />}
+      renderItem={({ item }) => <Post item={item} />}
     />
   );
 }
