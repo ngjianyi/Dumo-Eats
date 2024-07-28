@@ -6,11 +6,12 @@ import {
   Image,
   Modal,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RecipeSocials from ".././RecipeSocials";
 import RecipeIndivScreen from "../../indiv/RecipeIndivScreen";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
+import { getUserDocSnap } from "@/utils/social/User";
 
 type Props = {
   item: Recipe;
@@ -18,6 +19,44 @@ type Props = {
 
 export default function RecipeDisplay({ item }: Props) {
   const [detailsVisible, setDetailsVisible] = useState<boolean>(false);
+  const [warnings, setWarnings] = useState<string[]>([]);
+  const getWarnings = async () => {
+    const user = await getUserDocSnap();
+    const calorieGoal = user.data()?.calorieGoal;
+    const caloriesLeft = user.data()?.calorieGoal - user.data()?.currentCalorie;
+    const currWarnings: string[] = [];
+    for (let i = 0; i < item.nutrition.nutrients.length; i++) {
+      if (item.nutrition.nutrients[i].name === "Calories") {
+        if (
+          item.nutrition.nutrients[i].amount > calorieGoal / 3 ||
+          item.nutrition.nutrients[i].amount > caloriesLeft
+        ) {
+          currWarnings.push("calories");
+        }
+      } else if (item.nutrition.nutrients[i].name === "Saturated Fat") {
+        if (item.nutrition.nutrients[i].percentOfDailyNeeds > 50) {
+          currWarnings.push("aturated fat");
+        }
+      } else if (item.nutrition.nutrients[i].name === "Sugar") {
+        if (item.nutrition.nutrients[i].percentOfDailyNeeds > 50) {
+          currWarnings.push("sugar");
+        }
+      } else if (item.nutrition.nutrients[i].name === "Cholesterol") {
+        if (item.nutrition.nutrients[i].percentOfDailyNeeds > 50) {
+          currWarnings.push("cholesterol");
+        }
+      } else if (item.nutrition.nutrients[i].name === "Sodium") {
+        if (item.nutrition.nutrients[i].percentOfDailyNeeds > 50) {
+          currWarnings.push("sodium");
+        }
+      }
+    }
+    setWarnings(currWarnings);
+  };
+
+  useEffect(() => {
+    getWarnings()
+  })
 
   return (
     <View style={styles.container}>
@@ -29,8 +68,10 @@ export default function RecipeDisplay({ item }: Props) {
         </TouchableOpacity>
 
         <Text style={styles.calories}>
-          {/* First nutrient is calorie */}
           Calories: {Math.ceil(item.nutrition.nutrients[0].amount)}
+        </Text>
+        <Text style={styles.warning}>
+          {warnings.length != 0? "High in " + warnings.join(", ") : null}
         </Text>
 
         <RecipeSocials recipe={item} />
@@ -96,5 +137,12 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
     marginTop: 3,
     textTransform: "capitalize",
+  },
+
+  warning: {
+    fontSize: SIZES.small + 2,
+    fontFamily: "DMRegular",
+    color: COLORS.tertiary,
+    marginTop: 3,
   },
 });
