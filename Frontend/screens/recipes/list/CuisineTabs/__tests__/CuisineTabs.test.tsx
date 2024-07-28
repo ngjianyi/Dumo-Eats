@@ -84,13 +84,13 @@ describe("Renders cuisine tabs correctly", () => {
     fireEvent.scroll(flatList, {
       nativeEvent: {
         contentOffset: {
-          x: 500, // Adjust this value based on your item height and list length
+          x: 500,
         },
         contentSize: {
-          width: 1000, // Total height of the list content
+          width: 1000,
         },
         layoutMeasurement: {
-          width: 500, // Height of the FlatList container
+          width: 500,
         },
       },
     });
