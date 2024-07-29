@@ -3,9 +3,9 @@ import {
   createDrawerNavigator,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import Filter from "./list/Filter";
-import RecipesStack from "./RecipesStack";
+import Filter from "./list/Filter/Filter";
 import { RecipeProvider } from "./RecipeProvider";
+import RecipeListScreen from "./list/RecipeListScreen";
 
 export default function Drawer() {
   const Drawer = createDrawerNavigator();
@@ -29,7 +29,7 @@ export default function Drawer() {
         }}
         drawerContent={(props) => <CustomDrawerContentComponent {...props} />}
       >
-        <Drawer.Screen name="Home" component={RecipesStack} />
+        <Drawer.Screen name="Home" component={RecipeListScreen} />
         <Drawer.Screen name="Filter" component={Filter} />
       </Drawer.Navigator>
     </RecipeProvider>

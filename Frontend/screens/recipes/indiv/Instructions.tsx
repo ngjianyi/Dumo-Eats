@@ -1,55 +1,38 @@
-import { useContext } from "react";
-import { RecipeContext } from "../RecipeProvider";
-import { View, Text, StyleSheet } from "react-native";
+import { FlatList, View, Text, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
+import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
+import { Recipe } from "@/utils/recipes/RecipesTypes";
 
-type step = {
-  equipment: {
-    id: number;
-    image: string;
-    name: string;
-    temperature: {
-      number: number;
-      unit: string;
-    };
-    length: {
-      number: number;
-      unit: string;
-    };
-  }[];
-  ingredients: {
-    id: number;
-    image: string;
-    name: string;
-  }[];
-  number: number;
-  step: string;
+type Props = {
+  recipe: Recipe;
 };
 
-type item = {
-  name: string;
-  steps: step[];
-};
-
-export default function Instructions() {
-  const { recipe, capitalizeFirstLetter } = useContext<any>(RecipeContext);
-
+export default function Instructions({ recipe }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
-        {recipe?.analyzedInstructions.map((item: item) => (
-          <View key={item.name}>
-            <View>{item.name}</View>
-            {item?.steps?.map((step: step) => (
-              <View style={styles.pointWrapper} key={item.name + step.number}>
-                <View style={styles.pointDot} />
-                <Text style={styles.pointText}>
-                  {step.number}. {capitalizeFirstLetter(step.step)}
-                </Text>
+        <FlatList
+          data={recipe?.analyzedInstructions}
+          renderItem={({ item }) => {
+            return (
+              <View key={item.name}>
+                <View>{item.name}</View>
+                {item?.steps?.map((step) => (
+                  <View
+                    style={styles.pointWrapper}
+                    key={item.name + step.number}
+                  >
+                    <View style={styles.pointDot} />
+                    <Text style={styles.pointText}>
+                      {step.number}. {capitaliseFirstLetter(step.step)}
+                    </Text>
+                  </View>
+                ))}
               </View>
-            ))}
-          </View>
-        ))}
+            );
+          }}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
   );
@@ -58,22 +41,18 @@ export default function Instructions() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF",
-    borderRadius: SIZES.medium,
     paddingHorizontal: SIZES.medium,
-  },
-  title: {
-    fontSize: SIZES.large,
-    color: COLORS.primary,
-    // fontFamily: FONT.bold,
+    flex: 1,
   },
   pointsContainer: {
     marginVertical: SIZES.small,
+    flex: 1,
   },
   pointWrapper: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginVertical: SIZES.small / 1.25,
+    margin: SIZES.small / 1.25,
   },
   pointDot: {
     width: 6,
@@ -85,7 +64,6 @@ const styles = StyleSheet.create({
   pointText: {
     fontSize: SIZES.medium - 2,
     color: COLORS.gray,
-    // fontFamily: FONT.regular,
     marginLeft: SIZES.small,
   },
 });

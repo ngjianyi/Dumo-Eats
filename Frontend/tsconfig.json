@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "screens/HomeScreen.tsx"  ]
+, "screens/HomeScreen.tsx", "components/__tests__/CheckDate.test.js"  ]
 }

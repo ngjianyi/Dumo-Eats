@@ -1,35 +1,33 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from "react";
 
-type StateContextType = {
-  capitalizeFirstLetter: (string: string) => string;
-  recipes: any;
-  setRecipes: React.Dispatch<React.SetStateAction<any>>;
-  recipe: any;
-  setRecipe: React.Dispatch<React.SetStateAction<any>>;
-  minCalories: number;
+type RecipeContextType = {
   query: string;
-  setQuery: React.Dispatch<React.SetStateAction<string>>;
-  setMinCalories: React.Dispatch<React.SetStateAction<number>>;
+  setQuery: Dispatch<SetStateAction<string>>;
+  cuisineType: string;
+  setCuisineType: Dispatch<SetStateAction<string>>;
+  minCalories: number;
+  setMinCalories: Dispatch<SetStateAction<number>>;
   maxCalories: number;
-  setMaxCalories: React.Dispatch<React.SetStateAction<number>>;
+  setMaxCalories: Dispatch<SetStateAction<number>>;
   includeIngredients: string;
-  setIncludeIngredients: React.Dispatch<React.SetStateAction<string>>;
+  setIncludeIngredients: Dispatch<SetStateAction<string>>;
   excludeIngredients: string;
-  setExcludeIngredients: React.Dispatch<React.SetStateAction<string>>;
+  setExcludeIngredients: Dispatch<SetStateAction<string>>;
   intolerances: string[];
-  setIntolerances: React.Dispatch<React.SetStateAction<string[]>>;
+  setIntolerances: Dispatch<SetStateAction<string[]>>;
 };
 
-const RecipeContext = createContext<null | StateContextType>(null);
+const RecipeContext = createContext<null | RecipeContextType>(null);
 
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function RecipeProvider({ children }: any) {
-  const [recipes, setRecipes] = useState(null);
-  const [recipe, setRecipe] = useState(null);
+function RecipeProvider({ children }: { children: ReactNode }) {
   const [query, setQuery] = useState<string>("");
+  const [cuisineType, setCuisineType] = useState<string>("");
   const [minCalories, setMinCalories] = useState<number>(50);
   const [maxCalories, setMaxCalories] = useState<number>(800);
   const [includeIngredients, setIncludeIngredients] = useState<string>("");
@@ -39,13 +37,10 @@ function RecipeProvider({ children }: any) {
   return (
     <RecipeContext.Provider
       value={{
-        capitalizeFirstLetter,
-        recipes,
-        setRecipes,
-        recipe,
-        setRecipe,
         query,
         setQuery,
+        cuisineType,
+        setCuisineType,
         minCalories,
         setMinCalories,
         maxCalories,
@@ -63,4 +58,4 @@ function RecipeProvider({ children }: any) {
   );
 }
 
-export { RecipeContext, RecipeProvider };
+export { RecipeContextType, RecipeContext, RecipeProvider };

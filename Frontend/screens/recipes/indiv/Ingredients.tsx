@@ -1,35 +1,47 @@
-import { useContext } from "react";
-import { RecipeContext } from "../RecipeProvider";
-import { View, Text, StyleSheet } from "react-native";
-import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
-
-type ingredient = {
-  amount: number;
-  unit: string;
-  image: string;
-  name: string;
-};
+import { useEffect, useState } from "react";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { COLORS, SIZES } from "@/constants/Theme";
+import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
+import { Recipe, Ingredient } from "@/utils/recipes/RecipesTypes";
 
 type Props = {
-  ingredients: ingredient[];
-  capitalizeFirstLetter: (string: string) => string;
+  recipe: Recipe;
 };
 
-export default function () {
-  const { recipe, capitalizeFirstLetter } = useContext<any>(RecipeContext);
+export default function ({ recipe }: Props) {
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+
+  // Filters duplicate ingredients
+  const getFilteredIngredients = () => {
+    setIngredients([
+      ...new Map(
+        recipe?.nutrition.ingredients.map((obj) => [
+          `${obj.id}:${obj.name}`,
+          obj,
+        ])
+      ).values(),
+    ]);
+  };
+
+  useEffect(getFilteredIngredients, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
-        {recipe?.nutrition.ingredients.map((ingredient: ingredient) => (
-          <View style={styles.pointWrapper} key={ingredient.name}>
-            <View style={styles.pointDot} />
-            <Text style={styles.pointText}>
-              {capitalizeFirstLetter(ingredient.name)}: {ingredient.amount}{" "}
-              {ingredient.unit}
-            </Text>
-          </View>
-        ))}
+        <FlatList
+          data={ingredients}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.pointWrapper} key={item.name}>
+                <View style={styles.pointDot} />
+                <Text style={styles.pointText}>
+                  {capitaliseFirstLetter(item.name)}: {item.amount} {item.unit}
+                </Text>
+              </View>
+            );
+          }}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
   );
@@ -38,22 +50,18 @@ export default function () {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF",
-    borderRadius: SIZES.medium,
     paddingHorizontal: SIZES.medium,
-  },
-  title: {
-    fontSize: SIZES.large,
-    color: COLORS.primary,
-    // fontFamily: FONT.bold,
+    flex: 1,
   },
   pointsContainer: {
     marginVertical: SIZES.small,
+    flex: 1,
   },
   pointWrapper: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginVertical: SIZES.small / 1.25,
+    margin: SIZES.small / 1.25,
   },
   pointDot: {
     width: 6,
@@ -65,7 +73,6 @@ const styles = StyleSheet.create({
   pointText: {
     fontSize: SIZES.medium - 2,
     color: COLORS.gray,
-    // fontFamily: FONT.regular,
     marginLeft: SIZES.small,
   },
 });
