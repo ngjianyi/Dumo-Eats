@@ -151,7 +151,7 @@ export default function Post({ item }: PostProps) {
       </View>
       <View style={styles.description}>
         <Text style={[styles.caption, { color: "green", marginBottom: 3 }]}>
-          {likes} Likes
+          {likes === 1 ? `${likes} like` : `${likes} likes`}
         </Text>
         <Text style={styles.caption}>
           <Text style={{ fontWeight: "bold" }}>{username}</Text>

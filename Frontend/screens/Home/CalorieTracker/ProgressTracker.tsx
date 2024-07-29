@@ -44,23 +44,30 @@ export default function ProgressTracker() {
   };
 
   const resetHandler = async () => {
-    Alert.alert("Reset Calories", "Click confirm to reset your calories for today", [
-      {text:"Cancel",
-        onPress: () => {return}
-      },
-      {
-        text: "Confirm",
-        onPress: async () =>  {
-          const date: string = moment().format("LL"); // Jul 24, 2024
-          await updateDoc(docref, {
-            currentCalorie: 0,
-            [`calorieHistory.${date}`]: 0,
-          });
-          setCal(0);
-          setProg(0);
-        }
-      }
-    ])
+    Alert.alert(
+      "Reset Calories",
+      "Click confirm to reset your calories for today",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            return;
+          },
+        },
+        {
+          text: "Confirm",
+          onPress: async () => {
+            const date: string = moment().format("LL"); // Jul 24, 2024
+            await updateDoc(docref, {
+              currentCalorie: 0,
+              [`calorieHistory.${date}`]: 0,
+            });
+            setCal(0);
+            setProg(0);
+          },
+        },
+      ]
+    );
   };
 
   const autoReset = async () => {
@@ -76,7 +83,11 @@ export default function ProgressTracker() {
     const lastUploadDay: string = docsnap.data()?.lastUpdatedAt;
     const todayDate: string = moment().format("LL"); // July 24, 2024
     if (todayDate != lastUploadDay) {
-      resetHandler();
+      await updateDoc(docref, {
+        currentCalorie: 0,
+      });
+      setCal(0);
+      setProg(0);
     }
   };
 

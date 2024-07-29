@@ -27,10 +27,7 @@ export default function CommentsList({
   commentButtonHandler,
 }: Props) {
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
+    <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
       <View style={styles.container}>
         <SafeAreaView style={styles.commentBox}>
           <View style={styles.header}>

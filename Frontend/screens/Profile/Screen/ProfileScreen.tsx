@@ -41,6 +41,8 @@ import RefreshCommentContext from "@/contexts/RefreshComment";
 import { Propsprofile } from "@/components/navigation/PropTypes";
 import CalorieGraphScreen from "./CalorieGraphScreen";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
+import RNPickerSelect from "react-native-picker-select";
+
 const defaultProfilePic: ImageSourcePropType = require("@/assets/images/defaultProfile.png");
 
 export const checkDate = (val: string): boolean => {
@@ -79,6 +81,7 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
     setGoal(docsnap.data()?.calorieGoal);
     setDate(docsnap.data()?.DOB);
     setImage(docsnap.data()?.profilePic);
+    setGender(docsnap.data()?.gender);
   };
 
   const updateDetails = async () => {
@@ -92,6 +95,7 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
       calorieGoal: caloriegoal,
       name: name,
       DOB: date,
+      gender: gender,
     });
     Keyboard.dismiss();
     const docsnap: DocumentSnapshot<DocumentData, DocumentData> =
@@ -150,6 +154,7 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
   const [image, setImage] = useState<string>("");
   const [graph, setGraph] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [gender, setGender] = useState<string>("");
 
   const logOutHandler = () => {
     userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
@@ -251,8 +256,26 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
                 value={String(caloriegoal)}
               />
             </View>
+
+            <Text style={styles.inputLabel}>Gender:</Text>
+            <RNPickerSelect
+              onValueChange={(value) => setGender(value)}
+              items={[
+                { label: "Male", value: "male" },
+                { label: "Female", value: "female" },
+              ]}
+              value={gender}
+              placeholder={{}}
+              style={pickerSelectStyles}
+            />
           </View>
-          <View style={{ width: "100%", alignItems: "center" }}>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-around",
+            }}
+          >
             <TouchableOpacity
               onPress={updateDetails}
               style={styles.updateButton}
@@ -374,8 +397,8 @@ const styles = StyleSheet.create({
 
   updateButton: {
     backgroundColor: "mediumseagreen",
-    marginVertical: 30,
-    marginBottom: 20,
+    // marginVertical: 30,
+    // marginBottom: 20,
     paddingVertical: 8,
     borderRadius: 14,
     width: "25%",
@@ -393,5 +416,36 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     padding: 5,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 2,
+    borderColor: "lightgrey",
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+    height: 44,
+    width: "100%",
+    marginVertical: 14,
+    justifyContent: "center",
+    paddingLeft: 8,
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: "purple",
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+    height: 44,
+    width: "100%",
+    marginVertical: 14,
+    justifyContent: "center",
+    paddingLeft: 8,
   },
 });

@@ -79,7 +79,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         alert("Password too short, must be at least 6 characters");
         return;
       }
-      
+
       if (password1 != password2) {
         alert("Passwords do not match");
         return;
@@ -110,7 +110,8 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         lastUpdatedAt: "",
         savedRecipes: [],
         profilePic: "",
-        calorieHistory: {"date": 0},
+        calorieHistory: { date: 0 },
+        gender: "",
       });
 
       await addDoc(collection(DATA_BASE, "Usernames"), {

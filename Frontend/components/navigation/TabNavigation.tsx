@@ -76,15 +76,6 @@ export default function TabNavigation() {
                     }}
                   />
                   <Tab.Screen
-                    name="Food"
-                    component={Scan}
-                    options={{
-                      tabBarIcon: ({ color }) => (
-                        <Ionicons name="scan-sharp" size={27} color={color} />
-                      ),
-                    }}
-                  />
-                  <Tab.Screen
                     name="Badges"
                     component={BadgesScreen}
                     options={{

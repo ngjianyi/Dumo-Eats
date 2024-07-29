@@ -7,6 +7,7 @@ import {
   Keyboard,
   TextInput,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import React, {
   useState,
@@ -67,7 +68,10 @@ export default function CommentsScreen({
         <CommentsList comments={comments} />
       </View>
 
-      <KeyboardAvoidingView style={styles.inputContainer} behavior="position">
+      <KeyboardAvoidingView
+        style={styles.inputContainer}
+        behavior={Platform.OS === "ios" ? "position" : "height"}
+      >
         <View style={styles.input}>
           <View style={{ marginRight: 5, width: "100%" }}>
             <TextInput

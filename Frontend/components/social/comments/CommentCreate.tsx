@@ -42,6 +42,7 @@ export default function CommentCreate({ commentButtonHandler }: Props) {
             onChangeText={(val) => setBody(val)}
             autoCapitalize="none"
             autoCorrect={false}
+            autoComplete="off"
           />
         </View>
 

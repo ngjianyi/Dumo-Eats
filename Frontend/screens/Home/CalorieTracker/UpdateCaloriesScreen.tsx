@@ -167,9 +167,6 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
             onChangeText={updateCalories}
             aria-label="InputBox"
           />
-          <TouchableOpacity>
-            <Ionicons name="camera" size={35} color="black" />
-          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
@@ -226,8 +223,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 5,
     width: 300,
-    marginLeft: 20,
-    marginRight: 5,
   },
 
   submitButton: {
