@@ -46,23 +46,26 @@ import RNPickerSelect from "react-native-picker-select";
 const defaultProfilePic: ImageSourcePropType = require("@/assets/images/defaultProfile.png");
 
 export const checkDate = (val: string): boolean => {
+  const long = new Set([1, 3, 5, 7, 8, 10, 12]);
+  const short = new Set([4, 6, 9, 11]);
+
   const array = val.split("/");
+  const day = parseInt(array[0]);
+  const month = parseInt(array[1]);
+  const year = parseInt(array[2]);
   if (array.length != 3) {
     return false;
-  } else if (
-    Number(array[0]) > 31 ||
-    Number(array[1]) > 12 ||
-    Number(array[2]) > 2024
-  ) {
+  } else if (day > 31 || month > 12 || year > 2024) {
     return false;
-  } else if (
-    Number(array[0]) <= 0 ||
-    Number(array[1]) <= 0 ||
-    Number(array[2]) <= 0
-  ) {
+  } else if (day <= 0 || month <= 0 || year <= 0) {
     return false;
+  }
+  if (long.has(month)) {
+    return day <= 31;
+  } else if (short.has(month)) {
+    return day <= 30;
   } else {
-    return true;
+    return day <= 28;
   }
 };
 

@@ -197,12 +197,13 @@ const styles = StyleSheet.create({
   imageHolder: {
     flex: 1,
     aspectRatio: 1.5,
-    width: "100%",
+    width: "95%",
     alignItems: "center",
+    borderWidth: 1,
   },
   image: {
     height: "100%",
-    width: "95%",
+    width: "100%",
     resizeMode: "cover",
   },
 
