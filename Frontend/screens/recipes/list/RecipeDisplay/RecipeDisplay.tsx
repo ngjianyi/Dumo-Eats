@@ -11,7 +11,7 @@ import RecipeSocials from ".././RecipeSocials";
 import RecipeIndivScreen from "../../indiv/RecipeIndivScreen";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
-import { getUserDocSnap } from "@/utils/social/User";
+import DailyAllowance from "@/utils/recipes/DailyAllowances";
 
 type Props = {
   item: Recipe;
@@ -19,44 +19,15 @@ type Props = {
 
 export default function RecipeDisplay({ item }: Props) {
   const [detailsVisible, setDetailsVisible] = useState<boolean>(false);
+  const [benefits, setBenefits] = useState<string[]>([]);
   const [warnings, setWarnings] = useState<string[]>([]);
-  const getWarnings = async () => {
-    const user = await getUserDocSnap();
-    const calorieGoal = user.data()?.calorieGoal;
-    const caloriesLeft = user.data()?.calorieGoal - user.data()?.currentCalorie;
-    const currWarnings: string[] = [];
-    for (let i = 0; i < item.nutrition.nutrients.length; i++) {
-      if (item.nutrition.nutrients[i].name === "Calories") {
-        if (
-          item.nutrition.nutrients[i].amount > calorieGoal / 3 ||
-          item.nutrition.nutrients[i].amount > caloriesLeft
-        ) {
-          currWarnings.push("calories");
-        }
-      } else if (item.nutrition.nutrients[i].name === "Saturated Fat") {
-        if (item.nutrition.nutrients[i].percentOfDailyNeeds > 50) {
-          currWarnings.push("aturated fat");
-        }
-      } else if (item.nutrition.nutrients[i].name === "Sugar") {
-        if (item.nutrition.nutrients[i].percentOfDailyNeeds > 50) {
-          currWarnings.push("sugar");
-        }
-      } else if (item.nutrition.nutrients[i].name === "Cholesterol") {
-        if (item.nutrition.nutrients[i].percentOfDailyNeeds > 50) {
-          currWarnings.push("cholesterol");
-        }
-      } else if (item.nutrition.nutrients[i].name === "Sodium") {
-        if (item.nutrition.nutrients[i].percentOfDailyNeeds > 50) {
-          currWarnings.push("sodium");
-        }
-      }
-    }
-    setWarnings(currWarnings);
-  };
 
   useEffect(() => {
-    getWarnings()
-  })
+    DailyAllowance(item.nutrition.nutrients).then((res) => {
+      setBenefits(res[0]);
+      setWarnings(res[1]);
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -70,8 +41,11 @@ export default function RecipeDisplay({ item }: Props) {
         <Text style={styles.calories}>
           Calories: {Math.ceil(item.nutrition.nutrients[0].amount)}
         </Text>
+        <Text style={styles.benefit}>
+          {benefits.length > 0 && "High in " + benefits.join(", ")}
+        </Text>
         <Text style={styles.warning}>
-          {warnings.length != 0? "High in " + warnings.join(", ") : null}
+          {warnings.length > 0 ? "High in " + warnings.join(", ") : <View />}
         </Text>
 
         <RecipeSocials recipe={item} />
@@ -136,13 +110,17 @@ const styles = StyleSheet.create({
     fontFamily: "DMRegular",
     color: COLORS.gray,
     marginTop: 3,
-    textTransform: "capitalize",
   },
-
   warning: {
     fontSize: SIZES.small + 2,
     fontFamily: "DMRegular",
     color: COLORS.tertiary,
+    marginTop: 3,
+  },
+  benefit: {
+    fontSize: SIZES.small + 2,
+    fontFamily: "DMRegular",
+    color: "forestgreen",
     marginTop: 3,
   },
 });

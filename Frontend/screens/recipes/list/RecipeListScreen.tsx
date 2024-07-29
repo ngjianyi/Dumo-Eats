@@ -33,7 +33,8 @@ export default function RecipeListScreen({ navigation }: any) {
 
   const getRecipes = async () => {
     setIsLoading(true);
-    const KEY = "429fc2334b13424f9ab79a250d6d4a3c";
+    // const KEY = "429fc2334b13424f9ab79a250d6d4a3c";
+    const KEY = "225dfcb4870240d1b3659c2e0e8993f1";
     const URL = `https://api.spoonacular.com/recipes/complexSearch`;
     await axios
       .get(URL, {
