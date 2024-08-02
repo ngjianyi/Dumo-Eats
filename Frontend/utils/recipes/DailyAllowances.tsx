@@ -6,7 +6,7 @@ export default async function DailyAllowance(nutrients: Nutrient[]) {
   const calorieGoal = user.data()?.calorieGoal;
   const caloriesLeft = user.data()?.calorieGoal - user.data()?.currentCalorie;
   const gender = user.data()?.gender;
-  const age = user.data()?.DOB.split("/").pop() - new Date().getFullYear();
+  const age = new Date().getFullYear() - user.data()?.DOB.split("/").pop();
   const currBenefits: string[] = [];
   const currWarnings: string[] = [];
 
