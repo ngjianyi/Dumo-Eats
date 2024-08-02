@@ -13,7 +13,7 @@ export default async function DailyAllowance(nutrients: Nutrient[]) {
   for (let i = 0; i < nutrients.length; i++) {
     if (nutrients[i].name === "Calories") {
       if (
-        nutrients[i].amount > calorieGoal / 3 ||
+        nutrients[i].amount > calorieGoal / 2 ||
         nutrients[i].amount > caloriesLeft
       ) {
         currWarnings.push("calories");
