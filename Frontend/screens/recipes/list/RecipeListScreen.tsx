@@ -50,7 +50,7 @@ export default function RecipeListScreen({ navigation }: any) {
           intolerances: intolerances.toString(),
           includeIngredients: includeIngredients.split(" ").toString(),
           excludeIngredients: excludeIngredients.split(" ").toString(),
-          number: 2,
+          number: 3,
         },
       })
       .then((response) => {

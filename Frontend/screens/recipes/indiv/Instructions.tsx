@@ -1,7 +1,7 @@
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
 import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
-import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { Recipe, Instruction, Step } from "@/utils/recipes/RecipesTypes";
 
 type Props = {
   recipe: Recipe;
@@ -13,21 +13,29 @@ export default function Instructions({ recipe }: Props) {
       <View style={styles.pointsContainer}>
         <FlatList
           data={recipe?.analyzedInstructions}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
-              <View key={item.name}>
-                <View>{item.name}</View>
-                {item?.steps?.map((step) => (
-                  <View
-                    style={styles.pointWrapper}
-                    key={item.name + step.number}
-                  >
-                    <View style={styles.pointDot} />
-                    <Text style={styles.pointText}>
-                      {step.number}. {capitaliseFirstLetter(step.step)}
-                    </Text>
-                  </View>
-                ))}
+              <View key={index}>
+                <View>
+                  <Text>{item.name}</Text>
+                </View>
+
+                <FlatList
+                  data={item.steps}
+                  renderItem={({ item }) => (
+                    <View
+                      style={styles.pointWrapper}
+                      key={index.toString() + item.number}
+                    >
+                      <View style={styles.pointDot} />
+                      <Text style={styles.pointText}>
+                        {index + 1}.{item.number}
+                        {": "}
+                        {item.step}
+                      </Text>
+                    </View>
+                  )}
+                />
               </View>
             );
           }}
