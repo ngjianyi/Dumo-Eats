@@ -1,8 +1,8 @@
-import { FlatList, View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
-import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
 import { Recipe, Nutrient } from "@/utils/recipes/RecipesTypes";
 import separateNutrients from "@/utils/recipes/Nutrients";
+import NutrientSection from "./NutrientSection";
 
 type Props = {
   recipe: Recipe;
@@ -14,7 +14,7 @@ export default function Nutrients({ recipe }: Props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.pointsContainer}>
+      {/* <View style={styles.pointsContainer}>
         <FlatList
           data={recipe?.nutrition.nutrients}
           renderItem={({ item }) => {
@@ -30,7 +30,9 @@ export default function Nutrients({ recipe }: Props) {
           }}
           showsVerticalScrollIndicator={false}
         />
-      </View>
+      </View> */}
+
+      <NutrientSection nutrientSections={separatedNutrients} />
     </View>
   );
 }
