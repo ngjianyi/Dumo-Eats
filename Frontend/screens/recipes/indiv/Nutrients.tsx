@@ -14,24 +14,6 @@ export default function Nutrients({ recipe }: Props) {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.pointsContainer}>
-        <FlatList
-          data={recipe?.nutrition.nutrients}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.pointWrapper} key={item.name}>
-                <View style={styles.pointDot} />
-                <Text style={styles.pointText}>
-                  {capitaliseFirstLetter(item.name)}: {item.amount}
-                  {item.unit} ({item.percentOfDailyNeeds}% of daily needs)
-                </Text>
-              </View>
-            );
-          }}
-          showsVerticalScrollIndicator={false}
-        />
-      </View> */}
-
       <NutrientSection nutrientSections={separatedNutrients} />
     </View>
   );

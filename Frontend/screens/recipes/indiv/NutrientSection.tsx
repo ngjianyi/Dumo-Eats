@@ -33,9 +33,13 @@ export default function NutrientSection({ nutrientSections }: Props) {
               return (
                 <View style={styles.pointWrapper} key={item.name}>
                   <View style={styles.pointDot} />
+
                   <Text style={styles.pointText}>
-                    {item.name}: {item.amount}
-                    {item.unit} ({item.percentOfDailyNeeds}% of daily needs)
+                    <Text style={styles.name}>{item.name}</Text>
+                    {": "}
+                    {item.amount}
+                    {item.unit} {item.percentOfDailyNeeds}
+                    {"% of daily needs"}
                   </Text>
                 </View>
               );
@@ -59,6 +63,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: SIZES.large,
     textAlign: "center",
+    color: COLORS.primary,
+  },
+  name: {
     color: COLORS.primary,
   },
   pointWrapper: {
