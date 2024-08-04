@@ -52,4 +52,46 @@ const isVitamin = (name: string): boolean => {
   return vitamins.has(name);
 };
 
-export { isMacro, isMineral, isVitamin };
+const separateNutrients = (
+  nutrients: Nutrient[]
+): { name: string; nutrients: Nutrient[] }[] => {
+  const macros: Nutrient[] = [];
+  const minerals: Nutrient[] = [];
+  const vitamins: Nutrient[] = [];
+  const others: Nutrient[] = [];
+
+  for (let i = 0; i < nutrients.length; i++) {
+    const nutrient: Nutrient = nutrients[i];
+    const name = nutrient.name.toLowerCase();
+    if (isMacro(name)) {
+      macros.push(nutrient);
+    } else if (isMineral(name)) {
+      minerals.push(nutrient);
+    } else if (isVitamin(name)) {
+      vitamins.push(nutrient);
+    } else {
+      others.push(nutrient);
+    }
+  }
+
+  return [
+    {
+      name: "Macronutrients",
+      nutrients: macros,
+    },
+    {
+      name: "Minerals",
+      nutrients: minerals,
+    },
+    {
+      name: "Vitamins",
+      nutrients: vitamins,
+    },
+    {
+      name: "Others",
+      nutrients: others,
+    },
+  ];
+};
+
+export default separateNutrients;

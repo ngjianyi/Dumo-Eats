@@ -2,7 +2,7 @@ import { FlatList, View, Text, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
 import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
 import { Recipe, Nutrient } from "@/utils/recipes/RecipesTypes";
-import { isMacro, isMineral, isVitamin } from "@/utils/recipes/Nutrients";
+import separateNutrients from "@/utils/recipes/Nutrients";
 
 type Props = {
   recipe: Recipe;
@@ -10,24 +10,7 @@ type Props = {
 
 export default function Nutrients({ recipe }: Props) {
   const nutrients: Nutrient[] = recipe.nutrition.nutrients;
-  const macros: Nutrient[] = [];
-  const minerals: Nutrient[] = [];
-  const vitamins: Nutrient[] = [];
-  const others: Nutrient[] = [];
-
-  for (let i = 0; i < nutrients.length; i++) {
-    const nutrient: Nutrient = nutrients[i];
-    const name = nutrient.name.toLowerCase();
-    if (isMacro(name)) {
-      macros.push(nutrient);
-    } else if (isMineral(name)) {
-      minerals.push(nutrient);
-    } else if (isVitamin(name)) {
-      vitamins.push(nutrient);
-    } else {
-      others.push(nutrient);
-    }
-  }
+  const separatedNutrients = separateNutrients(nutrients);
 
   return (
     <View style={styles.container}>

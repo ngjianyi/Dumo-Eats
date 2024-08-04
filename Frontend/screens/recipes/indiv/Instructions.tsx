@@ -16,9 +16,7 @@ export default function Instructions({ recipe }: Props) {
           renderItem={({ item, index }) => {
             return (
               <View key={index}>
-                <View>
-                  <Text>{item.name}</Text>
-                </View>
+                <Text>{item.name}</Text>
 
                 <FlatList
                   data={item.steps}
