@@ -3,6 +3,7 @@ import { NutrientType } from "./RecipesTypes";
 const macros: Set<string> = new Set([
   "carbohydrates",
   "net carbohydrates",
+  "sugar",
   "protein",
   "fat",
   "saturated fat",
@@ -52,6 +53,10 @@ const isVitamin = (name: string): boolean => {
   return vitamins.has(name);
 };
 
+const compare = (a: NutrientType, b: NutrientType) => {
+  return a.name > b.name ? 1 : -1;
+};
+
 const separateNutrients = (
   nutrients: NutrientType[]
 ): { name: string; nutrients: NutrientType[] }[] => {
@@ -63,12 +68,25 @@ const separateNutrients = (
   for (let i = 0; i < nutrients.length; i++) {
     const nutrient: NutrientType = nutrients[i];
     const name = nutrient.name.toLowerCase();
+    if (name === "calories") {
+      continue;
+    }
+
     if (isMacro(name)) {
       macros.push(nutrient);
     } else if (isMineral(name)) {
       minerals.push(nutrient);
     } else if (isVitamin(name)) {
-      vitamins.push(nutrient);
+      if (name === "folate") {
+        vitamins.push({
+          name: "Vitamin B9", // Rename folate to vitamin B9 for easier reference
+          amount: nutrient.amount,
+          unit: nutrient.unit,
+          percentOfDailyNeeds: nutrient.percentOfDailyNeeds,
+        });
+      } else {
+        vitamins.push(nutrient);
+      }
     } else {
       others.push(nutrient);
     }
@@ -77,19 +95,19 @@ const separateNutrients = (
   return [
     {
       name: "Macronutrients",
-      nutrients: macros,
+      nutrients: macros.sort(compare),
     },
     {
       name: "Minerals",
-      nutrients: minerals,
+      nutrients: minerals.sort(compare),
     },
     {
       name: "Vitamins",
-      nutrients: vitamins,
+      nutrients: vitamins.sort(compare),
     },
     {
       name: "Others",
-      nutrients: others,
+      nutrients: others.sort(compare),
     },
   ];
 };

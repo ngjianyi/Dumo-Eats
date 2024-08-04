@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import { NutrientType } from "@/utils/recipes/RecipesTypes";
-import { COLORS, SIZES } from "@/constants/Theme";
+import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 
 interface Props {
   nutrientSections: {
@@ -21,7 +21,7 @@ export default function NutrientSection({ nutrientSections }: Props) {
       renderHeader={(section) => {
         return (
           <View>
-            <Text>{section.name}</Text>
+            <Text style={styles.title}>{section.name}</Text>
           </View>
         );
       }}
@@ -52,14 +52,14 @@ export default function NutrientSection({ nutrientSections }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#FFF",
-    paddingHorizontal: SIZES.medium,
-    flex: 1,
+  titleContainer: {
+    paddingVertical: SIZES.small,
+    borderRadius: SIZES.medium,
   },
-  pointsContainer: {
-    marginVertical: SIZES.small,
-    flex: 1,
+  title: {
+    fontSize: SIZES.large,
+    textAlign: "center",
+    color: COLORS.primary,
   },
   pointWrapper: {
     flexDirection: "row",
