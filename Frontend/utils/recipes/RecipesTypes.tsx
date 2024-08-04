@@ -1,22 +1,22 @@
-type Recipe = {
+type RecipeType = {
   id: number;
   title: string;
   image: string;
   nutrition: {
-    nutrients: Nutrient[];
-    ingredients: Ingredient[];
+    nutrients: NutrientType[];
+    ingredients: IngredientType[];
   };
-  analyzedInstructions: Instruction[];
+  analyzedInstructions: InstructionType[];
 };
 
-type Nutrient = {
+type NutrientType = {
   name: string;
   amount: number;
   unit: string;
   percentOfDailyNeeds: number;
 };
 
-type Ingredient = {
+type IngredientType = {
   id: number;
   amount: number;
   unit: string;
@@ -24,12 +24,12 @@ type Ingredient = {
   name: string;
 };
 
-type Instruction = {
+type InstructionType = {
   name: string;
-  steps: Step[];
+  steps: StepType[];
 };
 
-type Step = {
+type StepType = {
   ingredients: {
     id: number;
     image: string;
@@ -39,4 +39,4 @@ type Step = {
   step: string;
 };
 
-export { Recipe, Nutrient, Ingredient, Instruction, Step };
+export { RecipeType, NutrientType, IngredientType, InstructionType, StepType };

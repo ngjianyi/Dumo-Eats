@@ -1,10 +1,9 @@
 import { FlatList, View, Text, StyleSheet } from "react-native";
+import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import { COLORS, SIZES } from "@/constants/Theme";
-import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
-import { Recipe, Instruction, Step } from "@/utils/recipes/RecipesTypes";
 
 type Props = {
-  recipe: Recipe;
+  recipe: RecipeType;
 };
 
 export default function Instructions({ recipe }: Props) {

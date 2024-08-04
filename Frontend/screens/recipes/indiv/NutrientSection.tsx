@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import { Nutrient } from "@/utils/recipes/RecipesTypes";
+import { NutrientType } from "@/utils/recipes/RecipesTypes";
 import { COLORS, SIZES } from "@/constants/Theme";
 
 interface Props {
   nutrientSections: {
     name: string;
-    nutrients: Nutrient[];
+    nutrients: NutrientType[];
   }[];
 }
 

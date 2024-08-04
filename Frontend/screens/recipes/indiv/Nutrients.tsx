@@ -1,15 +1,15 @@
 import { View, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
-import { Recipe, Nutrient } from "@/utils/recipes/RecipesTypes";
+import { RecipeType, NutrientType } from "@/utils/recipes/RecipesTypes";
 import separateNutrients from "@/utils/recipes/Nutrients";
 import NutrientSection from "./NutrientSection";
 
 type Props = {
-  recipe: Recipe;
+  recipe: RecipeType;
 };
 
 export default function Nutrients({ recipe }: Props) {
-  const nutrients: Nutrient[] = recipe.nutrition.nutrients;
+  const nutrients: NutrientType[] = recipe.nutrition.nutrients;
   const separatedNutrients = separateNutrients(nutrients);
 
   return (

@@ -7,7 +7,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { DATA_BASE } from "@/firebaseCONFIG";
-import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import { getUserId, getUserDocSnap } from "@/utils/social/User";
 import {
   likeHandler,
@@ -16,7 +16,7 @@ import {
 } from "@/utils/social/SocialHandlers";
 import SocialTabs from "@/components/social/SocialTabs";
 type Props = {
-  recipe: Recipe;
+  recipe: RecipeType;
 };
 
 export default function RecipeSocials({ recipe }: Props) {

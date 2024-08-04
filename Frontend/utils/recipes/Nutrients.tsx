@@ -1,4 +1,4 @@
-import { Nutrient } from "./RecipesTypes";
+import { NutrientType } from "./RecipesTypes";
 
 const macros: Set<string> = new Set([
   "carbohydrates",
@@ -53,15 +53,15 @@ const isVitamin = (name: string): boolean => {
 };
 
 const separateNutrients = (
-  nutrients: Nutrient[]
-): { name: string; nutrients: Nutrient[] }[] => {
-  const macros: Nutrient[] = [];
-  const minerals: Nutrient[] = [];
-  const vitamins: Nutrient[] = [];
-  const others: Nutrient[] = [];
+  nutrients: NutrientType[]
+): { name: string; nutrients: NutrientType[] }[] => {
+  const macros: NutrientType[] = [];
+  const minerals: NutrientType[] = [];
+  const vitamins: NutrientType[] = [];
+  const others: NutrientType[] = [];
 
   for (let i = 0; i < nutrients.length; i++) {
-    const nutrient: Nutrient = nutrients[i];
+    const nutrient: NutrientType = nutrients[i];
     const name = nutrient.name.toLowerCase();
     if (isMacro(name)) {
       macros.push(nutrient);

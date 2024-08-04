@@ -1,10 +1,10 @@
 import { View, StyleSheet, FlatList, RefreshControl } from "react-native";
 import React, { useState } from "react";
-import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import RecipeDisplay from "./RecipeDisplay/RecipeDisplay";
 
 type Props = {
-  recipes: Recipe[] | null;
+  recipes: RecipeType[] | null;
   getRecipes: () => void;
 };
 

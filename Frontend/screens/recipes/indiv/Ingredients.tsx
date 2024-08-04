@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
 import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
-import { Recipe, Ingredient } from "@/utils/recipes/RecipesTypes";
+import { RecipeType, IngredientType } from "@/utils/recipes/RecipesTypes";
 
 type Props = {
-  recipe: Recipe;
+  recipe: RecipeType;
 };
 
 export default function ({ recipe }: Props) {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [ingredients, setIngredients] = useState<IngredientType[]>([]);
 
   // Filters duplicate ingredients
   const getFilteredIngredients = () => {
