@@ -6,15 +6,13 @@ import { SIZES, COLORS } from "@/constants/Theme";
 
 export default function Filter() {
   return (
-    <>
-      <View style={styles.searchContainer}>
-        <CaloriesFilter />
+    <View style={styles.searchContainer}>
+      <CaloriesFilter />
 
-        <IngredientsFilter />
+      <IngredientsFilter />
 
-        <IntolerancesFilter />
-      </View>
-    </>
+      <IntolerancesFilter />
+    </View>
   );
 }
 

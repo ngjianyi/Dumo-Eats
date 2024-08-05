@@ -12,7 +12,6 @@ export default function IngredientsFilter() {
   } = useContext<any>(RecipeContext);
 
   return (
-    // <View style={styles.searchContainer}>
     <View style={{ flexDirection: "column" }}>
       <Text style={styles.titleText}>Ingredients</Text>
 
@@ -28,8 +27,6 @@ export default function IngredientsFilter() {
         />
       </View>
 
-      {/* <Text style={styles.titleText}>Ingredients to exclude:</Text> */}
-
       <View style={styles.searchWrapper}>
         <TextInput
           style={styles.searchInput}
@@ -42,7 +39,6 @@ export default function IngredientsFilter() {
         />
       </View>
     </View>
-    // </View>
   );
 }
 
