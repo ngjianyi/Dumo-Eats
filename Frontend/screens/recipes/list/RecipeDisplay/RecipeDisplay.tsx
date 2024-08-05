@@ -8,14 +8,15 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Collapsible from "react-native-collapsible";
 import RecipeSocials from ".././RecipeSocials";
 import RecipeIndivScreen from "../../indiv/RecipeIndivScreen";
-import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 import DailyAllowance from "@/utils/recipes/DailyAllowances";
 
 type Props = {
-  item: Recipe;
+  item: RecipeType;
 };
 
 export default function RecipeDisplay({ item }: Props) {
@@ -24,6 +25,7 @@ export default function RecipeDisplay({ item }: Props) {
   const [warnings, setWarnings] = useState<string[]>([]);
   const [message, setMessage] = useState<string[]>([]);
   const [colour, setColour] = useState<string>("black");
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
 
   useEffect(() => {
     DailyAllowance(item.nutrition.nutrients).then((res) => {
@@ -36,9 +38,11 @@ export default function RecipeDisplay({ item }: Props) {
     if (message == benefits) {
       setMessage([]);
       setColour("black");
+      setIsCollapsed(true);
     } else {
       setMessage(benefits);
       setColour("forestgreen");
+      setIsCollapsed(false);
     }
   };
 
@@ -46,9 +50,11 @@ export default function RecipeDisplay({ item }: Props) {
     if (message == warnings) {
       setMessage([]);
       setColour("black");
+      setIsCollapsed(true);
     } else {
       setMessage(warnings);
       setColour("red");
+      setIsCollapsed(false);
     }
   };
 
@@ -89,9 +95,11 @@ export default function RecipeDisplay({ item }: Props) {
           )}
         </View>
 
-        {message.length > 0 && (
-          <Text style={{ color: colour }}>High in {message.join(", ")}</Text>
-        )}
+        <Collapsible collapsed={isCollapsed}>
+          {message.length > 0 ? (
+            <Text style={{ color: colour }}>High in {message.join(", ")}</Text>
+          ) : null}
+        </Collapsible>
 
         <RecipeSocials recipe={item} />
       </View>
