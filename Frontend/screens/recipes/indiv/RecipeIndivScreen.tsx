@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import Tabs from "../../../components/tabs/Tabs";
 import RecipeHeader from "./RecipeHeader";
 import { COLORS, SIZES } from "@/constants/Theme";
-import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import Nutrients from "./Nutrients";
 import Ingredients from "./Ingredients";
 import Instructions from "./Instructions";
@@ -18,7 +18,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 type Props = {
   setDetailsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  recipe: Recipe;
+  recipe: RecipeType;
 };
 
 export default function RecipeIndivScreen({

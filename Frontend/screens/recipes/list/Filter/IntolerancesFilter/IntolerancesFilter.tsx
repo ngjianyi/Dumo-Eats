@@ -32,7 +32,7 @@ export default function IntolerancesFilter() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.allergyContainer}>
-        <Text style={styles.allergy}>Allergens:</Text>
+        <Text style={styles.titleText}>Allergens:</Text>
 
         <FlatList
           data={intolerancesList}
@@ -74,6 +74,13 @@ export default function IntolerancesFilter() {
 }
 
 const styles = StyleSheet.create({
+  titleText: {
+    paddingTop: SIZES.large,
+    paddingBottom: SIZES.xSmall / 2,
+    textAlign: "center",
+    fontSize: SIZES.medium,
+    color: COLORS.secondary,
+  },
   tab: {
     paddingVertical: SIZES.small / 2,
     paddingHorizontal: SIZES.small,
@@ -89,11 +96,5 @@ const styles = StyleSheet.create({
   allergyContainer: {
     width: "70%",
     alignSelf: "center",
-  },
-  allergy: {
-    fontSize: SIZES.large,
-    color: COLORS.secondary,
-    textAlign: "center",
-    paddingVertical: SIZES.small,
   },
 });

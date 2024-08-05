@@ -28,8 +28,7 @@ const Tabs = ({ tabs, activeTab, setActiveTab }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: SIZES.small,
-    marginBottom: SIZES.small / 2,
+    marginVertical: SIZES.xSmall,
   },
   tabs: {
     justifyContent: "space-around",

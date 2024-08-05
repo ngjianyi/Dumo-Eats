@@ -80,8 +80,7 @@ export default function CuisineTabs() {
 const styles = StyleSheet.create({
   tabsContainer: {
     width: "100%",
-    marginTop: 16,
-    padding: 3,
+    paddingVertical: SIZES.xSmall,
   },
   tab: {
     paddingVertical: SIZES.small / 2,

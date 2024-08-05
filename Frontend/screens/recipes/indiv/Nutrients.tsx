@@ -1,32 +1,20 @@
-import { FlatList, View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
-import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
-import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { RecipeType, NutrientType } from "@/utils/recipes/RecipesTypes";
+import separateNutrients from "@/utils/recipes/Nutrients";
+import NutrientSection from "./NutrientSection";
 
 type Props = {
-  recipe: Recipe;
+  recipe: RecipeType;
 };
 
 export default function Nutrients({ recipe }: Props) {
+  const nutrients: NutrientType[] = recipe.nutrition.nutrients;
+  const separatedNutrients = separateNutrients(nutrients);
+
   return (
     <View style={styles.container}>
-      <View style={styles.pointsContainer}>
-        <FlatList
-          data={recipe?.nutrition.nutrients}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.pointWrapper} key={item.name}>
-                <View style={styles.pointDot} />
-                <Text style={styles.pointText}>
-                  {capitaliseFirstLetter(item.name)}: {item.amount}
-                  {item.unit} ({item.percentOfDailyNeeds}% of daily needs)
-                </Text>
-              </View>
-            );
-          }}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      <NutrientSection nutrientSections={separatedNutrients} />
     </View>
   );
 }

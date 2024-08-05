@@ -2,20 +2,20 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { COLORS, SIZES } from "@/constants/Theme";
 import capitaliseFirstLetter from "@/utils/functions/Capitalise/Capitalise";
-import { Recipe, Ingredient } from "@/utils/recipes/RecipesTypes";
+import { RecipeType, IngredientType } from "@/utils/recipes/RecipesTypes";
 
 type Props = {
-  recipe: Recipe;
+  recipe: RecipeType;
 };
 
 export default function ({ recipe }: Props) {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [ingredients, setIngredients] = useState<IngredientType[]>([]);
 
   // Filters duplicate ingredients
   const getFilteredIngredients = () => {
     setIngredients([
       ...new Map(
-        recipe?.nutrition.ingredients.map((obj) => [
+        recipe.nutrition.ingredients.map((obj) => [
           `${obj.id}:${obj.name}`,
           obj,
         ])
@@ -30,16 +30,14 @@ export default function ({ recipe }: Props) {
       <View style={styles.pointsContainer}>
         <FlatList
           data={ingredients}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.pointWrapper} key={item.name}>
-                <View style={styles.pointDot} />
-                <Text style={styles.pointText}>
-                  {capitaliseFirstLetter(item.name)}: {item.amount} {item.unit}
-                </Text>
-              </View>
-            );
-          }}
+          renderItem={({ item }) => (
+            <View style={styles.pointWrapper} key={item.id}>
+              <View style={styles.pointDot} />
+              <Text style={styles.pointText}>
+                {capitaliseFirstLetter(item.name)}: {item.amount} {item.unit}
+              </Text>
+            </View>
+          )}
           showsVerticalScrollIndicator={false}
         />
       </View>
