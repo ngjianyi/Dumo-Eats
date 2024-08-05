@@ -7,6 +7,7 @@ import {
   Modal,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import RecipeSocials from ".././RecipeSocials";
 import RecipeIndivScreen from "../../indiv/RecipeIndivScreen";
 import { Recipe } from "@/utils/recipes/RecipesTypes";
@@ -21,6 +22,8 @@ export default function RecipeDisplay({ item }: Props) {
   const [detailsVisible, setDetailsVisible] = useState<boolean>(false);
   const [benefits, setBenefits] = useState<string[]>([]);
   const [warnings, setWarnings] = useState<string[]>([]);
+  const [message, setMessage] = useState<string[]>([]);
+  const [colour, setColour] = useState<string>("black");
 
   useEffect(() => {
     DailyAllowance(item.nutrition.nutrients).then((res) => {
@@ -28,6 +31,26 @@ export default function RecipeDisplay({ item }: Props) {
       setWarnings(res[1]);
     });
   }, []);
+
+  const benefitHandler = () => {
+    if (message == benefits) {
+      setMessage([]);
+      setColour("black");
+    } else {
+      setMessage(benefits);
+      setColour("forestgreen");
+    }
+  };
+
+  const warningHandler = () => {
+    if (message == warnings) {
+      setMessage([]);
+      setColour("black");
+    } else {
+      setMessage(warnings);
+      setColour("red");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -38,20 +61,45 @@ export default function RecipeDisplay({ item }: Props) {
           </Text>
         </TouchableOpacity>
 
-        <Text style={styles.calories}>
-          Calories: {Math.ceil(item.nutrition.nutrients[0].amount)}
-        </Text>
-        <Text style={styles.benefit}>
-          {benefits.length > 0 && "High in " + benefits.join(", ")}
-        </Text>
-        <Text style={styles.warning}>
-          {warnings.length > 0 ? "High in " + warnings.join(", ") : <View />}
-        </Text>
+        <View style={styles.details}>
+          <Text style={styles.calories}>
+            Calories: {Math.ceil(item.nutrition.nutrients[0].amount)}
+          </Text>
+
+          {benefits.length > 0 && (
+            <TouchableOpacity onPress={benefitHandler}>
+              <Ionicons
+                name="alert-circle"
+                size={SIZES.large}
+                color="forestgreen"
+                style={styles.labels}
+              />
+            </TouchableOpacity>
+          )}
+
+          {warnings.length > 0 && (
+            <TouchableOpacity onPress={warningHandler}>
+              <Ionicons
+                name="warning"
+                size={SIZES.large}
+                color="red"
+                style={styles.labels}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {message.length > 0 && (
+          <Text style={{ color: colour }}>High in {message.join(", ")}</Text>
+        )}
 
         <RecipeSocials recipe={item} />
       </View>
 
-      <TouchableOpacity style={styles.logoContainer}>
+      <TouchableOpacity
+        style={styles.logoContainer}
+        onPress={() => setDetailsVisible(true)}
+      >
         <Image src={item.image} resizeMode="contain" style={styles.image} />
       </TouchableOpacity>
 
@@ -85,31 +133,32 @@ const styles = StyleSheet.create({
     shadowColor: COLORS.white,
   },
   logoContainer: {
-    width: 50,
-    height: 50,
-    backgroundColor: COLORS.white,
-    borderRadius: SIZES.medium,
-    justifyContent: "center",
-    alignItems: "center",
+    width: 70,
+    height: 53,
+    marginLeft: SIZES.small,
   },
   image: {
-    width: "70%",
-    height: "70%",
+    width: "100%",
+    height: "100%",
+    borderColor: COLORS.gray,
+    borderWidth: 1,
   },
   textContainer: {
     flex: 1,
-    marginHorizontal: SIZES.medium,
   },
   title: {
     fontSize: SIZES.medium,
     fontFamily: "DMBold",
     color: COLORS.primary,
   },
+  details: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   calories: {
     fontSize: SIZES.small + 2,
     fontFamily: "DMRegular",
     color: COLORS.gray,
-    marginTop: 3,
   },
   warning: {
     fontSize: SIZES.small + 2,
@@ -122,5 +171,8 @@ const styles = StyleSheet.create({
     fontFamily: "DMRegular",
     color: "forestgreen",
     marginTop: 3,
+  },
+  labels: {
+    paddingLeft: SIZES.xSmall / 2,
   },
 });

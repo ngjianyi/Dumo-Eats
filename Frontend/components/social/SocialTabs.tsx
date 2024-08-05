@@ -76,7 +76,7 @@ export default function SocialTabs({
 const styles = StyleSheet.create({
   footer: {
     flexDirection: "row",
-    paddingTop: SIZES.xSmall,
+    paddingTop: SIZES.xSmall / 2,
   },
   leftFooter: {
     flexDirection: "row",

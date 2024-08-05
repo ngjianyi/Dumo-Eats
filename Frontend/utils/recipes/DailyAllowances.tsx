@@ -6,14 +6,14 @@ export default async function DailyAllowance(nutrients: Nutrient[]) {
   const calorieGoal = user.data()?.calorieGoal;
   const caloriesLeft = user.data()?.calorieGoal - user.data()?.currentCalorie;
   const gender = user.data()?.gender;
-  const age = user.data()?.DOB.split("/").pop() - new Date().getFullYear();
+  const age = new Date().getFullYear() - user.data()?.DOB.split("/").pop();
   const currBenefits: string[] = [];
   const currWarnings: string[] = [];
 
   for (let i = 0; i < nutrients.length; i++) {
     if (nutrients[i].name === "Calories") {
       if (
-        nutrients[i].amount > calorieGoal / 3 ||
+        nutrients[i].amount > calorieGoal / 2 ||
         nutrients[i].amount > caloriesLeft
       ) {
         currWarnings.push("calories");
