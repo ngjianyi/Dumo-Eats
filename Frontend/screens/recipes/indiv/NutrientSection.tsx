@@ -20,9 +20,9 @@ export default function NutrientSection({ nutrientSections }: Props) {
       activeSections={activeSections}
       renderHeader={(section) => {
         return (
-          //   <View>
-          <Text style={styles.title}>{section.name}</Text>
-          //   </View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{section.name}</Text>
+          </View>
         );
       }}
       renderContent={(section) => {
@@ -51,14 +51,15 @@ export default function NutrientSection({ nutrientSections }: Props) {
         setActiveSections(activeSections);
       }}
       underlayColor={COLORS.gray2}
+      renderAsFlatList={true}
+      expandMultiple={true}
     />
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    paddingVertical: SIZES.small,
-    borderRadius: SIZES.medium,
+    paddingVertical: SIZES.xSmall / 2,
   },
   title: {
     fontSize: SIZES.large,
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   name: {
-    color: COLORS.primary,
+    color: COLORS.secondary,
   },
   pointWrapper: {
     flexDirection: "row",

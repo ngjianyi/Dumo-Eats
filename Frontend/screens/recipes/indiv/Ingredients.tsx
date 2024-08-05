@@ -15,7 +15,7 @@ export default function ({ recipe }: Props) {
   const getFilteredIngredients = () => {
     setIngredients([
       ...new Map(
-        recipe?.nutrition.ingredients.map((obj) => [
+        recipe.nutrition.ingredients.map((obj) => [
           `${obj.id}:${obj.name}`,
           obj,
         ])
@@ -31,8 +31,9 @@ export default function ({ recipe }: Props) {
         <FlatList
           data={ingredients}
           renderItem={({ item }) => {
+            console.log(item.id);
             return (
-              <View style={styles.pointWrapper} key={item.name}>
+              <View style={styles.pointWrapper} key={item.id}>
                 <View style={styles.pointDot} />
                 <Text style={styles.pointText}>
                   {capitaliseFirstLetter(item.name)}: {item.amount} {item.unit}

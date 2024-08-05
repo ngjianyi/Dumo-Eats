@@ -1,4 +1,6 @@
-import { FlatList, View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { FlatList, View, Text, StyleSheet, SafeAreaView } from "react-native";
+import Accordion from "react-native-collapsible/Accordion";
 import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import { COLORS, SIZES } from "@/constants/Theme";
 
@@ -7,40 +9,90 @@ type Props = {
 };
 
 export default function Instructions({ recipe }: Props) {
-  return (
-    <View style={styles.container}>
-      <View style={styles.pointsContainer}>
-        <FlatList
-          data={recipe?.analyzedInstructions}
-          renderItem={({ item, index }) => {
-            return (
-              <View key={index}>
-                <Text>{item.name}</Text>
+  const [activeSections, setActiveSections] = useState<number[]>([0]);
 
-                <FlatList
-                  data={item.steps}
-                  renderItem={({ item }) => (
-                    <View
-                      style={styles.pointWrapper}
-                      key={index.toString() + item.number}
-                    >
-                      <View style={styles.pointDot} />
-                      <Text style={styles.pointText}>
-                        {index + 1}.{item.number}
-                        {": "}
-                        {item.step}
+  if (recipe.analyzedInstructions.length == 1) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.pointsContainer}>
+          <FlatList
+            data={recipe.analyzedInstructions}
+            renderItem={({ item, index }) => {
+              return (
+                <View key={index}>
+                  <Text style={styles.header}>{item.name}</Text>
+
+                  <FlatList
+                    data={item.steps}
+                    renderItem={({ item }) => (
+                      <View
+                        style={styles.pointWrapper}
+                        key={index.toString() + item.number}
+                      >
+                        <View style={styles.pointDot} />
+                        <Text style={styles.pointText}>
+                          <Text style={styles.step}>
+                            {"Step "}
+                            {index + 1}.{item.number}{" "}
+                          </Text>
+
+                          {item.step}
+                        </Text>
+                      </View>
+                    )}
+                  />
+                </View>
+              );
+            }}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      </View>
+    );
+  } else {
+    return (
+      <SafeAreaView>
+        <Accordion
+          sections={recipe.analyzedInstructions}
+          activeSections={activeSections}
+          renderHeader={(section) => {
+            return <Text style={styles.title}>{section.name}</Text>;
+          }}
+          renderContent={(section) => {
+            return (
+              <FlatList
+                data={section.steps}
+                renderItem={({ item }) => (
+                  <View style={styles.pointWrapper} key={item.number}>
+                    <View style={styles.pointDot} />
+                    <Text style={styles.pointText}>
+                      <Text style={styles.step}>
+                        {"Step "}
+                        {item.number}{" "}
                       </Text>
-                    </View>
-                  )}
-                />
-              </View>
+
+                      {item.step}
+                    </Text>
+                  </View>
+                )}
+              />
             );
           }}
-          showsVerticalScrollIndicator={false}
+          onChange={(activeSections) => {
+            setActiveSections(activeSections);
+          }}
+          underlayColor={COLORS.gray2}
+          renderAsFlatList={true}
+          expandMultiple={true}
+          containerStyle={{
+            backgroundColor: "#FFF",
+            paddingHorizontal: SIZES.medium,
+          }}
+          sectionContainerStyle={{ marginVertical: SIZES.small }}
         />
-      </View>
-    </View>
-  );
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -48,6 +100,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     paddingHorizontal: SIZES.medium,
     flex: 1,
+  },
+  header: { color: COLORS.primary },
+  step: {
+    color: COLORS.secondary,
   },
   pointsContainer: {
     marginVertical: SIZES.small,
@@ -70,5 +126,9 @@ const styles = StyleSheet.create({
     fontSize: SIZES.medium - 2,
     color: COLORS.gray,
     marginLeft: SIZES.small,
+  },
+  title: {
+    fontSize: SIZES.medium,
+    color: COLORS.primary,
   },
 });
