@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import CaloriesFilter from "./CaloriesFilter/CaloriesFilter";
 import IngredientsFilter from "./IngredientsFilter/IngredientsFilter";
 import IntolerancesFilter from "./IntolerancesFilter/IntolerancesFilter";
@@ -7,22 +7,21 @@ import { SIZES, COLORS } from "@/constants/Theme";
 export default function Filter() {
   return (
     <>
-      <Text style={styles.welcomeMessage}>Filters</Text>
+      <View style={styles.searchContainer}>
+        <CaloriesFilter />
 
-      <CaloriesFilter />
+        <IngredientsFilter />
 
-      <IngredientsFilter />
-
-      <IntolerancesFilter />
+        <IntolerancesFilter />
+      </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  welcomeMessage: {
-    fontSize: SIZES.xLarge,
-    color: COLORS.primary,
-    marginTop: 2,
-    textAlign: "center",
+  searchContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: SIZES.xSmall / 2,
   },
 });

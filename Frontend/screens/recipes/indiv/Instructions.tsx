@@ -58,26 +58,24 @@ export default function Instructions({ recipe }: Props) {
           renderHeader={(section) => {
             return <Text style={styles.title}>{section.name}</Text>;
           }}
-          renderContent={(section) => {
-            return (
-              <FlatList
-                data={section.steps}
-                renderItem={({ item }) => (
-                  <View style={styles.pointWrapper} key={item.number}>
-                    <View style={styles.pointDot} />
-                    <Text style={styles.pointText}>
-                      <Text style={styles.step}>
-                        {"Step "}
-                        {item.number}{" "}
-                      </Text>
-
-                      {item.step}
+          renderContent={(section) => (
+            <FlatList
+              data={section.steps}
+              renderItem={({ item }) => (
+                <View style={styles.pointWrapper} key={item.number}>
+                  <View style={styles.pointDot} />
+                  <Text style={styles.pointText}>
+                    <Text style={styles.step}>
+                      {"Step "}
+                      {item.number}{" "}
                     </Text>
-                  </View>
-                )}
-              />
-            );
-          }}
+
+                    {item.step}
+                  </Text>
+                </View>
+              )}
+            />
+          )}
           onChange={(activeSections) => {
             setActiveSections(activeSections);
           }}

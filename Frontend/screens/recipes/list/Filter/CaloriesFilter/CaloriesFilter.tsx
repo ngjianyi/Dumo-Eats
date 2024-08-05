@@ -9,7 +9,7 @@ export default function CaloriesFilter() {
 
   return (
     <View style={{ flexDirection: "column" }}>
-      <Text style={styles.titleText}>Calories:</Text>
+      <Text style={styles.titleText}>Calories</Text>
 
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <View style={styles.searchWrapper}>
@@ -25,7 +25,9 @@ export default function CaloriesFilter() {
           />
         </View>
 
-        <Text style={styles.calorie}>to</Text>
+        <View style={styles.middleWrapper}>
+          <Text style={styles.middleText}>to</Text>
+        </View>
 
         <View style={styles.searchWrapper}>
           <TextInput
@@ -45,38 +47,27 @@ export default function CaloriesFilter() {
 }
 
 const styles = StyleSheet.create({
-  calorie: {
-    paddingTop: SIZES.xSmall / 2,
+  titleText: {
+    paddingTop: SIZES.large,
+    paddingBottom: SIZES.xSmall / 2,
+    textAlign: "center",
+    fontSize: SIZES.medium,
+    color: COLORS.secondary,
   },
-  searchContainer: {
+  middleWrapper: {
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "row",
-    height: 150,
-    margin: SIZES.xSmall / 2,
-    padding: SIZES.xSmall / 2,
   },
+  middleText: { color: COLORS.secondary },
   searchWrapper: {
     backgroundColor: COLORS.white,
     marginHorizontal: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: SIZES.medium,
-    height: 30,
-  },
-  titleText: {
-    padding: SIZES.small,
-    textAlign: "center",
+    height: SIZES.xxLarge,
   },
   searchInput: {
     paddingHorizontal: SIZES.medium,
-  },
-  searchBtn: {
-    width: 40,
-    height: 40,
-    backgroundColor: COLORS.tertiary,
-    borderRadius: SIZES.medium,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

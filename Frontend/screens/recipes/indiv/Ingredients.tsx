@@ -30,17 +30,14 @@ export default function ({ recipe }: Props) {
       <View style={styles.pointsContainer}>
         <FlatList
           data={ingredients}
-          renderItem={({ item }) => {
-            console.log(item.id);
-            return (
-              <View style={styles.pointWrapper} key={item.id}>
-                <View style={styles.pointDot} />
-                <Text style={styles.pointText}>
-                  {capitaliseFirstLetter(item.name)}: {item.amount} {item.unit}
-                </Text>
-              </View>
-            );
-          }}
+          renderItem={({ item }) => (
+            <View style={styles.pointWrapper} key={item.id}>
+              <View style={styles.pointDot} />
+              <Text style={styles.pointText}>
+                {capitaliseFirstLetter(item.name)}: {item.amount} {item.unit}
+              </Text>
+            </View>
+          )}
           showsVerticalScrollIndicator={false}
         />
       </View>

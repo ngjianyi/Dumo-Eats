@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   View,
@@ -7,12 +8,12 @@ import {
   Keyboard,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useEffect, useContext } from "react";
 import axios, { AxiosError } from "axios";
 import { RecipeContext } from "../RecipeProvider";
-import Recipes from "@/screens/recipes/list/Recipes";
+import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import Header from "./Header";
 import CuisineTabs from "./CuisineTabs/CuisineTabs";
+import Recipes from "@/screens/recipes/list/Recipes";
 import { SIZES } from "@/constants/Theme";
 
 export default function RecipeListScreen({ navigation }: any) {
@@ -26,7 +27,7 @@ export default function RecipeListScreen({ navigation }: any) {
     intolerances,
   } = useContext<any>(RecipeContext);
 
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState<RecipeType[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [totalRecipes, setTotalRecipes] = useState<number>(0);
@@ -103,7 +104,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   error: {
-    // fontFamily: FONT.bold,
     textAlign: "center",
     margin: SIZES.xLarge,
   },
