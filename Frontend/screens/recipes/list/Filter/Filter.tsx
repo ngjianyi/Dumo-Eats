@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import CaloriesFilter from "./CaloriesFilter/CaloriesFilter";
 import IngredientsFilter from "./IngredientsFilter/IngredientsFilter";
 import IntolerancesFilter from "./IntolerancesFilter/IntolerancesFilter";
-import { SIZES, COLORS } from "@/constants/Theme";
+import { SIZES } from "@/constants/Theme";
 
 export default function Filter() {
   return (
