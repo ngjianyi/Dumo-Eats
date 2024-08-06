@@ -1,14 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  TouchableHighlight,
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
@@ -26,6 +28,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { PropsSignup } from "@/components/navigation/PropTypes";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 export default function SignupScreen({ navigation }: PropsSignup) {
   const haveAccountHandler: () => void = () => navigation.navigate("login");
@@ -44,6 +47,32 @@ export default function SignupScreen({ navigation }: PropsSignup) {
   const auth = AUTH;
 
   const handleSubmit = async () => {
+    if (!username) {
+      Alert.alert("", "Please enter a username");
+      return;
+    } else if (!firstName) {
+      Alert.alert("", "Please enter a first name");
+      return;
+    } else if (!lastName) {
+      Alert.alert("", "Please enter a last name");
+      return;
+    } else if (!email) {
+      Alert.alert("", "Please enter an email");
+      return;
+    } else if (!password1) {
+      Alert.alert("", "Please enter a password");
+      return;
+    } else if (!password2) {
+      Alert.alert("", "Please enter a confirmation password");
+      return;
+    } else if (password1 !== password2) {
+      Alert.alert("", "Passwords do not match");
+      return;
+    } else if (password1.length < 6) {
+      Alert.alert("", "Passwords must have at least 6 characters");
+      return;
+    }
+
     setLoading(true);
     try {
       const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
@@ -56,34 +85,39 @@ export default function SignupScreen({ navigation }: PropsSignup) {
       });
 
       if (status) {
-        alert("Username is already taken");
+        Alert.alert("", "Username has been taken");
         return;
       }
 
-      if (username == "") {
-        alert("Missing username");
-        return;
-      }
+      // if (status) {
+      //   alert("Username is already taken");
+      //   return;
+      // }
 
-      if (firstName == "" || lastName == "") {
-        alert("Missing name");
-        return;
-      }
+      // if (username == "") {
+      //   alert("Missing username");
+      //   return;
+      // }
 
-      if (password1 == "") {
-        alert("Missing password");
-        return;
-      }
+      // if (firstName == "" || lastName == "") {
+      //   alert("Missing name");
+      //   return;
+      // }
 
-      if (password1.length < 6) {
-        alert("Password too short, must be at least 6 characters");
-        return;
-      }
+      // if (password1 == "") {
+      //   alert("Missing password");
+      //   return;
+      // }
 
-      if (password1 != password2) {
-        alert("Passwords do not match");
-        return;
-      }
+      // if (password1.length < 6) {
+      //   alert("Password too short, must be at least 6 characters");
+      //   return;
+      // }
+
+      // if (password1 != password2) {
+      //   alert("Passwords do not match");
+      //   return;
+      // }
 
       const response = await createUserWithEmailAndPassword(
         auth,
@@ -117,35 +151,154 @@ export default function SignupScreen({ navigation }: PropsSignup) {
       await addDoc(collection(DATA_BASE, "Usernames"), {
         username: username,
       });
+      navigation.navigate("login");
     } catch (error: any) {
       const errorCode = error.code;
-      if (errorCode == "auth/email-already-in-use") {
-        alert("Email already in use");
-      } else if (errorCode == "auth/invalid-email") {
-        alert("Invalid email");
-      } else if (errorCode == "auth/missing-email") {
-        alert("Missing email");
+      // if (errorCode == "auth/email-already-in-use") {
+      //   alert("Email already in use");
+      // } else if (errorCode == "auth/invalid-email") {
+      //   alert("Invalid email");
+      // } else if (errorCode == "auth/missing-email") {
+      //   alert("Missing email");
+      // } else {
+      //   alert("Sign up failed: " + error.message);
+      // }
+      // return;
+      if (errorCode == "auth/auth/invalid-email") {
+        Alert.alert("", "Please enter a valid email");
+      } else if (errorCode == "auth/email-already-in-use") {
+        Alert.alert("", "Email is already in use");
       } else {
-        alert("Sign up failed: " + error.message);
+        Alert.alert("", "Something went wrong");
       }
-      return;
     } finally {
       setLoading(false);
       auth.signOut();
     }
-    navigation.navigate("login");
   };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <Text style={styles.headerText}>Create Account</Text>
           <Text style={styles.subHeaderText}>
             Start your journey with DumoEats today!
           </Text>
+        </View> */}
+        <View style={styles.header}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>Create your account</Text>
+          </View>
         </View>
+
         <View style={styles.details}>
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            placeholderTextColor={COLORS.gray}
+            value={username}
+            onChangeText={(val) => setUsername(val)}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            aria-label="Username"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="First name"
+            placeholderTextColor={COLORS.gray}
+            value={firstName}
+            onChangeText={(val) => {
+              setFirstName(val);
+            }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            aria-label="Firstname"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Last name"
+            placeholderTextColor={COLORS.gray}
+            value={lastName}
+            onChangeText={(val) => {
+              setLastName(val);
+            }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            aria-label="Lastname"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor={COLORS.gray}
+            value={email}
+            onChangeText={(val) => setEmail(val)}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            aria-label="Email"
+          />
+          <View style={{ justifyContent: "center" }}>
+            <TextInput
+              style={styles.input}
+              placeholderTextColor={COLORS.gray}
+              placeholder=" Password"
+              secureTextEntry={!visible1}
+              value={password1}
+              onChangeText={(val) => {
+                setPassword1(val);
+              }}
+              textContentType="oneTimeCode"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoComplete="off"
+              aria-label="Password1"
+            />
+            <TouchableHighlight
+              style={styles.visible}
+              onPress={pressHandler1}
+              underlayColor={COLORS.lightWhite}
+            >
+              <Ionicons
+                name={visible1 ? "eye" : "eye-off"}
+                size={22}
+                color={COLORS.gray}
+              />
+            </TouchableHighlight>
+          </View>
+          <View style={{ justifyContent: "center" }}>
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              placeholderTextColor={COLORS.gray}
+              secureTextEntry={!visible2}
+              value={password2}
+              onChangeText={(val) => {
+                setPassword2(val);
+              }}
+              textContentType="oneTimeCode"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoComplete="off"
+              aria-label="Password2"
+            />
+            <TouchableHighlight
+              onPress={pressHandler2}
+              style={styles.visible}
+              underlayColor={COLORS.lightWhite}
+            >
+              <Ionicons
+                name={visible2 ? "eye" : "eye-off"}
+                size={22}
+                color={COLORS.gray}
+              />
+            </TouchableHighlight>
+          </View>
+        </View>
+        {/* <View style={styles.details}>
           <TextInput
             style={styles.input}
             placeholder="Username"
@@ -229,8 +382,8 @@ export default function SignupScreen({ navigation }: PropsSignup) {
               )}
             </TouchableOpacity>
           </View>
-        </View>
-        <TouchableOpacity
+        </View> */}
+        {/* <TouchableOpacity
           style={styles.signUpButton}
           onPress={handleSubmit}
           aria-label="SignupButton"
@@ -241,10 +394,32 @@ export default function SignupScreen({ navigation }: PropsSignup) {
           <ActivityIndicator size="large" color="deepskyblue" />
         ) : (
           true
+        )} */}
+        {!loading ? (
+          <TouchableOpacity
+            style={styles.signUpButton}
+            onPress={handleSubmit}
+            aria-label="SignupButton"
+          >
+            <Text style={styles.signup}>Sign Up</Text>
+          </TouchableOpacity>
+        ) : (
+          <ActivityIndicator size="large" />
         )}
-        <TouchableOpacity onPress={haveAccountHandler}>
+
+        <View style={styles.haveAccountContainer}>
+          <Text style={styles.defaultText}>Have an account?</Text>
+
+          <TouchableOpacity
+            onPress={haveAccountHandler}
+            aria-label="signupButton"
+          >
+            <Text style={styles.signinText}>Log in</Text>
+          </TouchableOpacity>
+        </View>
+        {/* <TouchableOpacity onPress={haveAccountHandler}>
           <Text style={styles.back}>Already have an account?</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -253,60 +428,104 @@ export default function SignupScreen({ navigation }: PropsSignup) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: COLORS.lightWhite,
   },
 
   header: {
     alignItems: "center",
-    marginTop: 50,
+    marginTop: SIZES.medium,
   },
 
+  headerContainer: {
+    margin: SIZES.xSmall,
+  },
   headerText: {
-    fontSize: 35,
-    color: "blue",
-    fontWeight: "bold",
+    fontSize: SIZES.xLarge,
+    fontWeight: "700",
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
   },
-  subHeaderText: {
-    fontWeight: "bold",
-    marginVertical: 10,
-  },
+
+  // headerText: {
+  //   fontSize: 35,
+  //   color: "blue",
+  //   fontWeight: "bold",
+  // },
+  // subHeaderText: {
+  //   fontWeight: "bold",
+  //   marginVertical: 10,
+  // },
 
   details: {
-    padding: 35,
-    margin: 5,
+    // padding: 35,
+    // margin: 5,
+    margin: SIZES.xxLarge,
   },
 
   input: {
-    backgroundColor: "lavender",
-    padding: 10,
-    marginVertical: 10,
-    borderRadius: 5,
+    // backgroundColor: "lavender",
+    // padding: 10,
+    // marginVertical: 10,
+    // borderRadius: 5,
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginVertical: SIZES.small,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
   },
 
   visible: {
     position: "absolute",
-    right: 12,
+    // right: 12,
+    right: SIZES.xSmall,
+    backgroundColor: COLORS.lightWhite,
+    paddingLeft: SIZES.xSmall / 2,
   },
 
   signUpButton: {
-    backgroundColor: "maroon",
-    marginTop: 40,
-    marginBottom: 30,
-    marginHorizontal: 30,
-    borderRadius: 20,
-    padding: 5,
+    // backgroundColor: "maroon",
+    // marginTop: 40,
+    // marginBottom: 30,
+    // marginHorizontal: 30,
+    // borderRadius: 20,
+    // padding: 5,
+    backgroundColor: COLORS.tertiary,
+    marginHorizontal: SIZES.xxLarge,
+    borderRadius: SIZES.xSmall * 2,
+    padding: SIZES.xSmall / 4,
   },
 
   signup: {
+    // textAlign: "center",
+    // fontSize: 18,
+    // padding: 5,
+    // color: "white",
     textAlign: "center",
-    fontSize: 18,
-    padding: 5,
-    color: "white",
+    fontSize: SIZES.large,
+    padding: SIZES.xSmall / 2,
+    color: "black",
   },
 
-  back: {
-    textAlign: "center",
-    fontWeight: "bold",
-    color: "dodgerblue",
+  haveAccountContainer: {
+    justifyContent: "center",
+    flexDirection: "row",
+    marginTop: SIZES.large,
   },
+  defaultText: {
+    fontSize: SIZES.medium,
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
+  },
+  signinText: {
+    fontSize: SIZES.medium,
+    color: COLORS.blue,
+    marginLeft: SIZES.xSmall / 2,
+    marginVertical: SIZES.xSmall / 4,
+  },
+
+  // back: {
+  //   textAlign: "center",
+  //   fontWeight: "bold",
+  //   color: "dodgerblue",
+  // },
 });

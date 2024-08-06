@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
   TouchableWithoutFeedback,
   Keyboard,
   Image,
@@ -63,6 +64,8 @@ export default function LoginScreen({ navigation }: PropsLogin) {
         errorCode == "auth/invalid-credential"
       ) {
         Alert.alert("", "Invalid email / password");
+      } else {
+        Alert.alert("", "Something went wrong");
       }
     } finally {
       setLoading(false);
@@ -87,16 +90,16 @@ export default function LoginScreen({ navigation }: PropsLogin) {
         <View style={styles.header}>
           <Image source={logoImg} style={styles.logo} />
 
-          <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>Welcome back!</Text>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>Welcome back!</Text>
           </View>
         </View>
 
         <View style={styles.details}>
           <TextInput
             style={styles.input}
-            placeholderTextColor={"grey"}
-            placeholder=" Email"
+            placeholderTextColor={COLORS.gray}
+            placeholder="Email"
             value={email}
             onChangeText={(val) => {
               setEmail(val);
@@ -109,8 +112,8 @@ export default function LoginScreen({ navigation }: PropsLogin) {
           <View style={{ justifyContent: "center" }}>
             <TextInput
               style={styles.input}
-              placeholderTextColor={"grey"}
-              placeholder=" Password"
+              placeholderTextColor={COLORS.gray}
+              placeholder="Password"
               secureTextEntry={!visible}
               value={password}
               onChangeText={(val) => {
@@ -122,13 +125,17 @@ export default function LoginScreen({ navigation }: PropsLogin) {
               aria-label="Password"
             />
 
-            <TouchableOpacity style={styles.visible} onPress={pressHandler}>
-              {visible ? (
-                <Ionicons name="eye" size={22} color={COLORS.gray} />
-              ) : (
-                <Ionicons name="eye-off" size={22} color={COLORS.gray} />
-              )}
-            </TouchableOpacity>
+            <TouchableHighlight
+              style={styles.visible}
+              onPress={pressHandler}
+              underlayColor={COLORS.lightWhite}
+            >
+              <Ionicons
+                name={visible ? "eye" : "eye-off"}
+                size={22}
+                color={COLORS.gray}
+              />
+            </TouchableHighlight>
           </View>
 
           <View style={styles.forgetPasswordContainer}>
@@ -188,13 +195,15 @@ const styles = StyleSheet.create({
   visible: {
     position: "absolute",
     right: SIZES.xSmall,
+    backgroundColor: COLORS.lightWhite,
+    paddingLeft: SIZES.xSmall / 2,
   },
 
   loginButton: {
     backgroundColor: COLORS.tertiary,
     marginHorizontal: SIZES.xxLarge,
     borderRadius: SIZES.xSmall * 2,
-    padding: SIZES.xSmall / 2,
+    padding: SIZES.xSmall / 4,
   },
 
   login: {
@@ -221,10 +230,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: SIZES.large,
   },
-  welcomeContainer: {
+  headerContainer: {
     margin: SIZES.xSmall,
   },
-  welcomeText: {
+  headerText: {
     fontSize: SIZES.xLarge,
     fontWeight: "700",
     color: "black",

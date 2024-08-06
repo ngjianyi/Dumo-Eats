@@ -48,7 +48,7 @@ describe("Renders loginscreen correctly", () => {
     );
     const usernamebox = screen.getByLabelText("Email");
     expect(usernamebox).toBeTruthy();
-    expect(usernamebox.props.placeholder).toBe(" Email");
+    expect(usernamebox.props.placeholder).toBe("Email");
   });
 
   it("Renders password input box ", () => {
@@ -60,7 +60,7 @@ describe("Renders loginscreen correctly", () => {
     );
     const usernamebox = screen.getByLabelText("Password");
     expect(usernamebox).toBeTruthy();
-    expect(usernamebox.props.placeholder).toBe(" Password");
+    expect(usernamebox.props.placeholder).toBe("Password");
   });
 
   it("Renders login button", () => {
