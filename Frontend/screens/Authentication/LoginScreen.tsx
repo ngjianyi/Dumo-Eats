@@ -49,7 +49,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (!auth.currentUser?.emailVerified) {
         AUTH.signOut();
-        alert("Email not verified");
+        Alert.alert("", "Email is not verified");
       } else {
         userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
         setEmail("");

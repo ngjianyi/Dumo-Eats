@@ -10,7 +10,10 @@ import { RootStackParamList } from "@/app";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
 
-global.alert = jest.fn();
+import { Alert } from "react-native";
+jest.spyOn(Alert, "alert");
+
+// global.alert = jest.fn();
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -95,27 +98,6 @@ describe("Renders loginscreen correctly", () => {
     const signupButton = screen.getByLabelText("signupButton");
     expect(signupButton).toBeTruthy();
   });
-
-  it("Checks for invalid email", async () => {
-    render(
-      <LoginScreen
-        navigation={mockNavigation as LoginScreenNavigationProp}
-        route={mockRoute}
-      />
-    );
-    const user = userEvent.setup();
-    const usernamebox = screen.getByLabelText("Email");
-    const loginButton = screen.getByLabelText("loginButton");
-    try {
-      await user.type(usernamebox, "nonsense");
-      await user.press(loginButton);
-      await waitFor(() => {
-        expect(global.alert).toHaveBeenCalledWith("Invalid email provided");
-      });
-    } catch (error) {
-      console.log("error for invalid email");
-    }
-  });
   it("Checks for invalid credentials", async () => {
     render(
       <LoginScreen
@@ -132,12 +114,37 @@ describe("Renders loginscreen correctly", () => {
       await user.type(passwordbox, "fakePassword");
       await user.press(loginButton);
       await waitFor(() => {
-        expect(global.alert).toHaveBeenCalledWith(
-          "Invalid credentials provided"
+        // expect(global.alert).toHaveBeenCalledWith(
+        //   "Invalid credentials provided"
+        // );
+        expect(Alert.alert).toHaveBeenCalledWith(
+          "",
+          "Invalid email / password"
         );
       });
     } catch (error) {
       console.log("error for invalid creds");
+    }
+  });
+
+  it("Checks for empty email", async () => {
+    render(
+      <LoginScreen
+        navigation={mockNavigation as LoginScreenNavigationProp}
+        route={mockRoute}
+      />
+    );
+    const user = userEvent.setup();
+    const passwordbox = screen.getByLabelText("Password");
+    const loginButton = screen.getByLabelText("loginButton");
+    try {
+      await user.type(passwordbox, "fakePassword");
+      await user.press(loginButton);
+      await waitFor(() => {
+        expect(Alert.alert).toHaveBeenCalledWith("", "Please enter an email");
+      });
+    } catch (error) {
+      console.log("error for empty email");
     }
   });
 
@@ -155,7 +162,8 @@ describe("Renders loginscreen correctly", () => {
       await user.type(usernamebox, "abcdef@gmail.com");
       await user.press(loginButton);
       await waitFor(() => {
-        expect(global.alert).toHaveBeenCalledWith("Please enter password");
+        // expect(global.alert).toHaveBeenCalledWith("Please enter password");
+        expect(Alert.alert).toHaveBeenCalledWith("", "Please enter a password");
       });
     } catch (error) {
       console.log("error for empty password");

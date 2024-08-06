@@ -69,7 +69,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
       Alert.alert("", "Passwords do not match");
       return;
     } else if (password1.length < 6) {
-      Alert.alert("", "Passwords must have at least 6 characters");
+      Alert.alert("", "Password must have at least 6 characters");
       return;
     }
 
@@ -164,10 +164,10 @@ export default function SignupScreen({ navigation }: PropsSignup) {
       //   alert("Sign up failed: " + error.message);
       // }
       // return;
-      if (errorCode == "auth/auth/invalid-email") {
-        Alert.alert("", "Please enter a valid email");
-      } else if (errorCode == "auth/email-already-in-use") {
+      if (errorCode == "auth/email-already-in-use") {
         Alert.alert("", "Email is already in use");
+      } else if (errorCode == "auth/invalid-email") {
+        Alert.alert("", "Please enter a valid email");
       } else {
         Alert.alert("", "Something went wrong");
       }

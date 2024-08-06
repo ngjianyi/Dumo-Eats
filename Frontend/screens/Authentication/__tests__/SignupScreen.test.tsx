@@ -11,6 +11,9 @@ import { RouteProp } from "@react-navigation/native";
 import SignupScreen from "../SignupScreen";
 import { getDocs } from "firebase/firestore";
 
+import { Alert } from "react-native";
+jest.spyOn(Alert, "alert");
+
 /**
  * mock firebase/firestore module by declaring the getDocs as a mock jest function
  */
@@ -37,7 +40,7 @@ jest.mock("firebase/firestore", () => {
   })
 );
 
-global.alert = jest.fn();
+// global.alert = jest.fn();
 
 type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -161,12 +164,15 @@ describe("SignUp screen renders correctly", () => {
     await user.type(usernamebox, "test123");
     await user.type(firstnamebox, "test");
     await user.type(lastnamebox, "test");
-    await user.type(emailbox, "cjianzhi23@gmail.com");
+    await user.type(emailbox, "ngjianyi2002@gmail.com");
     await user.type(password1, "password123");
     await user.type(password2, "password123");
     await user.press(signupbutton);
+    // await waitFor(() => {
+    //   expect(global.alert).toHaveBeenCalledWith("Email already in use");
+    // });
     await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith("Email already in use");
+      expect(Alert.alert).toHaveBeenCalledWith("", "Email is already in use");
     });
   });
 
@@ -193,8 +199,11 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "password123");
     await user.type(password2, "password123");
     await user.press(signupbutton);
+    // await waitFor(() => {
+    //   expect(global.alert).toHaveBeenCalledWith("Username is already taken");
+    // });
     await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith("Username is already taken");
+      expect(Alert.alert).toHaveBeenCalledWith("", "Username has been taken");
     });
   });
 
@@ -217,12 +226,18 @@ describe("SignUp screen renders correctly", () => {
     await user.type(usernamebox, "test123");
     await user.type(firstnamebox, "test");
     await user.type(lastnamebox, "test");
-    await user.type(emailbox, ".com");
+    await user.type(emailbox, "fake.com");
     await user.type(password1, "password123");
     await user.type(password2, "password123");
     await user.press(signupbutton);
+    // await waitFor(() => {
+    //   expect(global.alert).toHaveBeenCalledWith("Invalid email");
+    // });
     await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith("Invalid email");
+      expect(Alert.alert).toHaveBeenCalledWith(
+        "",
+        "Please enter a valid email"
+      );
     });
   });
 
@@ -249,9 +264,10 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "password");
     await user.type(password2, "password123");
     await user.press(signupbutton);
-    await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith("Passwords do not match");
-    });
+    // await waitFor(() => {
+    //   expect(global.alert).toHaveBeenCalledWith("Passwords do not match");
+    // });
+    expect(Alert.alert).toHaveBeenCalledWith("", "Passwords do not match");
   });
 
   it("Checks for password that is too short", async () => {
@@ -277,11 +293,15 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "s");
     await user.type(password2, "s");
     await user.press(signupbutton);
-    await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith(
-        "Password too short, must be at least 6 characters"
-      );
-    });
+    // await waitFor(() => {
+    //   expect(global.alert).toHaveBeenCalledWith(
+    //     "Password too short, must be at least 6 characters"
+    //   );
+    // });
+    expect(Alert.alert).toHaveBeenCalledWith(
+      "",
+      "Password must have at least 6 characters"
+    );
   });
 
   it("Checks for missing username", async () => {
@@ -307,9 +327,10 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "abcde");
     await user.type(password2, "abcde");
     await user.press(signupbutton);
-    await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith("Missing username");
-    });
+    // await waitFor(() => {
+    //   expect(global.alert).toHaveBeenCalledWith("Missing username");
+    // });
+    expect(Alert.alert).toHaveBeenCalledWith("", "Please enter a username");
   });
 
   it("Checks for missing password", async () => {
@@ -335,9 +356,10 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "");
     await user.type(password2, "");
     await user.press(signupbutton);
-    await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith("Missing password");
-    });
+    // await waitFor(() => {
+    //   expect(global.alert).toHaveBeenCalledWith("Missing password");
+    // });
+    expect(Alert.alert).toHaveBeenCalledWith("", "Please enter a password");
   });
 
   it("Checks for missing Email", async () => {
@@ -363,8 +385,9 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "abcdef");
     await user.type(password2, "abcdef");
     await user.press(signupbutton);
-    await waitFor(() => {
-      expect(global.alert).toHaveBeenCalledWith("Missing email");
-    });
+    // await waitFor(() => {
+    //   expect(global.alert).toHaveBeenCalledWith("Missing email");
+    // });
+    expect(Alert.alert).toHaveBeenCalledWith("", "Please enter an email");
   });
 });

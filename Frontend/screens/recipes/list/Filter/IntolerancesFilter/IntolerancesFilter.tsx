@@ -32,7 +32,7 @@ export default function IntolerancesFilter() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.allergyContainer}>
-        <Text style={styles.titleText}>Allergens:</Text>
+        <Text style={styles.titleText}>Allergens</Text>
 
         <FlatList
           data={intolerancesList}
