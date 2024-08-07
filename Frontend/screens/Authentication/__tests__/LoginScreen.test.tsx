@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   render,
   screen,
@@ -9,11 +9,9 @@ import LoginScreen from "../LoginScreen";
 import { RootStackParamList } from "@/app";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
-
 import { Alert } from "react-native";
-jest.spyOn(Alert, "alert");
 
-// global.alert = jest.fn();
+jest.spyOn(Alert, "alert");
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -114,9 +112,6 @@ describe("Renders loginscreen correctly", () => {
       await user.type(passwordbox, "fakePassword");
       await user.press(loginButton);
       await waitFor(() => {
-        // expect(global.alert).toHaveBeenCalledWith(
-        //   "Invalid credentials provided"
-        // );
         expect(Alert.alert).toHaveBeenCalledWith(
           "",
           "Invalid email / password"
@@ -162,7 +157,6 @@ describe("Renders loginscreen correctly", () => {
       await user.type(usernamebox, "abcdef@gmail.com");
       await user.press(loginButton);
       await waitFor(() => {
-        // expect(global.alert).toHaveBeenCalledWith("Please enter password");
         expect(Alert.alert).toHaveBeenCalledWith("", "Please enter a password");
       });
     } catch (error) {

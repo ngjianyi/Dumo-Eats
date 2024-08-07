@@ -40,8 +40,6 @@ jest.mock("firebase/firestore", () => {
   })
 );
 
-// global.alert = jest.fn();
-
 type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "signup"
@@ -168,9 +166,7 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "password123");
     await user.type(password2, "password123");
     await user.press(signupbutton);
-    // await waitFor(() => {
-    //   expect(global.alert).toHaveBeenCalledWith("Email already in use");
-    // });
+
     await waitFor(() => {
       expect(Alert.alert).toHaveBeenCalledWith("", "Email is already in use");
     });
@@ -199,9 +195,7 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "password123");
     await user.type(password2, "password123");
     await user.press(signupbutton);
-    // await waitFor(() => {
-    //   expect(global.alert).toHaveBeenCalledWith("Username is already taken");
-    // });
+
     await waitFor(() => {
       expect(Alert.alert).toHaveBeenCalledWith("", "Username has been taken");
     });
@@ -230,9 +224,7 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "password123");
     await user.type(password2, "password123");
     await user.press(signupbutton);
-    // await waitFor(() => {
-    //   expect(global.alert).toHaveBeenCalledWith("Invalid email");
-    // });
+
     await waitFor(() => {
       expect(Alert.alert).toHaveBeenCalledWith(
         "",
@@ -264,9 +256,7 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "password");
     await user.type(password2, "password123");
     await user.press(signupbutton);
-    // await waitFor(() => {
-    //   expect(global.alert).toHaveBeenCalledWith("Passwords do not match");
-    // });
+
     expect(Alert.alert).toHaveBeenCalledWith("", "Passwords do not match");
   });
 
@@ -293,11 +283,7 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "s");
     await user.type(password2, "s");
     await user.press(signupbutton);
-    // await waitFor(() => {
-    //   expect(global.alert).toHaveBeenCalledWith(
-    //     "Password too short, must be at least 6 characters"
-    //   );
-    // });
+
     expect(Alert.alert).toHaveBeenCalledWith(
       "",
       "Password must have at least 6 characters"
@@ -327,9 +313,7 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "abcde");
     await user.type(password2, "abcde");
     await user.press(signupbutton);
-    // await waitFor(() => {
-    //   expect(global.alert).toHaveBeenCalledWith("Missing username");
-    // });
+
     expect(Alert.alert).toHaveBeenCalledWith("", "Please enter a username");
   });
 
@@ -356,9 +340,7 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "");
     await user.type(password2, "");
     await user.press(signupbutton);
-    // await waitFor(() => {
-    //   expect(global.alert).toHaveBeenCalledWith("Missing password");
-    // });
+
     expect(Alert.alert).toHaveBeenCalledWith("", "Please enter a password");
   });
 
@@ -385,9 +367,7 @@ describe("SignUp screen renders correctly", () => {
     await user.type(password1, "abcdef");
     await user.type(password2, "abcdef");
     await user.press(signupbutton);
-    // await waitFor(() => {
-    //   expect(global.alert).toHaveBeenCalledWith("Missing email");
-    // });
+
     expect(Alert.alert).toHaveBeenCalledWith("", "Please enter an email");
   });
 });
