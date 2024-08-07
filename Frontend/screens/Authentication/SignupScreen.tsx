@@ -89,36 +89,6 @@ export default function SignupScreen({ navigation }: PropsSignup) {
         return;
       }
 
-      // if (status) {
-      //   alert("Username is already taken");
-      //   return;
-      // }
-
-      // if (username == "") {
-      //   alert("Missing username");
-      //   return;
-      // }
-
-      // if (firstName == "" || lastName == "") {
-      //   alert("Missing name");
-      //   return;
-      // }
-
-      // if (password1 == "") {
-      //   alert("Missing password");
-      //   return;
-      // }
-
-      // if (password1.length < 6) {
-      //   alert("Password too short, must be at least 6 characters");
-      //   return;
-      // }
-
-      // if (password1 != password2) {
-      //   alert("Passwords do not match");
-      //   return;
-      // }
-
       const response = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -154,16 +124,6 @@ export default function SignupScreen({ navigation }: PropsSignup) {
       navigation.navigate("login");
     } catch (error: any) {
       const errorCode = error.code;
-      // if (errorCode == "auth/email-already-in-use") {
-      //   alert("Email already in use");
-      // } else if (errorCode == "auth/invalid-email") {
-      //   alert("Invalid email");
-      // } else if (errorCode == "auth/missing-email") {
-      //   alert("Missing email");
-      // } else {
-      //   alert("Sign up failed: " + error.message);
-      // }
-      // return;
       if (errorCode == "auth/email-already-in-use") {
         Alert.alert("", "Email is already in use");
       } else if (errorCode == "auth/invalid-email") {
@@ -180,12 +140,6 @@ export default function SignupScreen({ navigation }: PropsSignup) {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
-        {/* <View style={styles.header}>
-          <Text style={styles.headerText}>Create Account</Text>
-          <Text style={styles.subHeaderText}>
-            Start your journey with DumoEats today!
-          </Text>
-        </View> */}
         <View style={styles.header}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Create your account</Text>
@@ -298,103 +252,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             </TouchableHighlight>
           </View>
         </View>
-        {/* <View style={styles.details}>
-          <TextInput
-            style={styles.input}
-            placeholder="Username"
-            placeholderTextColor={"grey"}
-            onChangeText={(val) => setUsername(val)}
-            autoCapitalize="none"
-            autoCorrect={false}
-            aria-label="Username"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="First name"
-            placeholderTextColor={"grey"}
-            onChangeText={(val) => {
-              setFirstName(val);
-            }}
-            autoCapitalize="none"
-            autoCorrect={false}
-            aria-label="Firstname"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Last name"
-            placeholderTextColor={"grey"}
-            onChangeText={(val) => {
-              setLastName(val);
-            }}
-            autoCapitalize="none"
-            autoCorrect={false}
-            aria-label="Lastname"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor={"grey"}
-            onChangeText={(val) => setEmail(val)}
-            autoCapitalize="none"
-            autoCorrect={false}
-            aria-label="Email"
-          />
-          <View style={{ justifyContent: "center" }}>
-            <TextInput
-              style={styles.input}
-              placeholderTextColor={"grey"}
-              placeholder=" Password"
-              secureTextEntry={!visible1}
-              onChangeText={(val) => {
-                setPassword1(val);
-              }}
-              textContentType="oneTimeCode"
-              autoCapitalize="none"
-              autoCorrect={false}
-              aria-label="Password1"
-            />
-            <TouchableOpacity style={styles.visible} onPress={pressHandler1}>
-              {visible1 ? (
-                <Ionicons name="eye" size={22} color="black" />
-              ) : (
-                <Ionicons name="eye-off" size={22} color="black" />
-              )}
-            </TouchableOpacity>
-          </View>
-          <View style={{ justifyContent: "center" }}>
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm Password"
-              placeholderTextColor={"grey"}
-              secureTextEntry={!visible2}
-              onChangeText={(val) => {
-                setPassword2(val);
-              }}
-              textContentType="oneTimeCode"
-              autoCapitalize="none"
-              aria-label="Password2"
-            />
-            <TouchableOpacity onPress={pressHandler2} style={styles.visible}>
-              {visible2 ? (
-                <Ionicons name="eye" size={22} color="black" />
-              ) : (
-                <Ionicons name="eye-off" size={22} color="black" />
-              )}
-            </TouchableOpacity>
-          </View>
-        </View> */}
-        {/* <TouchableOpacity
-          style={styles.signUpButton}
-          onPress={handleSubmit}
-          aria-label="SignupButton"
-        >
-          <Text style={styles.signup}>Sign Up</Text>
-        </TouchableOpacity>
-        {loading ? (
-          <ActivityIndicator size="large" color="deepskyblue" />
-        ) : (
-          true
-        )} */}
+
         {!loading ? (
           <TouchableOpacity
             style={styles.signUpButton}
@@ -417,9 +275,6 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             <Text style={styles.signinText}>Log in</Text>
           </TouchableOpacity>
         </View>
-        {/* <TouchableOpacity onPress={haveAccountHandler}>
-          <Text style={styles.back}>Already have an account?</Text>
-        </TouchableOpacity> */}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -446,27 +301,11 @@ const styles = StyleSheet.create({
     marginVertical: SIZES.xSmall / 4,
   },
 
-  // headerText: {
-  //   fontSize: 35,
-  //   color: "blue",
-  //   fontWeight: "bold",
-  // },
-  // subHeaderText: {
-  //   fontWeight: "bold",
-  //   marginVertical: 10,
-  // },
-
   details: {
-    // padding: 35,
-    // margin: 5,
     margin: SIZES.xxLarge,
   },
 
   input: {
-    // backgroundColor: "lavender",
-    // padding: 10,
-    // marginVertical: 10,
-    // borderRadius: 5,
     borderWidth: SIZES.xSmall / 8,
     borderColor: COLORS.gray,
     marginVertical: SIZES.small,
@@ -476,19 +315,12 @@ const styles = StyleSheet.create({
 
   visible: {
     position: "absolute",
-    // right: 12,
     right: SIZES.xSmall,
     backgroundColor: COLORS.lightWhite,
     paddingLeft: SIZES.xSmall / 2,
   },
 
   signUpButton: {
-    // backgroundColor: "maroon",
-    // marginTop: 40,
-    // marginBottom: 30,
-    // marginHorizontal: 30,
-    // borderRadius: 20,
-    // padding: 5,
     backgroundColor: COLORS.tertiary,
     marginHorizontal: SIZES.xxLarge,
     borderRadius: SIZES.xSmall * 2,
@@ -496,10 +328,6 @@ const styles = StyleSheet.create({
   },
 
   signup: {
-    // textAlign: "center",
-    // fontSize: 18,
-    // padding: 5,
-    // color: "white",
     textAlign: "center",
     fontSize: SIZES.large,
     padding: SIZES.xSmall / 2,
@@ -522,10 +350,4 @@ const styles = StyleSheet.create({
     marginLeft: SIZES.xSmall / 2,
     marginVertical: SIZES.xSmall / 4,
   },
-
-  // back: {
-  //   textAlign: "center",
-  //   fontWeight: "bold",
-  //   color: "dodgerblue",
-  // },
 });
