@@ -174,16 +174,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.lightWhite,
   },
-
   header: {
     marginTop: 50,
     alignItems: "center",
   },
-
   details: {
     margin: SIZES.xxLarge,
   },
-
   input: {
     borderWidth: SIZES.xSmall / 8,
     borderColor: COLORS.gray,
@@ -191,37 +188,24 @@ const styles = StyleSheet.create({
     padding: SIZES.small,
     borderRadius: SIZES.xSmall / 2,
   },
-
   visible: {
     position: "absolute",
     right: SIZES.xSmall,
     backgroundColor: COLORS.lightWhite,
     paddingLeft: SIZES.xSmall / 2,
   },
-
   loginButton: {
     backgroundColor: COLORS.tertiary,
     marginHorizontal: SIZES.xxLarge,
     borderRadius: SIZES.xSmall * 2,
     padding: SIZES.xSmall / 4,
   },
-
   login: {
     textAlign: "center",
     fontSize: SIZES.large,
     padding: SIZES.xSmall / 2,
     color: "black",
   },
-
-  signupButton: {
-    backgroundColor: "maroon",
-    marginTop: 10,
-    marginBottom: 30,
-    marginHorizontal: 30,
-    borderRadius: 20,
-    padding: 5,
-  },
-
   forgetPasswordContainer: {
     alignItems: "flex-end",
   },
@@ -255,7 +239,6 @@ const styles = StyleSheet.create({
     marginLeft: SIZES.xSmall / 2,
     marginVertical: SIZES.xSmall / 4,
   },
-
   logo: {
     height: 50,
     width: 220,

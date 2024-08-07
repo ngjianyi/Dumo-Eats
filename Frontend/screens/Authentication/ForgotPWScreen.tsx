@@ -7,46 +7,67 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { AUTH } from "@/firebaseCONFIG";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { Propsforget } from "@/components/navigation/PropTypes";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 export default function ForgotScreen({ navigation }: Propsforget) {
   const backHandler = (): void => navigation.navigate("login");
   const [email, setEmail] = useState<string>("");
 
   const sendReset = () => {
+    if (!email) {
+      Alert.alert("", "Please enter an email");
+      return;
+    }
+
     sendPasswordResetEmail(AUTH, email)
       .then(() => {
-        alert("Check your Email");
+        console.log("Successfully sent email");
       })
       .catch((error) => {
-        alert(error.message);
+        console.log("Error: " + error.message);
       });
+
+    Alert.alert(
+      "",
+      "The link to reset your password has been sent to your email"
+    );
   };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Reset Password</Text>
-          <Text style={styles.subHeaderText}>
-            Please enter the email used during sign up.
-          </Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Reset password</Text>
         </View>
-        <View style={styles.detail}>
+
+        <View style={styles.details}>
           <TextInput
             style={styles.input}
+            placeholderTextColor={COLORS.gray}
             placeholder="Email"
-            placeholderTextColor={"grey"}
-            onChangeText={(value) => setEmail(value)}
+            value={email}
+            onChangeText={(val) => {
+              setEmail(val);
+            }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            aria-label="Email"
           />
-          <TouchableOpacity onPress={backHandler}>
-            <Text style={styles.back}>Back to Login</Text>
-          </TouchableOpacity>
+
+          <View style={styles.forgetPasswordContainer}>
+            <TouchableOpacity onPress={backHandler}>
+              <Text style={styles.blueText}>Back to login</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
         <TouchableOpacity style={styles.submit} onPress={sendReset}>
           <Text style={styles.submitText}>Submit</Text>
         </TouchableOpacity>
@@ -58,52 +79,49 @@ export default function ForgotScreen({ navigation }: Propsforget) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: COLORS.lightWhite,
   },
-  header: {
+  headerContainer: {
     alignItems: "center",
-    marginTop: 50,
+    marginTop: SIZES.medium,
+    margin: SIZES.xSmall,
   },
-
   headerText: {
-    fontSize: 35,
-    fontWeight: "bold",
+    fontSize: SIZES.xLarge,
+    fontWeight: "700",
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
   },
-
-  subHeaderText: {
-    marginTop: 20,
-    marginBottom: 50,
-  },
-
-  detail: {
-    padding: 35,
-  },
-
   input: {
-    backgroundColor: "lavender",
-    padding: 10,
-    marginVertical: 10,
-    borderRadius: 5,
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginVertical: SIZES.small,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
   },
 
-  back: {
-    textAlign: "right",
-    color: "dodgerblue",
+  details: {
+    margin: SIZES.xxLarge,
   },
-
+  forgetPasswordContainer: {
+    alignItems: "flex-end",
+  },
+  blueText: {
+    fontSize: SIZES.medium,
+    color: COLORS.blue,
+    marginVertical: SIZES.xSmall / 4,
+  },
   submit: {
-    backgroundColor: "maroon",
-    marginTop: 50,
-    marginBottom: 30,
-    marginHorizontal: 30,
-    borderRadius: 20,
-    padding: 5,
+    backgroundColor: COLORS.tertiary,
+    marginHorizontal: SIZES.xxLarge,
+    borderRadius: SIZES.xSmall * 2,
+    padding: SIZES.xSmall / 4,
   },
 
   submitText: {
     textAlign: "center",
-    fontSize: 18,
-    padding: 5,
-    color: "white",
+    fontSize: SIZES.large,
+    padding: SIZES.xSmall / 2,
+    color: "black",
   },
 });

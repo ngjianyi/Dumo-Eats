@@ -140,10 +140,8 @@ export default function SignupScreen({ navigation }: PropsSignup) {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>Create your account</Text>
-          </View>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Create your account</Text>
         </View>
 
         <View style={styles.details}>
@@ -285,13 +283,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.lightWhite,
   },
-
-  header: {
+  headerContainer: {
     alignItems: "center",
     marginTop: SIZES.medium,
-  },
-
-  headerContainer: {
     margin: SIZES.xSmall,
   },
   headerText: {
@@ -300,11 +294,9 @@ const styles = StyleSheet.create({
     color: "black",
     marginVertical: SIZES.xSmall / 4,
   },
-
   details: {
     margin: SIZES.xxLarge,
   },
-
   input: {
     borderWidth: SIZES.xSmall / 8,
     borderColor: COLORS.gray,
@@ -312,28 +304,24 @@ const styles = StyleSheet.create({
     padding: SIZES.small,
     borderRadius: SIZES.xSmall / 2,
   },
-
   visible: {
     position: "absolute",
     right: SIZES.xSmall,
     backgroundColor: COLORS.lightWhite,
     paddingLeft: SIZES.xSmall / 2,
   },
-
   signUpButton: {
     backgroundColor: COLORS.tertiary,
     marginHorizontal: SIZES.xxLarge,
     borderRadius: SIZES.xSmall * 2,
     padding: SIZES.xSmall / 4,
   },
-
   signup: {
     textAlign: "center",
     fontSize: SIZES.large,
     padding: SIZES.xSmall / 2,
     color: "black",
   },
-
   haveAccountContainer: {
     justifyContent: "center",
     flexDirection: "row",
