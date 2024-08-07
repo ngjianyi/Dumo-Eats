@@ -41,7 +41,7 @@ export default function RecipeDisplay({ item }: Props) {
       setIsCollapsed(true);
     } else {
       setMessage(benefits);
-      setColour("forestgreen");
+      setColour(COLORS.green);
       setIsCollapsed(false);
     }
   };
@@ -77,7 +77,7 @@ export default function RecipeDisplay({ item }: Props) {
               <Ionicons
                 name="alert-circle"
                 size={SIZES.large}
-                color="forestgreen"
+                color={COLORS.green}
                 style={styles.labels}
               />
             </TouchableOpacity>

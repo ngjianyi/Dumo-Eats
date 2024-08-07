@@ -11,6 +11,8 @@ const COLORS = {
 
   blue: "dodgerblue",
   darkBlue: "#415F78",
+
+  green: "forestgreen",
 };
 
 // const FONT = {
