@@ -168,18 +168,6 @@ const styles = StyleSheet.create({
     fontFamily: "DMRegular",
     color: COLORS.gray,
   },
-  warning: {
-    fontSize: SIZES.small + 2,
-    fontFamily: "DMRegular",
-    color: COLORS.tertiary,
-    marginTop: 3,
-  },
-  benefit: {
-    fontSize: SIZES.small + 2,
-    fontFamily: "DMRegular",
-    color: "forestgreen",
-    marginTop: 3,
-  },
   labels: {
     paddingLeft: SIZES.xSmall / 2,
   },

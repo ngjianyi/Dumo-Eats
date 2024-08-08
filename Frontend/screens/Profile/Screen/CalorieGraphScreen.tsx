@@ -24,7 +24,8 @@ export default function CalorieGraphScreen({ setGraph }: props) {
     const dates: string[] = Dates();
     const caloriesArray: number[] = [];
     const widthsArray: number[] = [];
-    const userDocSnap: DocumentSnapshot<DocumentData, DocumentData> = await getUserDocSnap();
+    const userDocSnap: DocumentSnapshot<DocumentData, DocumentData> =
+      await getUserDocSnap();
     let max: number = 0;
     const map = userDocSnap.data()?.calorieHistory;
     for (let i = 0; i < 7; i += 1) {
@@ -64,7 +65,7 @@ export default function CalorieGraphScreen({ setGraph }: props) {
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
       </View>
-      
+
       <CalorieGraph
         widthArray={widthArray}
         dateArray={dateArray}
@@ -99,6 +100,4 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 4,
   },
-
-  
 });

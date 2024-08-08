@@ -165,7 +165,7 @@ export default function Post({ item }: PostProps) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginVertical: 10,
+    // marginVertical: 10,
   },
   header: {
     flexDirection: "row",

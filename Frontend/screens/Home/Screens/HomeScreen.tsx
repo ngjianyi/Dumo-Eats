@@ -15,6 +15,7 @@ import {
   getDocs,
   QuerySnapshot,
   CollectionReference,
+  DocumentSnapshot,
 } from "firebase/firestore";
 import { DATA_BASE } from "@/firebaseCONFIG";
 import Feed from "../Feed/Feed";
@@ -23,12 +24,19 @@ import CreatePostScreen from "./CreatePostScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { PostItem } from "../Feed/Post";
 import { getUserDocSnap } from "@/utils/social/User";
+import { COLORS, SIZES } from "@/constants/Theme";
+
+import { Dates } from "@/utils/functions/Dates";
+import { dateFormat } from "@/utils/functions/dateFormat";
+import CalorieGraph from "@/screens/Profile/Graph/CalorieGraph";
 
 export default function HomeScreen() {
   const [posts, setPosts] = useState<PostItem[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [upload, setUpload] = useState<boolean>(false);
+
+  const [visible, setVisible] = useState<boolean>(false);
 
   const uploadHandler = () => {
     setUpload(!upload);
@@ -79,17 +87,40 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={{ fontSize: 18 }}>Today's progress</Text>
-      </View>
-      <View style={styles.progress}>
+      </View> */}
+
+      {/* <View style={styles.progress}>
         <Text style={styles.calories}>Calories (Kcal):</Text>
         <View style={styles.bar}>
           <ProgressTracker />
         </View>
+      </View> */}
+
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>
+          {new Date(Date.now()).toDateString()}
+        </Text>
+      </View>
+      <View style={styles.progressContainer}>
+        <ProgressTracker />
       </View>
 
-      <View style={styles.header}>
+      <View style={styles.postsTextContainer}>
+        <Text style={styles.postsText}>Posts</Text>
+
+        <TouchableOpacity
+          style={styles.postsButton}
+          onPress={uploadHandler}
+          aria-label="UpdateButton"
+        >
+          <Ionicons name="create-outline" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+      {!loading ? <Feed posts={posts} /> : <ActivityIndicator size="large" />}
+
+      {/* <View style={styles.header}>
         <Text style={{ fontSize: 18 }}>Feed</Text>
         <View style={styles.button}>
           <TouchableOpacity onPress={() => setRefresh(!refresh)}>
@@ -103,7 +134,7 @@ export default function HomeScreen() {
       <View>
         {loading ? <ActivityIndicator color="blue" size="large" /> : true}
       </View>
-      <Feed posts={posts} />
+      <Feed posts={posts} /> */}
       <Modal visible={upload}>
         <CreatePostScreen
           upload={upload}
@@ -119,52 +150,77 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
-
-  header: {
-    flexDirection: "row",
-    marginTop: 20,
-    backgroundColor: "turquoise",
-    padding: 8,
-    marginHorizontal: 14,
-    borderRadius: 10,
-    marginBottom: 20,
+  headerContainer: {
+    margin: SIZES.xSmall,
+    marginBottom: SIZES.xSmall / 2,
     alignItems: "center",
   },
-
-  progress: {
-    backgroundColor: "lightgrey",
-    borderRadius: 20,
-    marginVertical: 20,
-    marginHorizontal: 14,
+  headerText: { fontSize: SIZES.xLarge, fontWeight: "500" },
+  progressContainer: {
+    backgroundColor: COLORS.lightWhite,
+    marginHorizontal: SIZES.xSmall,
+    padding: SIZES.medium,
+    borderRadius: SIZES.medium,
   },
-
-  calories: {
-    fontSize: 15,
-    paddingLeft: 18,
-    marginVertical: 10,
-  },
-
-  bar: {
-    paddingHorizontal: 15,
-    marginBottom: 20,
-  },
-
-  button: {
+  postsTextContainer: {
     flexDirection: "row",
-    position: "absolute",
-    right: 3,
-    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: SIZES.xSmall,
+    marginVertical: SIZES.xSmall,
+  },
+  postsText: { fontSize: SIZES.xLarge, fontWeight: "400" },
+  postsButton: {
+    backgroundColor: COLORS.blue,
+    padding: SIZES.xSmall / 2,
+    borderRadius: SIZES.large / 2,
   },
 
-  uploadButton: {
-    flex: 1,
-    alignItems: "flex-end",
-  },
+  // header: {
+  //   flexDirection: "row",
+  //   marginTop: 20,
+  //   backgroundColor: "turquoise",
+  //   padding: 8,
+  //   marginHorizontal: 14,
+  //   borderRadius: 10,
+  //   marginBottom: 20,
+  //   alignItems: "center",
+  // },
 
-  upload: {
-    backgroundColor: "green",
-    borderRadius: 5,
-    padding: 3,
-  },
+  // progress: {
+  //   backgroundColor: "lightgrey",
+  //   borderRadius: 20,
+  //   marginVertical: 20,
+  //   marginHorizontal: 14,
+  // },
+
+  // calories: {
+  //   fontSize: 15,
+  //   paddingLeft: 18,
+  //   marginVertical: 10,
+  // },
+
+  // bar: {
+  //   paddingHorizontal: 15,
+  //   marginBottom: 20,
+  // },
+
+  // button: {
+  //   flexDirection: "row",
+  //   position: "absolute",
+  //   right: 3,
+  //   alignItems: "center",
+  // },
+
+  // uploadButton: {
+  //   flex: 1,
+  //   alignItems: "flex-end",
+  // },
+
+  // upload: {
+  //   backgroundColor: "green",
+  //   borderRadius: 5,
+  //   padding: 3,
+  // },
 });
