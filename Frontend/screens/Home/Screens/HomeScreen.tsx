@@ -36,8 +36,6 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState<boolean>(false);
   const [upload, setUpload] = useState<boolean>(false);
 
-  const [visible, setVisible] = useState<boolean>(false);
-
   const uploadHandler = () => {
     setUpload(!upload);
   };
@@ -115,10 +113,14 @@ export default function HomeScreen() {
           onPress={uploadHandler}
           aria-label="UpdateButton"
         >
-          <Ionicons name="create-outline" size={24} color="white" />
+          <Ionicons name="create-outline" size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>
-      {!loading ? <Feed posts={posts} /> : <ActivityIndicator size="large" />}
+      {!loading ? (
+        <Feed posts={posts} getAllPosts={getAllPosts} />
+      ) : (
+        <ActivityIndicator size="large" color={COLORS.tertiary} />
+      )}
 
       {/* <View style={styles.header}>
         <Text style={{ fontSize: 18 }}>Feed</Text>

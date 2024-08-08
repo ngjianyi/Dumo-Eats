@@ -154,7 +154,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
             <Text style={styles.login}>Log In</Text>
           </TouchableOpacity>
         ) : (
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color={COLORS.tertiary} />
         )}
 
         <View style={styles.noAccountContainer}>

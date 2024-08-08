@@ -260,7 +260,7 @@ export default function SignupScreen({ navigation }: PropsSignup) {
             <Text style={styles.signup}>Sign Up</Text>
           </TouchableOpacity>
         ) : (
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color={COLORS.tertiary} />
         )}
 
         <View style={styles.haveAccountContainer}>
