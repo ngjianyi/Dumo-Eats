@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import {
@@ -149,8 +151,12 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      {/* <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        {/* <SafeAreaView style={styles.container}>
         <View style={styles.closeContainer}>
           <TouchableOpacity
             onPress={() => modalHandler()}
@@ -180,34 +186,36 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
           <Text style={styles.submit}>Submit</Text>
         </TouchableOpacity>
       </SafeAreaView> */}
-      <SafeAreaView style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Log your calories</Text>
 
-          <TouchableOpacity onPress={modalHandler} style={styles.closeButton}>
-            <Ionicons name="close" size={25} color="black" />
+        <SafeAreaView style={styles.container}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>Log your calories</Text>
+
+            <TouchableOpacity onPress={modalHandler} style={styles.closeButton}>
+              <Ionicons name="close" size={25} color="black" />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.details}>
+            <TextInput
+              style={styles.input}
+              placeholder="Add calories (kcal)"
+              keyboardType="numeric"
+              onChangeText={updateCalories}
+              aria-label="InputBox"
+            />
+          </View>
+
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={submitCalories}
+            aria-label="SubmitButton"
+          >
+            <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
-        </View>
-
-        <View style={styles.details}>
-          <TextInput
-            style={styles.input}
-            placeholder="Add calories (kcal)"
-            keyboardType="numeric"
-            onChangeText={updateCalories}
-            aria-label="InputBox"
-          />
-        </View>
-
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={submitCalories}
-          aria-label="SubmitButton"
-        >
-          <Text style={styles.submitText}>Submit</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 export { updateCalories };

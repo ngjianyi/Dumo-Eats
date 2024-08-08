@@ -47,7 +47,7 @@ export default function CommentCreate({ commentButtonHandler }: Props) {
         </View>
 
         <TouchableOpacity onPress={commentHandler} style={styles.sendButton}>
-          <Ionicons name="send" size={25} color="black" />
+          <Ionicons name="send" size={25} color={COLORS.gray} />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

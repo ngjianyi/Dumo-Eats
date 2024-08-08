@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     flexDirection: "row",
-    padding: SIZES.medium,
+    padding: SIZES.xSmall,
     marginVertical: SIZES.xSmall / 2,
     borderRadius: SIZES.small,
     backgroundColor: COLORS.lightWhite,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: 70,
     height: 53,
-    marginLeft: SIZES.small,
+    marginLeft: SIZES.xSmall,
   },
   image: {
     width: "100%",
