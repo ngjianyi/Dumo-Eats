@@ -130,13 +130,12 @@ export default function RecipeDisplay({ item }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
     padding: SIZES.medium,
-    marginVertical: SIZES.xSmall / 4,
+    marginVertical: SIZES.xSmall / 2,
     borderRadius: SIZES.small,
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS.lightWhite,
     ...SHADOWS.medium,
     shadowColor: COLORS.white,
   },
