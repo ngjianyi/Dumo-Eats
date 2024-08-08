@@ -132,7 +132,7 @@ export default function ProgressTracker() {
           onPress={resetHandler}
           aria-label="ResetButton"
         >
-          <Ionicons name="reload" size={SIZES.xLarge} color={COLORS.white} />
+          <Ionicons name="reload" size={SIZES.xLarge} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity

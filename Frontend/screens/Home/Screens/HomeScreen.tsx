@@ -15,7 +15,6 @@ import {
   getDocs,
   QuerySnapshot,
   CollectionReference,
-  DocumentSnapshot,
 } from "firebase/firestore";
 import { DATA_BASE } from "@/firebaseCONFIG";
 import Feed from "../Feed/Feed";
@@ -25,10 +24,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { PostItem } from "../Feed/Post";
 import { getUserDocSnap } from "@/utils/social/User";
 import { COLORS, SIZES } from "@/constants/Theme";
-
-import { Dates } from "@/utils/functions/Dates";
-import { dateFormat } from "@/utils/functions/dateFormat";
-import CalorieGraph from "@/screens/Profile/Graph/CalorieGraph";
 
 export default function HomeScreen() {
   const [posts, setPosts] = useState<PostItem[]>([]);
@@ -108,11 +103,7 @@ export default function HomeScreen() {
       <View style={styles.postsTextContainer}>
         <Text style={styles.postsText}>Posts</Text>
 
-        <TouchableOpacity
-          style={styles.postsButton}
-          onPress={uploadHandler}
-          aria-label="UpdateButton"
-        >
+        <TouchableOpacity style={styles.postsButton} onPress={uploadHandler}>
           <Ionicons name="create-outline" size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>
