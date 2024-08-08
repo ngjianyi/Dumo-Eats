@@ -15,12 +15,19 @@ import {
   DocumentSnapshot,
 } from "firebase/firestore";
 import { getUserDocSnap } from "@/utils/social/User";
-import { likeHandler, saveHandler } from "@/utils/social/SocialHandlers";
+import {
+  likeHandler,
+  saveHandler,
+  commentHandler,
+} from "@/utils/social/SocialHandlers";
 
 import { AUTH } from "@/firebaseCONFIG";
 import CommentsScreen from "./Comments/CommentsScreen";
 import RefreshCommentContext from "@/contexts/RefreshComment";
 import RefreshCollectionContext from "@/contexts/RefreshCollection";
+
+import SocialTabs from "@/components/social/SocialTabs";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 const profilepic = require("@/assets/images/defaultProfile.png");
 
@@ -71,7 +78,7 @@ export default function Post({ item }: PostProps) {
 
   const getAllComments = async () => {
     const updatedDoc: DocumentData | undefined = (await getDoc(postref)).data();
-    setComments(updatedDoc?.comments);
+    setComments(updatedDoc?.comments.reverse());
   };
 
   // to keep previous state of likes when refreshed / logged in
@@ -98,9 +105,19 @@ export default function Post({ item }: PostProps) {
     );
   }, []);
 
+  const commentButtonHandler = useCallback(
+    async (trimmedBody: string): Promise<void> => {
+      await commentHandler(trimmedBody, postref, "PostsComments");
+      refreshCommentContext?.setRefreshComment(
+        (refreshComment) => !refreshComment
+      );
+    },
+    []
+  );
+
   return (
     <View style={styles.container}>
-      <View>
+      {/* <View>
         <Modal visible={visible}>
           <CommentsScreen
             item={item}
@@ -109,8 +126,8 @@ export default function Post({ item }: PostProps) {
             comments={comments}
           />
         </Modal>
-      </View>
-      <View style={styles.header}>
+      </View> */}
+      {/* <View style={styles.header}>
         <View style={styles.userinfo}>
           {image != "" ? (
             <Image source={{ uri: image }} style={styles.profilePic} />
@@ -125,8 +142,8 @@ export default function Post({ item }: PostProps) {
       </View>
       <View style={styles.imageHolder}>
         <Image source={{ uri: item.image }} style={styles.image} />
-      </View>
-      <View style={styles.footer}>
+      </View> */}
+      {/* <View style={styles.footer}>
         <View style={styles.leftFooter}>
           <TouchableOpacity onPress={likeButtonHandler}>
             {heart ? (
@@ -157,6 +174,37 @@ export default function Post({ item }: PostProps) {
           <Text style={{ fontWeight: "bold" }}>{username}</Text>
           <Text>{" " + item.caption}</Text>
         </Text>
+      </View> */}
+      <View style={styles.header}>
+        <Image
+          source={image ? { uri: image } : profilepic}
+          style={styles.profilePic}
+        />
+
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>{username}</Text>
+          <Text style={styles.headerText}>{item.time}</Text>
+        </View>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: item.image }} style={styles.image} />
+      </View>
+
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.usernameText}>{username}</Text>
+        <Text style={styles.descriptionText}>{item.caption}</Text>
+      </View>
+
+      <View style={styles.socialsContainer}>
+        <SocialTabs
+          heart={heart}
+          likes={likes}
+          likeButtonHandler={likeButtonHandler}
+          saved={saved}
+          saveButtonHandler={saveButtonhandler}
+          commentRefs={comments}
+          commentButtonHandler={commentButtonHandler}
+        />
       </View>
     </View>
   );
@@ -164,78 +212,104 @@ export default function Post({ item }: PostProps) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    // alignItems: "center",
     // marginVertical: 10,
+    marginHorizontal: SIZES.xSmall,
+    backgroundColor: COLORS.lightWhite,
+    marginBottom: SIZES.xSmall,
+    borderRadius: SIZES.small,
   },
+
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "95%",
-    marginBottom: 0,
-    backgroundColor: "aliceblue",
-    borderWidth: 1,
-    borderBottomWidth: 0,
+    margin: SIZES.xSmall / 2,
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // alignItems: "center",
+    // // width: "95%",
+    // marginBottom: 0,
+    // backgroundColor: "aliceblue",
+    // borderWidth: 1,
+    // borderBottomWidth: 0,
   },
-
   profilePic: {
-    borderRadius: 50,
-    height: 40,
-    width: 40,
-    marginLeft: 5,
+    // borderRadius: 50,
+    // height: 40,
+    // width: 40,
+    // marginLeft: 5,
+    height: SIZES.xxLarge,
+    width: SIZES.xxLarge,
+    borderRadius: SIZES.xxLarge / 2,
   },
-
-  username: {
-    marginLeft: 5,
-  },
-
-  userinfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 5,
-  },
-  imageHolder: {
-    flex: 1,
-    aspectRatio: 1.5,
-    width: "95%",
-    alignItems: "center",
-    borderWidth: 1,
+  headerTextContainer: { marginLeft: SIZES.xSmall },
+  headerText: { fontSize: SIZES.medium - 2, color: "black" },
+  imageContainer: {
+    aspectRatio: 1.4,
+    // aspectRatio: 1.5
   },
   image: {
     height: "100%",
     width: "100%",
     resizeMode: "cover",
   },
-
-  footer: {
+  descriptionContainer: {
     flexDirection: "row",
-    backgroundColor: "lavenderblush",
-    width: "95%",
-    borderWidth: 1,
-    borderBottomWidth: 0,
+    marginHorizontal: SIZES.xSmall / 2,
+    marginTop: SIZES.xSmall / 2,
+  },
+  usernameText: { fontSize: SIZES.medium - 2, fontWeight: "600" },
+  descriptionText: { marginLeft: SIZES.xSmall / 2, fontSize: SIZES.medium - 2 },
+  socialsContainer: {
+    marginHorizontal: SIZES.xSmall / 2,
+    marginBottom: SIZES.xSmall / 2,
   },
 
-  leftFooter: {
-    paddingVertical: 5,
-    flexDirection: "row",
-    width: "25%",
-    justifyContent: "space-between",
-  },
+  // username: {
+  //   marginLeft: 5,
+  // },
 
-  rightFooter: {
-    flex: 1,
-    paddingVertical: 5,
-    alignItems: "flex-end",
-  },
+  // userinfo: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   marginVertical: 5,
+  // },
+  // imageHolder: {
+  //   flex: 1,
+  //   aspectRatio: 1.5,
+  //   // width: "95%",
+  //   alignItems: "center",
+  //   borderWidth: 1,
+  // },
 
-  description: {
-    width: "95%",
-    backgroundColor: "lavenderblush",
-    borderWidth: 1,
-    borderTopWidth: 0,
-  },
+  // footer: {
+  //   flexDirection: "row",
+  //   backgroundColor: "lavenderblush",
+  //   // width: "95%",
+  //   borderWidth: 1,
+  //   borderBottomWidth: 0,
+  // },
 
-  caption: {
-    paddingLeft: 5,
-  },
+  // leftFooter: {
+  //   paddingVertical: 5,
+  //   flexDirection: "row",
+  //   width: "25%",
+  //   justifyContent: "space-between",
+  // },
+
+  // rightFooter: {
+  //   flex: 1,
+  //   paddingVertical: 5,
+  //   alignItems: "flex-end",
+  // },
+
+  // description: {
+  //   width: "95%",
+  //   backgroundColor: "lavenderblush",
+  //   borderWidth: 1,
+  //   borderTopWidth: 0,
+  // },
+
+  // caption: {
+  //   paddingLeft: 5,
+  // },
 });
