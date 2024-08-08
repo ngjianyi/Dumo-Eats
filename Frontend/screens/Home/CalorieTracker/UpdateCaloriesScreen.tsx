@@ -21,6 +21,8 @@ import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
 import moment from "moment";
 
+import { COLORS, SIZES } from "@/constants/Theme";
+
 export const checkStreak = (prev: string, curr: string): boolean => {
   const array1: string[] = prev.split("/");
   const array2: string[] = curr.split("/");
@@ -145,9 +147,10 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
       !refreshCalorieContext?.refreshCalorie
     );
   };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={styles.container}>
+      {/* <SafeAreaView style={styles.container}>
         <View style={styles.closeContainer}>
           <TouchableOpacity
             onPress={() => modalHandler()}
@@ -176,6 +179,33 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
         >
           <Text style={styles.submit}>Submit</Text>
         </TouchableOpacity>
+      </SafeAreaView> */}
+      <SafeAreaView style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Log your calories</Text>
+
+          <TouchableOpacity onPress={modalHandler} style={styles.closeButton}>
+            <Ionicons name="close" size={25} color="black" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.details}>
+          <TextInput
+            style={styles.input}
+            placeholder="Add calories (kcal)"
+            keyboardType="numeric"
+            onChangeText={updateCalories}
+            aria-label="InputBox"
+          />
+        </View>
+
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={submitCalories}
+          aria-label="SubmitButton"
+        >
+          <Text style={styles.submitText}>Submit</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -184,60 +214,101 @@ export { updateCalories };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "white",
+    height: "35%",
+    marginTop: "auto",
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.small,
   },
-
-  closeContainer: {
-    alignItems: "flex-end",
-    marginTop: 20,
+  headerContainer: {
+    flexDirection: "row",
+    marginTop: SIZES.xSmall,
+    justifyContent: "center",
+    alignItems: "center",
   },
-
-  closeButton: {
-    marginRight: 20,
-    backgroundColor: "red",
-  },
-
-  header: {
-    marginTop: 50,
-  },
-
   headerText: {
     textAlign: "center",
-    fontSize: 35,
-    color: "darkcyan",
-    fontWeight: "bold",
+    fontSize: SIZES.medium,
   },
-
-  detailsFood: {},
-
-  detailsCalorie: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+  closeButton: {
+    position: "absolute",
+    right: SIZES.xSmall,
   },
-
+  details: {
+    margin: SIZES.xxLarge,
+  },
   input: {
-    backgroundColor: "lavender",
-    padding: 10,
-    marginVertical: 10,
-    borderRadius: 5,
-    width: 300,
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginVertical: SIZES.small,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
   },
-
   submitButton: {
-    backgroundColor: "maroon",
-    marginTop: 40,
-    marginBottom: 30,
-    marginHorizontal: 30,
-    borderRadius: 20,
-    padding: 5,
+    backgroundColor: COLORS.tertiary,
+    marginHorizontal: SIZES.xxLarge,
+    borderRadius: SIZES.xSmall * 2,
+    padding: SIZES.xSmall / 4,
   },
-
-  submit: {
+  submitText: {
     textAlign: "center",
-    color: "white",
-    fontSize: 18,
-    padding: 5,
+    fontSize: SIZES.large,
+    padding: SIZES.xSmall / 2,
+    color: "black",
   },
+  // container: {
+  //   flex: 1,
+  //   backgroundColor: "white",
+  // },
+  // closeContainer: {
+  //   alignItems: "flex-end",
+  //   marginTop: 20,
+  // },
+
+  // closeButton: {
+  //   marginRight: 20,
+  //   backgroundColor: "red",
+  // },
+
+  // header: {
+  //   marginTop: 50,
+  // },
+
+  // headerText: {
+  //   textAlign: "center",
+  //   fontSize: 35,
+  //   color: "darkcyan",
+  //   fontWeight: "bold",
+  // },
+
+  // detailsFood: {},
+
+  // detailsCalorie: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
+
+  // input: {
+  //   backgroundColor: "lavender",
+  //   padding: 10,
+  //   marginVertical: 10,
+  //   borderRadius: 5,
+  //   width: 300,
+  // },
+
+  // submitButton: {
+  //   backgroundColor: "maroon",
+  //   marginTop: 40,
+  //   marginBottom: 30,
+  //   marginHorizontal: 30,
+  //   borderRadius: 20,
+  //   padding: 5,
+  // },
+
+  // submit: {
+  //   textAlign: "center",
+  //   color: "white",
+  //   fontSize: 18,
+  //   padding: 5,
+  // },
 });

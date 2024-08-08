@@ -128,7 +128,13 @@ export default function HomeScreen() {
         {loading ? <ActivityIndicator color="blue" size="large" /> : true}
       </View>
       <Feed posts={posts} /> */}
-      <Modal visible={upload}>
+      <Modal
+        visible={upload}
+        animationType="slide"
+        onRequestClose={() => {
+          () => setUpload(false);
+        }}
+      >
         <CreatePostScreen
           upload={upload}
           setUpload={setUpload}

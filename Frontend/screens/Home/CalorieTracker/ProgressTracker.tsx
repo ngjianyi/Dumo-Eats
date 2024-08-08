@@ -174,7 +174,14 @@ export default function ProgressTracker() {
         </Text>
       </View> */}
 
-      <Modal visible={open}>
+      <Modal
+        visible={open}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => {
+          () => setOpen(false);
+        }}
+      >
         <UpdateCaloriesScreen modalHandler={modalHandler} />
       </Modal>
     </View>

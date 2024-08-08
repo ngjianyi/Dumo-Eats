@@ -46,7 +46,6 @@ export default function CreatePostScreen({
   refresh,
   setRefresh,
 }: Props) {
-
   const refreshContext = useContext(RefreshBadgeContext);
   const img: ImageSourcePropType = require("@/assets/images/imagePlaceholder.png");
   interface FormValues {

@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     marginTop: "auto",
     backgroundColor: COLORS.white,
     borderRadius: SIZES.small,
+    // flex: 1,
   },
   commentBox: {
     flex: 1,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     marginTop: SIZES.xSmall,
-    width: "95%",
+    // width: "95%",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    right: 0,
+    right: SIZES.xSmall,
   },
   empty: {
     textAlign: "center",
