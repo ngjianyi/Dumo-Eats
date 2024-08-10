@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: SIZES.medium,
     fontFamily: "DMBold",
-    color: COLORS.primary,
+    color: "black",
   },
   details: {
     flexDirection: "row",

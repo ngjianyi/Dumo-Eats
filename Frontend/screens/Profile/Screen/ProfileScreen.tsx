@@ -11,6 +11,7 @@ import {
   Modal,
   ScrollView,
   ImageSourcePropType,
+  Alert,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
@@ -42,6 +43,9 @@ import { Propsprofile } from "@/components/navigation/PropTypes";
 import CalorieGraphScreen from "./CalorieGraphScreen";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
 import RNPickerSelect from "react-native-picker-select";
+
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 const defaultProfilePic: ImageSourcePropType = require("@/assets/images/defaultProfile.png");
 
@@ -160,8 +164,21 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
   const [gender, setGender] = useState<string>("");
 
   const logOutHandler = () => {
-    userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
-    AUTH.signOut().then(() => navigation.navigate("login"));
+    Alert.alert("", "Are you sure you want to log out?", [
+      {
+        text: "Cancel",
+        onPress: () => {
+          return;
+        },
+      },
+      {
+        text: "Ok",
+        onPress: () => {
+          userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
+          AUTH.signOut().then(() => navigation.navigate("login"));
+        },
+      },
+    ]);
   };
 
   const collectionsHandler = () => {
@@ -185,119 +202,230 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
   }, []);
 
   return (
+    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    //   <SafeAreaView style={styles.container}>
+    //     <Modal visible={searchUser}>
+    //       <AddUsersScreen searchUser={searchUser} setSearch={setSearch} />
+    //     </Modal>
+    //     <View style={styles.header}>
+    //       <Text style={styles.headerText}>Profile</Text>
+    //       <TouchableOpacity onPress={pickImage}>
+    //         <View style={styles.picContainer}>
+    //           {image != "" ? (
+    //             <Image source={{ uri: image }} style={styles.profilePic} />
+    //           ) : (
+    //             <Image source={defaultProfilePic} style={styles.profilePic} />
+    //           )}
+    //           <View style={styles.pencil}>
+    //             <Entypo name="edit" size={24} color="blue" />
+    //           </View>
+    //         </View>
+    //       </TouchableOpacity>
+    //     </View>
+    //     <View style={styles.buttonContainer}>
+    //       <TouchableOpacity
+    //         onPress={() => setGraph(true)}
+    //         style={styles.graphButton}
+    //       >
+    //         <Text style={styles.updateDetails}>Graph</Text>
+    //       </TouchableOpacity>
+
+    //       <TouchableOpacity
+    //         style={styles.addButton}
+    //         // onPress={() => navigation.navigate("login")}
+    //         onPress={() => setSearch(!searchUser)}
+    //       >
+    //         <Text style={styles.logout}>Add Friends</Text>
+    //       </TouchableOpacity>
+    //       <TouchableOpacity
+    //         style={styles.collectionButton}
+    //         onPress={collectionsHandler}
+    //       >
+    //         <Text style={styles.logout}>Collections</Text>
+    //       </TouchableOpacity>
+    //     </View>
+
+    //     <ScrollView style={{ flex: 1 }}>
+    //       <View style={styles.details}>
+    //         <Text style={styles.inputLabel}>Name:</Text>
+    //         <View style={styles.inputBox}>
+    //           <TextInput
+    //             onChangeText={(value: string) => {
+    //               setName(value);
+    //             }}
+    //             value={name}
+    //             autoCorrect={false}
+    //           />
+    //         </View>
+    //         <Text style={styles.inputLabel}>Date of Birth:</Text>
+    //         <View style={styles.inputBox}>
+    //           <TextInput
+    //             onChangeText={(value: string) => {
+    //               setDate(value);
+    //             }}
+    //             placeholder="31/06/2024"
+    //             value={date}
+    //           />
+    //         </View>
+    //         <Text style={styles.inputLabel}>Calories Goal:</Text>
+    //         <View style={styles.inputBox}>
+    //           <TextInput
+    //             keyboardType={"numeric"}
+    //             onChangeText={(val: string) => {
+    //               setGoal(Number(val));
+    //             }}
+    //             value={String(caloriegoal)}
+    //           />
+    //         </View>
+
+    //         <Text style={styles.inputLabel}>Gender:</Text>
+    //         <RNPickerSelect
+    //           onValueChange={(value) => setGender(value)}
+    //           items={[
+    //             { label: "Male", value: "male" },
+    //             { label: "Female", value: "female" },
+    //           ]}
+    //           value={gender}
+    //           placeholder={{}}
+    //           style={pickerSelectStyles}
+    //         />
+    //       </View>
+    //       <View
+    //         style={{
+    //           width: "100%",
+    //           flexDirection: "row",
+    //           justifyContent: "space-around",
+    //         }}
+    //       >
+    //         <TouchableOpacity
+    //           onPress={updateDetails}
+    //           style={styles.updateButton}
+    //         >
+    //           <Text style={styles.updateDetails}>Update</Text>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity
+    //           style={styles.logoutButton}
+    //           // onPress={() => navigation.navigate("login")}
+    //           onPress={logOutHandler}
+    //         >
+    //           <Text style={styles.logout}>Logout</Text>
+    //         </TouchableOpacity>
+    //       </View>
+    //     </ScrollView>
+    //     <Modal visible={collection}>
+    //       <CollectionScreen setCollection={setCollection} />
+    //     </Modal>
+    //     <Modal visible={graph}>
+    //       <CalorieGraphScreen setGraph={setGraph} />
+    //     </Modal>
+    //   </SafeAreaView>
+    // </TouchableWithoutFeedback>
+
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
-        <Modal visible={searchUser}>
-          <AddUsersScreen searchUser={searchUser} setSearch={setSearch} />
-        </Modal>
-        <View style={styles.header}>
+        <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Profile</Text>
+
           <TouchableOpacity onPress={pickImage}>
-            <View style={styles.picContainer}>
-              {image != "" ? (
-                <Image source={{ uri: image }} style={styles.profilePic} />
-              ) : (
-                <Image source={defaultProfilePic} style={styles.profilePic} />
-              )}
-              <View style={styles.pencil}>
+            <View style={styles.imageContainer}>
+              <Image
+                source={image ? { uri: image } : defaultProfilePic}
+                style={styles.image}
+              />
+              <View style={styles.editIcon}>
                 <Entypo name="edit" size={24} color="blue" />
               </View>
             </View>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.logoutButton} onPress={logOutHandler}>
+            <MaterialIcons name="logout" size={24} color="black" />
+          </TouchableOpacity>
         </View>
-        <View style={styles.buttonContainer}>
+
+        <View style={styles.buttonsContainer}>
           <TouchableOpacity
             onPress={() => setGraph(true)}
-            style={styles.graphButton}
+            style={styles.button}
           >
-            <Text style={styles.updateDetails}>Graph</Text>
+            <Text style={styles.buttonText}>Graph</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.addButton}
+            style={styles.button}
             // onPress={() => navigation.navigate("login")}
             onPress={() => setSearch(!searchUser)}
           >
-            <Text style={styles.logout}>Add Friends</Text>
+            <Text style={styles.buttonText}>Add Friends</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.collectionButton}
-            onPress={collectionsHandler}
-          >
-            <Text style={styles.logout}>Collections</Text>
+          <TouchableOpacity style={styles.button} onPress={collectionsHandler}>
+            <Text style={styles.buttonText}>Collections</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={{ flex: 1 }}>
-          <View style={styles.details}>
-            <Text style={styles.inputLabel}>Name:</Text>
-            <View style={styles.inputBox}>
-              <TextInput
-                onChangeText={(value: string) => {
-                  setName(value);
-                }}
-                value={name}
-                autoCorrect={false}
-              />
-            </View>
-            <Text style={styles.inputLabel}>Date of Birth:</Text>
-            <View style={styles.inputBox}>
-              <TextInput
-                onChangeText={(value: string) => {
-                  setDate(value);
-                }}
-                placeholder="31/06/2024"
-                value={date}
-              />
-            </View>
-            <Text style={styles.inputLabel}>Calories Goal:</Text>
-            <View style={styles.inputBox}>
-              <TextInput
-                keyboardType={"numeric"}
-                onChangeText={(val: string) => {
-                  setGoal(Number(val));
-                }}
-                value={String(caloriegoal)}
-              />
-            </View>
 
-            <Text style={styles.inputLabel}>Gender:</Text>
-            <RNPickerSelect
-              onValueChange={(value) => setGender(value)}
-              items={[
-                { label: "Male", value: "male" },
-                { label: "Female", value: "female" },
-              ]}
-              value={gender}
-              placeholder={{}}
-              style={pickerSelectStyles}
-            />
-          </View>
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-around",
+        <View style={styles.details}>
+          <Text style={styles.inputText}>Name</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(value: string) => {
+              setName(value);
             }}
-          >
-            <TouchableOpacity
-              onPress={updateDetails}
-              style={styles.updateButton}
-            >
-              <Text style={styles.updateDetails}>Update</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.logoutButton}
-              // onPress={() => navigation.navigate("login")}
-              onPress={logOutHandler}
-            >
-              <Text style={styles.logout}>Logout</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+            value={name}
+            autoCorrect={false}
+            autoCapitalize="none"
+            autoComplete="off"
+            placeholderTextColor={COLORS.gray}
+          />
+
+          <Text style={styles.inputText}>Date of Birth</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(value: string) => {
+              setDate(value);
+            }}
+            placeholder="DD/MM/YYYY"
+            value={date}
+            placeholderTextColor={COLORS.gray}
+          />
+
+          <Text style={styles.inputText}>Calories Goal</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType={"numeric"}
+            onChangeText={(val: string) => {
+              setGoal(Number(val));
+            }}
+            value={String(caloriegoal)}
+            placeholderTextColor={COLORS.gray}
+          />
+
+          <Text style={styles.inputText}>Gender</Text>
+          <RNPickerSelect
+            onValueChange={(value) => setGender(value)}
+            items={[
+              { label: "Male", value: "male" },
+              { label: "Female", value: "female" },
+            ]}
+            value={gender}
+            placeholder={{ label: "Please select a gender", value: "" }}
+            style={pickerSelectStyles}
+          />
+        </View>
+
+        <View style={styles.updateButtonContainer}>
+          <TouchableOpacity onPress={updateDetails} style={styles.button}>
+            <Text style={styles.buttonText}>Update</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Modal visible={searchUser}>
+          <AddUsersScreen searchUser={searchUser} setSearch={setSearch} />
+        </Modal>
 
         <Modal visible={collection}>
           <CollectionScreen setCollection={setCollection} />
         </Modal>
+
         <Modal visible={graph}>
           <CalorieGraphScreen setGraph={setGraph} />
         </Modal>
@@ -310,33 +438,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    marginTop: 20,
+  headerContainer: {
     alignItems: "center",
+    marginTop: SIZES.medium,
+    margin: SIZES.xSmall,
   },
-
   headerText: {
-    fontSize: 20,
-    marginBottom: 30,
+    fontSize: SIZES.xLarge,
+    fontWeight: "700",
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
   },
-
-  picContainer: {
+  logoutButton: { position: "absolute", right: 0 },
+  imageContainer: {
     height: 100,
     width: 100,
-    borderRadius: 85,
-    borderWidth: 2,
-    borderColor: "grey",
   },
-
-  profilePic: {
-    height: "100%",
-    width: "100%",
-    borderRadius: 85,
-  },
-  pencil: {
+  image: { height: "100%", width: "100%", borderRadius: 50 },
+  editIcon: {
     position: "absolute",
     bottom: 0,
-    right: 2,
+    right: 0,
     backgroundColor: "white",
     borderRadius: 15,
     height: 28,
@@ -344,111 +466,188 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  details: {
-    marginTop: 5,
-    padding: 15,
-  },
-  inputLabel: {
-    marginHorizontal: 2,
-  },
-
-  inputBox: {
-    height: 44,
-    width: "100%",
-    borderWidth: 2,
-    borderColor: "lightgrey",
-    marginVertical: 14,
-    justifyContent: "center",
-    paddingLeft: 8,
-  },
-
-  buttonContainer: {
+  buttonsContainer: {
     flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-evenly",
+    // width: "100%",
+    justifyContent: "space-between",
+    margin: SIZES.xSmall,
+    marginBottom: SIZES.xLarge,
   },
-
-  logoutButton: {
-    backgroundColor: "maroon",
-    paddingVertical: 8,
-    borderRadius: 14,
-    width: "25%",
+  button: {
+    backgroundColor: COLORS.tertiary,
+    borderRadius: SIZES.xSmall * 2,
+    padding: SIZES.xSmall / 4,
+    width: "30%",
   },
-
-  logout: {
+  buttonText: {
     textAlign: "center",
-    padding: 5,
-    color: "white",
-    fontWeight: "bold",
+    fontSize: SIZES.medium,
+    padding: SIZES.xSmall / 2,
+    color: "black",
   },
+  details: {
+    marginHorizontal: SIZES.xxLarge,
+  },
+  inputText: { fontSize: SIZES.medium },
+  input: {
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginTop: SIZES.small / 2,
+    marginBottom: SIZES.small,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
+  },
+  updateButtonContainer: { alignItems: "center", marginTop: SIZES.xLarge },
 
-  addButton: {
-    backgroundColor: "hotpink",
-    marginVertical: 10,
-    paddingVertical: 8,
-    borderRadius: 14,
-    width: "25%",
-  },
+  // header: {
+  //   marginTop: 20,
+  //   alignItems: "center",
+  // },
 
-  collectionButton: {
-    backgroundColor: "gold",
-    marginVertical: 10,
-    paddingVertical: 8,
-    borderRadius: 14,
-    width: "25%",
-  },
+  // headerText: {
+  //   fontSize: 20,
+  //   marginBottom: 30,
+  // },
 
-  updateButton: {
-    backgroundColor: "mediumseagreen",
-    // marginVertical: 30,
-    // marginBottom: 20,
-    paddingVertical: 8,
-    borderRadius: 14,
-    width: "25%",
-  },
+  // picContainer: {
+  //   height: 100,
+  //   width: 100,
+  //   borderRadius: 85,
+  //   borderWidth: 2,
+  //   borderColor: "grey",
+  // },
 
-  graphButton: {
-    backgroundColor: "blue",
-    marginVertical: 10,
-    paddingVertical: 8,
-    borderRadius: 14,
-    width: "25%",
-  },
-  updateDetails: {
-    textAlign: "center",
-    color: "white",
-    fontWeight: "bold",
-    padding: 5,
-  },
+  // profilePic: {
+  //   height: "100%",
+  //   width: "100%",
+  //   borderRadius: 85,
+  // },
+  // pencil: {
+  //   position: "absolute",
+  //   bottom: 0,
+  //   right: 2,
+  //   backgroundColor: "white",
+  //   borderRadius: 15,
+  //   height: 28,
+  //   width: 28,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
+  // details: {
+  //   marginTop: 5,
+  //   padding: 15,
+  // },
+  // inputLabel: {
+  //   marginHorizontal: 2,
+  // },
+
+  // inputBox: {
+  //   height: 44,
+  //   width: "100%",
+  //   borderWidth: 2,
+  //   borderColor: "lightgrey",
+  //   marginVertical: 14,
+  //   justifyContent: "center",
+  //   paddingLeft: 8,
+  // },
+
+  // buttonContainer: {
+  //   flexDirection: "row",
+  //   width: "100%",
+  //   justifyContent: "space-evenly",
+  // },
+
+  //   logoutButton: {
+  //     backgroundColor: "maroon",
+  //     paddingVertical: 8,
+  //     borderRadius: 14,
+  //     width: "25%",
+  //   },
+
+  //   logout: {
+  //     textAlign: "center",
+  //     padding: 5,
+  //     color: "white",
+  //     fontWeight: "bold",
+  //   },
+
+  //   addButton: {
+  //     backgroundColor: "hotpink",
+  //     marginVertical: 10,
+  //     paddingVertical: 8,
+  //     borderRadius: 14,
+  //     width: "25%",
+  //   },
+
+  //   collectionButton: {
+  //     backgroundColor: "gold",
+  //     marginVertical: 10,
+  //     paddingVertical: 8,
+  //     borderRadius: 14,
+  //     width: "25%",
+  //   },
+
+  //   updateButton: {
+  //     backgroundColor: "mediumseagreen",
+  //     // marginVertical: 30,
+  //     // marginBottom: 20,
+  //     paddingVertical: 8,
+  //     borderRadius: 14,
+  //     width: "25%",
+  //   },
+
+  //   graphButton: {
+  //     backgroundColor: "blue",
+  //     marginVertical: 10,
+  //     paddingVertical: 8,
+  //     borderRadius: 14,
+  //     width: "25%",
+  //   },
+  //   updateDetails: {
+  //     textAlign: "center",
+  //     color: "white",
+  //     fontWeight: "bold",
+  //     padding: 5,
+  //   },
 });
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 2,
-    borderColor: "lightgrey",
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
-    height: 44,
-    width: "100%",
-    marginVertical: 14,
-    justifyContent: "center",
-    paddingLeft: 8,
+    // fontSize: 16,
+    // paddingVertical: 12,
+    // paddingHorizontal: 10,
+    // borderWidth: 2,
+    // borderColor: "lightgrey",
+    // color: "black",
+    // paddingRight: 30, // to ensure the text is never behind the icon
+    // height: 44,
+    // width: "100%",
+    // marginVertical: 14,
+    // justifyContent: "center",
+    // paddingLeft: 8,
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginVertical: SIZES.small / 2,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "purple",
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
-    height: 44,
-    width: "100%",
-    marginVertical: 14,
-    justifyContent: "center",
-    paddingLeft: 8,
+    // fontSize: 16,
+    // paddingHorizontal: 10,
+    // paddingVertical: 8,
+    // borderWidth: 0.5,
+    // borderColor: "purple",
+    // color: "black",
+    // paddingRight: 30, // to ensure the text is never behind the icon
+    // height: 44,
+    // width: "100%",
+    // marginVertical: 14,
+    // justifyContent: "center",
+    // paddingLeft: 8,
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginVertical: SIZES.small / 2,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
   },
 });

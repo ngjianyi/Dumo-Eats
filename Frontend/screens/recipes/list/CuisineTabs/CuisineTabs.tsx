@@ -49,8 +49,7 @@ export default function CuisineTabs() {
           <TouchableOpacity
             style={{
               ...styles.tab,
-              borderColor:
-                item === cuisineType ? COLORS.secondary : COLORS.gray2,
+              borderColor: item === cuisineType ? "black" : COLORS.gray2,
             }}
             onPress={() => {
               item === cuisineType ? setCuisineType("") : setCuisineType(item);
@@ -59,7 +58,7 @@ export default function CuisineTabs() {
             <Text
               style={{
                 ...styles.tabText,
-                color: item === cuisineType ? COLORS.secondary : COLORS.gray2,
+                color: item === cuisineType ? "black" : COLORS.gray2,
               }}
             >
               {item}

@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pointsContainer: {
-    marginVertical: SIZES.small,
     flex: 1,
   },
   pointWrapper: {

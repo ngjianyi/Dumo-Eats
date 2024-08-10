@@ -27,11 +27,9 @@ const Tabs = ({ tabs, activeTab, setActiveTab }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: SIZES.xSmall,
-  },
+  container: {},
   tabs: {
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     flexDirection: "row",
   },
 });

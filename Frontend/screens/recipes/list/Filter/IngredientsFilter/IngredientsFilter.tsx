@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     paddingBottom: SIZES.xSmall / 2,
     textAlign: "center",
     fontSize: SIZES.medium,
-    color: COLORS.secondary,
+    color: "black",
   },
   searchWrapper: {
     backgroundColor: COLORS.white,

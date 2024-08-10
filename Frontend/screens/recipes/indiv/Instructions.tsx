@@ -33,7 +33,7 @@ export default function Instructions({ recipe }: Props) {
                         <Text style={styles.pointText}>
                           <Text style={styles.step}>
                             {"Step "}
-                            {index + 1}.{item.number}{" "}
+                            {item.number}{" "}
                           </Text>
 
                           {item.step}
@@ -99,12 +99,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.medium,
     flex: 1,
   },
-  header: { color: COLORS.primary },
+  header: { color: "black" },
   step: {
-    color: COLORS.secondary,
+    color: "black",
   },
   pointsContainer: {
-    marginVertical: SIZES.small,
     flex: 1,
   },
   pointWrapper: {
@@ -127,6 +126,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: SIZES.medium,
-    color: COLORS.primary,
+    color: "black",
   },
 });

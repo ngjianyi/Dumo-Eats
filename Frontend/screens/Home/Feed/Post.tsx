@@ -215,20 +215,22 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // marginVertical: 10,
     marginHorizontal: SIZES.xSmall,
-    backgroundColor: COLORS.lightWhite,
+    // backgroundColor: COLORS.lightWhite,
     marginBottom: SIZES.xSmall,
     borderRadius: SIZES.small,
   },
 
   header: {
     flexDirection: "row",
-    margin: SIZES.xSmall / 2,
+    // margin: SIZES.xSmall / 2,
+    padding: SIZES.xSmall / 2,
+
     // flexDirection: "row",
     // justifyContent: "space-between",
     // alignItems: "center",
     // // width: "95%",
     // marginBottom: 0,
-    // backgroundColor: "aliceblue",
+    backgroundColor: "aliceblue",
     // borderWidth: 1,
     // borderBottomWidth: 0,
   },
@@ -241,7 +243,9 @@ const styles = StyleSheet.create({
     width: SIZES.xxLarge,
     borderRadius: SIZES.xxLarge / 2,
   },
-  headerTextContainer: { marginLeft: SIZES.xSmall },
+  headerTextContainer: {
+    marginLeft: SIZES.xSmall,
+  },
   headerText: { fontSize: SIZES.medium - 2, color: "black" },
   imageContainer: {
     aspectRatio: 1.4,
@@ -254,14 +258,21 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     flexDirection: "row",
-    marginHorizontal: SIZES.xSmall / 2,
-    marginTop: SIZES.xSmall / 2,
+    // marginHorizontal: SIZES.xSmall / 2,
+    // marginTop: SIZES.xSmall / 2,
+    paddingHorizontal: SIZES.xSmall / 2,
+    paddingTop: SIZES.xSmall / 2,
+
+    backgroundColor: "lavenderblush",
   },
   usernameText: { fontSize: SIZES.medium - 2, fontWeight: "600" },
   descriptionText: { marginLeft: SIZES.xSmall / 2, fontSize: SIZES.medium - 2 },
   socialsContainer: {
-    marginHorizontal: SIZES.xSmall / 2,
-    marginBottom: SIZES.xSmall / 2,
+    // marginHorizontal: SIZES.xSmall / 2,
+    // marginBottom: SIZES.xSmall / 2,
+    paddingHorizontal: SIZES.xSmall / 2,
+    paddingBottom: SIZES.xSmall / 2,
+    backgroundColor: "lavenderblush",
   },
 
   // username: {

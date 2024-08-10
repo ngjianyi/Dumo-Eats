@@ -30,14 +30,14 @@ export default function RecipeIndivScreen({
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        onPress={() => setDetailsVisible(false)}
-        style={styles.backButton}
-      >
-        <Ionicons name="arrow-back" size={25} color="black" />
-      </TouchableOpacity>
-
       <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => setDetailsVisible(false)}
+          style={styles.backButton}
+        >
+          <Ionicons name="arrow-back" size={25} color="black" />
+        </TouchableOpacity>
+
         <RecipeHeader
           recipeImage={recipe.image}
           recipeTitle={recipe.title}
@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   backButton: {
-    padding: SIZES.xSmall,
+    position: "absolute",
+    left: SIZES.xSmall,
   },
   header: {
     paddingHorizontal: SIZES.medium,
