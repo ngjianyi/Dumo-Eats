@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: "center",
-    marginTop: SIZES.medium,
+    marginTop: "50%",
     margin: SIZES.xSmall,
   },
   headerText: {
@@ -92,16 +92,15 @@ const styles = StyleSheet.create({
     color: "black",
     marginVertical: SIZES.xSmall / 4,
   },
+  details: {
+    margin: SIZES.xxLarge,
+  },
   input: {
     borderWidth: SIZES.xSmall / 8,
     borderColor: COLORS.gray,
     marginVertical: SIZES.small,
     padding: SIZES.small,
     borderRadius: SIZES.xSmall / 2,
-  },
-
-  details: {
-    margin: SIZES.xxLarge,
   },
   forgetPasswordContainer: {
     alignItems: "flex-end",
@@ -117,7 +116,6 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xSmall * 2,
     padding: SIZES.xSmall / 4,
   },
-
   submitText: {
     textAlign: "center",
     fontSize: SIZES.large,

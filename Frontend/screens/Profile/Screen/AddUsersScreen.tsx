@@ -21,6 +21,9 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AutoRefresh from "@/contexts/AutoRefresh";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
+
+import { COLORS, SIZES } from "@/constants/Theme";
+
 interface Props {
   searchUser: boolean;
   setSearch: Dispatch<SetStateAction<boolean>>;
@@ -58,34 +61,67 @@ export default function AddUsersScreen({ searchUser, setSearch }: Props) {
       {
         text: "OK",
         onPress: () => {
-          setSearch(!searchUser);
+          // setSearch(!searchUser);
           refreshContext?.setRefresh(!refreshContext.autoRefresh);
         },
       },
     ]);
   };
+
   return (
+    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    //   <SafeAreaView style={styles.searchWrapper}>
+    //     <View style={styles.header}>
+    //       <Text style={styles.title}>Add your friends here!</Text>
+    //       <TouchableOpacity
+    //         style={styles.closeButton}
+    //         onPress={() => setSearch(!searchUser)}
+    //       >
+    //         <Ionicons name="arrow-back" size={24} color="white" />
+    //       </TouchableOpacity>
+    //     </View>
+
+    //     <TextInput
+    //       style={styles.searchInput}
+    //       onChangeText={(text) => setFollow(text)}
+    //       placeholder="Username"
+    //       autoCapitalize="none"
+    //       value={followed}
+    //     />
+    //     <TouchableOpacity style={styles.addButton} onPress={addHandler}>
+    //       <Text style={{ color: "white" }}>Add Friend</Text>
+    //     </TouchableOpacity>
+    //   </SafeAreaView>
+    // </TouchableWithoutFeedback>
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={styles.searchWrapper}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Add your friends here!</Text>
+      <SafeAreaView style={styles.container}>
+        <View>
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => setSearch(!searchUser)}
           >
-            <Ionicons name="arrow-back" size={24} color="white" />
+            <Ionicons name="arrow-back" size={24} color="black" />
           </TouchableOpacity>
         </View>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Add friends</Text>
+        </View>
 
-        <TextInput
-          style={styles.searchInput}
-          onChangeText={(text) => setFollow(text)}
-          placeholder="Username"
-          autoCapitalize="none"
-          value={followed}
-        />
-        <TouchableOpacity style={styles.addButton} onPress={addHandler}>
-          <Text style={{ color: "white" }}>Add Friend</Text>
+        <View style={styles.details}>
+          <TextInput
+            style={styles.input}
+            placeholderTextColor={COLORS.gray}
+            onChangeText={(text) => setFollow(text)}
+            placeholder="Username"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            value={followed}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.submit} onPress={addHandler}>
+          <Text style={styles.submitText}>Add friend</Text>
         </TouchableOpacity>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -93,44 +129,86 @@ export default function AddUsersScreen({ searchUser, setSearch }: Props) {
 }
 
 const styles = StyleSheet.create({
-  searchWrapper: {
+  container: {
     flex: 1,
-    marginHorizontal: 10,
+    backgroundColor: COLORS.lightWhite,
+  },
+  headerContainer: {
     alignItems: "center",
-  },
-  header: {
-    marginTop: 50,
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "center",
-    backgroundColor: "hotpink",
-    padding: 20,
-    alignItems: "center",
-    borderRadius: 10,
-  },
-  title: {
-    fontSize: 18,
-    alignSelf: "center",
-    color: "white",
-  },
-
-  searchInput: {
-    padding: 10,
-    backgroundColor: "light-grey",
-    width: "95%",
-    marginTop: 50,
-    borderRadius: 10,
-    borderWidth: 1,
-  },
-
-  addButton: {
-    backgroundColor: "hotpink",
-    padding: 8,
-    marginTop: 50,
-    borderRadius: 8,
+    marginTop: "50%",
+    margin: SIZES.xSmall,
   },
   closeButton: {
-    position: "absolute",
-    left: 4,
+    marginLeft: SIZES.xSmall * 2,
+    marginTop: SIZES.xSmall,
   },
+  headerText: {
+    fontSize: SIZES.xLarge,
+    fontWeight: "700",
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
+  },
+  details: {
+    margin: SIZES.xxLarge,
+  },
+  input: {
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginVertical: SIZES.small,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
+  },
+  submit: {
+    backgroundColor: COLORS.tertiary,
+    marginHorizontal: SIZES.xxLarge,
+    borderRadius: SIZES.xSmall * 2,
+    padding: SIZES.xSmall / 4,
+  },
+  submitText: {
+    textAlign: "center",
+    fontSize: SIZES.large,
+    padding: SIZES.xSmall / 2,
+    color: "black",
+  },
+
+  // searchWrapper: {
+  //   flex: 1,
+  //   marginHorizontal: 10,
+  //   alignItems: "center",
+  // },
+  // header: {
+  //   marginTop: 50,
+  //   flexDirection: "row",
+  //   width: "100%",
+  //   justifyContent: "center",
+  //   backgroundColor: "hotpink",
+  //   padding: 20,
+  //   alignItems: "center",
+  //   borderRadius: 10,
+  // },
+  // title: {
+  //   fontSize: 18,
+  //   alignSelf: "center",
+  //   color: "white",
+  // },
+
+  // searchInput: {
+  //   padding: 10,
+  //   backgroundColor: "light-grey",
+  //   width: "95%",
+  //   marginTop: 50,
+  //   borderRadius: 10,
+  //   borderWidth: 1,
+  // },
+
+  // addButton: {
+  //   backgroundColor: "hotpink",
+  //   padding: 8,
+  //   marginTop: 50,
+  //   borderRadius: 8,
+  // },
+  // closeButton: {
+  //   position: "absolute",
+  //   left: 4,
+  // },
 });

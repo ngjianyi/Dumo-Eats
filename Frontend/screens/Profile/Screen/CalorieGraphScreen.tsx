@@ -12,9 +12,13 @@ import { getUserDocSnap } from "@/utils/social/User";
 import { Dates } from "@/utils/functions/Dates";
 import { dateFormat } from "@/utils/functions/dateFormat";
 import { DocumentData, DocumentSnapshot } from "firebase/firestore";
+
+import { COLORS, SIZES } from "@/constants/Theme";
+
 interface props {
   setGraph: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 export default function CalorieGraphScreen({ setGraph }: props) {
   const [dateArray, setDateArray] = useState<string[]>([]);
   const [calorieArray, setCalorieArray] = useState<number[]>([]);
@@ -55,15 +59,33 @@ export default function CalorieGraphScreen({ setGraph }: props) {
   }, []);
 
   return (
+    // <SafeAreaView style={styles.container}>
+    //   <View style={styles.header}>
+    //     <Text style={styles.title}>Weekly calorie record</Text>
+    //     <TouchableOpacity
+    //       style={styles.closeButton}
+    //       onPress={() => setGraph(false)}
+    //     >
+    //       <Ionicons name="arrow-back" size={24} color="white" />
+    //     </TouchableOpacity>
+    //   </View>
+
+    //   <CalorieGraph
+    //     widthArray={widthArray}
+    //     dateArray={dateArray}
+    //     calorieArray={calorieArray}
+    //   />
+    // </SafeAreaView>
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Weekly calorie record</Text>
+      <View style={styles.headerContainer}>
         <TouchableOpacity
           style={styles.closeButton}
           onPress={() => setGraph(false)}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
+
+        <Text style={styles.headerText}>Calories in the last 7 days</Text>
       </View>
 
       <CalorieGraph
@@ -77,27 +99,40 @@ export default function CalorieGraphScreen({ setGraph }: props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
-  header: {
-    flexDirection: "row",
-    marginTop: 20,
-    backgroundColor: "blue",
-    padding: 8,
-    marginHorizontal: 14,
-    borderRadius: 10,
-    marginBottom: 20,
+  headerContainer: {
     alignItems: "center",
-    justifyContent: "center",
+    marginTop: SIZES.medium,
+    margin: SIZES.xSmall,
   },
+  closeButton: { position: "absolute", left: SIZES.small },
+  headerText: {
+    fontSize: SIZES.xLarge,
+    fontWeight: "700",
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
+  },
+  // header: {
+  //   flexDirection: "row",
+  //   marginTop: 20,
+  //   backgroundColor: "blue",
+  //   padding: 8,
+  //   marginHorizontal: 14,
+  //   borderRadius: 10,
+  //   marginBottom: 20,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
 
-  title: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  // title: {
+  //   color: "white",
+  //   fontSize: 18,
+  //   fontWeight: "bold",
+  // },
 
-  closeButton: {
-    position: "absolute",
-    left: 4,
-  },
+  // closeButton: {
+  //   position: "absolute",
+  //   left: 4,
+  // },
 });
