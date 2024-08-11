@@ -190,11 +190,6 @@ export default function Post({ item }: PostProps) {
         <Image source={{ uri: item.image }} style={styles.image} />
       </View>
 
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.usernameText}>{username}</Text>
-        <Text style={styles.descriptionText}>{item.caption}</Text>
-      </View>
-
       <View style={styles.socialsContainer}>
         <SocialTabs
           heart={heart}
@@ -205,6 +200,10 @@ export default function Post({ item }: PostProps) {
           commentRefs={comments}
           commentButtonHandler={commentButtonHandler}
         />
+      </View>
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.usernameText}>{username}</Text>
+        <Text style={styles.descriptionText}>{item.caption}</Text>
       </View>
     </View>
   );
@@ -263,7 +262,7 @@ const styles = StyleSheet.create({
     // marginHorizontal: SIZES.xSmall / 2,
     // marginTop: SIZES.xSmall / 2,
     paddingHorizontal: SIZES.xSmall / 2,
-    paddingTop: SIZES.xSmall / 2,
+    paddingBottom: SIZES.xSmall / 2,
 
     // backgroundColor: "lavenderblush",
   },
@@ -272,8 +271,9 @@ const styles = StyleSheet.create({
   socialsContainer: {
     // marginHorizontal: SIZES.xSmall / 2,
     // marginBottom: SIZES.xSmall / 2,
+    paddingTop: SIZES.xSmall / 2,
     paddingHorizontal: SIZES.xSmall / 2,
-    paddingBottom: SIZES.xSmall / 2,
+    // paddingBottom: SIZES.xSmall / 2,
     // backgroundColor: "lavenderblush",
   },
 
