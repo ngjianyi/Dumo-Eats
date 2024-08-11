@@ -219,8 +219,7 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.xSmall,
     borderRadius: SIZES.small,
     ...SHADOWS.medium,
-    // shadowColor: COLORS.white,
-    shadowColor: "black",
+    shadowColor: COLORS.white,
   },
 
   header: {

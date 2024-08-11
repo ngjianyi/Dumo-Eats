@@ -333,7 +333,7 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
                 style={styles.image}
               />
               <View style={styles.editIcon}>
-                <Entypo name="edit" size={24} color="blue" />
+                <Entypo name="edit" size={24} color={COLORS.gray} />
               </View>
             </View>
           </TouchableOpacity>
@@ -437,6 +437,7 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   headerContainer: {
     alignItems: "center",

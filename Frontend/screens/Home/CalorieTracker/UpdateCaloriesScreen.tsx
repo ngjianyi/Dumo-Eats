@@ -203,6 +203,7 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
               keyboardType="numeric"
               onChangeText={updateCalories}
               aria-label="InputBox"
+              placeholderTextColor={COLORS.gray}
             />
           </View>
 

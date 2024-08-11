@@ -31,12 +31,8 @@ export default function CommentCreate({ commentButtonHandler }: Props) {
       <View style={styles.input}>
         <View style={styles.textInput}>
           <TextInput
-            style={{
-              marginRight: 10,
-              width: "90%",
-              borderRadius: SIZES.medium,
-            }}
             placeholder="Add a comment"
+            placeholderTextColor="black"
             value={body}
             multiline={true}
             onChangeText={(val) => setBody(val)}

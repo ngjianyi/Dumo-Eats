@@ -95,7 +95,7 @@ export default function Instructions({ recipe }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS.white,
     paddingHorizontal: SIZES.medium,
     flex: 1,
   },

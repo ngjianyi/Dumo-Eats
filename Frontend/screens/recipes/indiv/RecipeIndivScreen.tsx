@@ -64,6 +64,7 @@ export default function RecipeIndivScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   backButton: {
     position: "absolute",

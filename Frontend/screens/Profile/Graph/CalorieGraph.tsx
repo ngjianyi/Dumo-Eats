@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-around",
-    backgroundColor: "lavenderblush",
+    // backgroundColor: "lavenderblush",
     marginHorizontal: 15,
     borderRadius: 15,
   },

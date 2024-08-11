@@ -40,8 +40,6 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: SIZES.large,
   },
   logoImage: {
     width: "80%",

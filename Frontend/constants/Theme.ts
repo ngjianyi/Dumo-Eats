@@ -9,7 +9,8 @@ const COLORS = {
   gray2: "#C1C0C8",
 
   // white: "#F3F4F8",
-  white: "#f3f2ee",
+  // white: "#f3f2ee",
+  white: "#f1efeb",
   lightWhite: "#FAFAFC",
 
   blue: "dodgerblue",

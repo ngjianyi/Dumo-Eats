@@ -15,7 +15,7 @@ function TabButton({ name, activeTab, onHandleSearchType }: Props) {
       style={{
         ...styles.btn,
         // backgroundColor: name === activeTab ? COLORS.primary : "#F3F4F8",
-        backgroundColor: name === activeTab ? COLORS.blue : "#F3F4F8",
+        backgroundColor: name === activeTab ? COLORS.blue : COLORS.lightWhite,
       }}
       onPress={onHandleSearchType}
     >

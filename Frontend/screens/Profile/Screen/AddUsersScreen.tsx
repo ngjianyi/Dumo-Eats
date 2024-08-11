@@ -131,7 +131,7 @@ export default function AddUsersScreen({ searchUser, setSearch }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightWhite,
+    backgroundColor: COLORS.white,
   },
   headerContainer: {
     alignItems: "center",

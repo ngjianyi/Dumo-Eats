@@ -21,7 +21,7 @@ export default function Nutrients({ recipe }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS.white,
     paddingHorizontal: SIZES.medium,
     flex: 1,
   },
