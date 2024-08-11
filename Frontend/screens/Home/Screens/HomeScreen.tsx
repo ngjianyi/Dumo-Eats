@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
+    // backgroundColor: "lavenderblush",
   },
   headerContainer: {
     margin: SIZES.xSmall,

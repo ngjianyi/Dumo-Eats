@@ -27,7 +27,7 @@ import RefreshCommentContext from "@/contexts/RefreshComment";
 import RefreshCollectionContext from "@/contexts/RefreshCollection";
 
 import SocialTabs from "@/components/social/SocialTabs";
-import { COLORS, SIZES } from "@/constants/Theme";
+import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
 
 const profilepic = require("@/assets/images/defaultProfile.png");
 
@@ -215,9 +215,12 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // marginVertical: 10,
     marginHorizontal: SIZES.xSmall,
-    // backgroundColor: COLORS.lightWhite,
+    backgroundColor: COLORS.lightWhite,
     marginBottom: SIZES.xSmall,
     borderRadius: SIZES.small,
+    ...SHADOWS.medium,
+    // shadowColor: COLORS.white,
+    shadowColor: "black",
   },
 
   header: {
@@ -230,7 +233,7 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // // width: "95%",
     // marginBottom: 0,
-    backgroundColor: "aliceblue",
+    // backgroundColor: "aliceblue",
     // borderWidth: 1,
     // borderBottomWidth: 0,
   },
@@ -263,7 +266,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.xSmall / 2,
     paddingTop: SIZES.xSmall / 2,
 
-    backgroundColor: "lavenderblush",
+    // backgroundColor: "lavenderblush",
   },
   usernameText: { fontSize: SIZES.medium - 2, fontWeight: "600" },
   descriptionText: { marginLeft: SIZES.xSmall / 2, fontSize: SIZES.medium - 2 },
@@ -272,7 +275,7 @@ const styles = StyleSheet.create({
     // marginBottom: SIZES.xSmall / 2,
     paddingHorizontal: SIZES.xSmall / 2,
     paddingBottom: SIZES.xSmall / 2,
-    backgroundColor: "lavenderblush",
+    // backgroundColor: "lavenderblush",
   },
 
   // username: {
