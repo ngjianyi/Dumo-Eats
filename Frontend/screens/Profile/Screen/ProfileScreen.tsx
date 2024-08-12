@@ -202,125 +202,6 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
   }, []);
 
   return (
-    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    //   <SafeAreaView style={styles.container}>
-    //     <Modal visible={searchUser}>
-    //       <AddUsersScreen searchUser={searchUser} setSearch={setSearch} />
-    //     </Modal>
-    //     <View style={styles.header}>
-    //       <Text style={styles.headerText}>Profile</Text>
-    //       <TouchableOpacity onPress={pickImage}>
-    //         <View style={styles.picContainer}>
-    //           {image != "" ? (
-    //             <Image source={{ uri: image }} style={styles.profilePic} />
-    //           ) : (
-    //             <Image source={defaultProfilePic} style={styles.profilePic} />
-    //           )}
-    //           <View style={styles.pencil}>
-    //             <Entypo name="edit" size={24} color="blue" />
-    //           </View>
-    //         </View>
-    //       </TouchableOpacity>
-    //     </View>
-    //     <View style={styles.buttonContainer}>
-    //       <TouchableOpacity
-    //         onPress={() => setGraph(true)}
-    //         style={styles.graphButton}
-    //       >
-    //         <Text style={styles.updateDetails}>Graph</Text>
-    //       </TouchableOpacity>
-
-    //       <TouchableOpacity
-    //         style={styles.addButton}
-    //         // onPress={() => navigation.navigate("login")}
-    //         onPress={() => setSearch(!searchUser)}
-    //       >
-    //         <Text style={styles.logout}>Add Friends</Text>
-    //       </TouchableOpacity>
-    //       <TouchableOpacity
-    //         style={styles.collectionButton}
-    //         onPress={collectionsHandler}
-    //       >
-    //         <Text style={styles.logout}>Collections</Text>
-    //       </TouchableOpacity>
-    //     </View>
-
-    //     <ScrollView style={{ flex: 1 }}>
-    //       <View style={styles.details}>
-    //         <Text style={styles.inputLabel}>Name:</Text>
-    //         <View style={styles.inputBox}>
-    //           <TextInput
-    //             onChangeText={(value: string) => {
-    //               setName(value);
-    //             }}
-    //             value={name}
-    //             autoCorrect={false}
-    //           />
-    //         </View>
-    //         <Text style={styles.inputLabel}>Date of Birth:</Text>
-    //         <View style={styles.inputBox}>
-    //           <TextInput
-    //             onChangeText={(value: string) => {
-    //               setDate(value);
-    //             }}
-    //             placeholder="31/06/2024"
-    //             value={date}
-    //           />
-    //         </View>
-    //         <Text style={styles.inputLabel}>Calories Goal:</Text>
-    //         <View style={styles.inputBox}>
-    //           <TextInput
-    //             keyboardType={"numeric"}
-    //             onChangeText={(val: string) => {
-    //               setGoal(Number(val));
-    //             }}
-    //             value={String(caloriegoal)}
-    //           />
-    //         </View>
-
-    //         <Text style={styles.inputLabel}>Gender:</Text>
-    //         <RNPickerSelect
-    //           onValueChange={(value) => setGender(value)}
-    //           items={[
-    //             { label: "Male", value: "male" },
-    //             { label: "Female", value: "female" },
-    //           ]}
-    //           value={gender}
-    //           placeholder={{}}
-    //           style={pickerSelectStyles}
-    //         />
-    //       </View>
-    //       <View
-    //         style={{
-    //           width: "100%",
-    //           flexDirection: "row",
-    //           justifyContent: "space-around",
-    //         }}
-    //       >
-    //         <TouchableOpacity
-    //           onPress={updateDetails}
-    //           style={styles.updateButton}
-    //         >
-    //           <Text style={styles.updateDetails}>Update</Text>
-    //         </TouchableOpacity>
-    //         <TouchableOpacity
-    //           style={styles.logoutButton}
-    //           // onPress={() => navigation.navigate("login")}
-    //           onPress={logOutHandler}
-    //         >
-    //           <Text style={styles.logout}>Logout</Text>
-    //         </TouchableOpacity>
-    //       </View>
-    //     </ScrollView>
-    //     <Modal visible={collection}>
-    //       <CollectionScreen setCollection={setCollection} />
-    //     </Modal>
-    //     <Modal visible={graph}>
-    //       <CalorieGraphScreen setGraph={setGraph} />
-    //     </Modal>
-    //   </SafeAreaView>
-    // </TouchableWithoutFeedback>
-
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
@@ -353,7 +234,6 @@ export default function ProfileScreen({ navigation }: Propsprofile) {
 
           <TouchableOpacity
             style={styles.button}
-            // onPress={() => navigation.navigate("login")}
             onPress={() => setSearch(!searchUser)}
           >
             <Text style={styles.buttonText}>Add Friends</Text>
@@ -469,7 +349,6 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: "row",
-    // width: "100%",
     justifyContent: "space-between",
     margin: SIZES.xSmall,
     marginBottom: SIZES.xLarge,
@@ -499,133 +378,10 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xSmall / 2,
   },
   updateButtonContainer: { alignItems: "center", marginTop: SIZES.xLarge },
-
-  // header: {
-  //   marginTop: 20,
-  //   alignItems: "center",
-  // },
-
-  // headerText: {
-  //   fontSize: 20,
-  //   marginBottom: 30,
-  // },
-
-  // picContainer: {
-  //   height: 100,
-  //   width: 100,
-  //   borderRadius: 85,
-  //   borderWidth: 2,
-  //   borderColor: "grey",
-  // },
-
-  // profilePic: {
-  //   height: "100%",
-  //   width: "100%",
-  //   borderRadius: 85,
-  // },
-  // pencil: {
-  //   position: "absolute",
-  //   bottom: 0,
-  //   right: 2,
-  //   backgroundColor: "white",
-  //   borderRadius: 15,
-  //   height: 28,
-  //   width: 28,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
-  // details: {
-  //   marginTop: 5,
-  //   padding: 15,
-  // },
-  // inputLabel: {
-  //   marginHorizontal: 2,
-  // },
-
-  // inputBox: {
-  //   height: 44,
-  //   width: "100%",
-  //   borderWidth: 2,
-  //   borderColor: "lightgrey",
-  //   marginVertical: 14,
-  //   justifyContent: "center",
-  //   paddingLeft: 8,
-  // },
-
-  // buttonContainer: {
-  //   flexDirection: "row",
-  //   width: "100%",
-  //   justifyContent: "space-evenly",
-  // },
-
-  //   logoutButton: {
-  //     backgroundColor: "maroon",
-  //     paddingVertical: 8,
-  //     borderRadius: 14,
-  //     width: "25%",
-  //   },
-
-  //   logout: {
-  //     textAlign: "center",
-  //     padding: 5,
-  //     color: "white",
-  //     fontWeight: "bold",
-  //   },
-
-  //   addButton: {
-  //     backgroundColor: "hotpink",
-  //     marginVertical: 10,
-  //     paddingVertical: 8,
-  //     borderRadius: 14,
-  //     width: "25%",
-  //   },
-
-  //   collectionButton: {
-  //     backgroundColor: "gold",
-  //     marginVertical: 10,
-  //     paddingVertical: 8,
-  //     borderRadius: 14,
-  //     width: "25%",
-  //   },
-
-  //   updateButton: {
-  //     backgroundColor: "mediumseagreen",
-  //     // marginVertical: 30,
-  //     // marginBottom: 20,
-  //     paddingVertical: 8,
-  //     borderRadius: 14,
-  //     width: "25%",
-  //   },
-
-  //   graphButton: {
-  //     backgroundColor: "blue",
-  //     marginVertical: 10,
-  //     paddingVertical: 8,
-  //     borderRadius: 14,
-  //     width: "25%",
-  //   },
-  //   updateDetails: {
-  //     textAlign: "center",
-  //     color: "white",
-  //     fontWeight: "bold",
-  //     padding: 5,
-  //   },
 });
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    // fontSize: 16,
-    // paddingVertical: 12,
-    // paddingHorizontal: 10,
-    // borderWidth: 2,
-    // borderColor: "lightgrey",
-    // color: "black",
-    // paddingRight: 30, // to ensure the text is never behind the icon
-    // height: 44,
-    // width: "100%",
-    // marginVertical: 14,
-    // justifyContent: "center",
-    // paddingLeft: 8,
     borderWidth: SIZES.xSmall / 8,
     borderColor: COLORS.gray,
     marginVertical: SIZES.small / 2,
@@ -633,18 +389,6 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: SIZES.xSmall / 2,
   },
   inputAndroid: {
-    // fontSize: 16,
-    // paddingHorizontal: 10,
-    // paddingVertical: 8,
-    // borderWidth: 0.5,
-    // borderColor: "purple",
-    // color: "black",
-    // paddingRight: 30, // to ensure the text is never behind the icon
-    // height: 44,
-    // width: "100%",
-    // marginVertical: 14,
-    // justifyContent: "center",
-    // paddingLeft: 8,
     borderWidth: SIZES.xSmall / 8,
     borderColor: COLORS.gray,
     marginVertical: SIZES.small / 2,

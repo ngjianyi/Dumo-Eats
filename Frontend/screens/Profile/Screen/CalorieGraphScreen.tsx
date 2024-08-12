@@ -59,23 +59,6 @@ export default function CalorieGraphScreen({ setGraph }: props) {
   }, []);
 
   return (
-    // <SafeAreaView style={styles.container}>
-    //   <View style={styles.header}>
-    //     <Text style={styles.title}>Weekly calorie record</Text>
-    //     <TouchableOpacity
-    //       style={styles.closeButton}
-    //       onPress={() => setGraph(false)}
-    //     >
-    //       <Ionicons name="arrow-back" size={24} color="white" />
-    //     </TouchableOpacity>
-    //   </View>
-
-    //   <CalorieGraph
-    //     widthArray={widthArray}
-    //     dateArray={dateArray}
-    //     calorieArray={calorieArray}
-    //   />
-    // </SafeAreaView>
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity
@@ -113,26 +96,4 @@ const styles = StyleSheet.create({
     color: "black",
     marginVertical: SIZES.xSmall / 4,
   },
-  // header: {
-  //   flexDirection: "row",
-  //   marginTop: 20,
-  //   backgroundColor: "blue",
-  //   padding: 8,
-  //   marginHorizontal: 14,
-  //   borderRadius: 10,
-  //   marginBottom: 20,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
-
-  // title: {
-  //   color: "white",
-  //   fontSize: 18,
-  //   fontWeight: "bold",
-  // },
-
-  // closeButton: {
-  //   position: "absolute",
-  //   left: 4,
-  // },
 });

@@ -69,30 +69,6 @@ export default function AddUsersScreen({ searchUser, setSearch }: Props) {
   };
 
   return (
-    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    //   <SafeAreaView style={styles.searchWrapper}>
-    //     <View style={styles.header}>
-    //       <Text style={styles.title}>Add your friends here!</Text>
-    //       <TouchableOpacity
-    //         style={styles.closeButton}
-    //         onPress={() => setSearch(!searchUser)}
-    //       >
-    //         <Ionicons name="arrow-back" size={24} color="white" />
-    //       </TouchableOpacity>
-    //     </View>
-
-    //     <TextInput
-    //       style={styles.searchInput}
-    //       onChangeText={(text) => setFollow(text)}
-    //       placeholder="Username"
-    //       autoCapitalize="none"
-    //       value={followed}
-    //     />
-    //     <TouchableOpacity style={styles.addButton} onPress={addHandler}>
-    //       <Text style={{ color: "white" }}>Add Friend</Text>
-    //     </TouchableOpacity>
-    //   </SafeAreaView>
-    // </TouchableWithoutFeedback>
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
         <View>
@@ -170,45 +146,4 @@ const styles = StyleSheet.create({
     padding: SIZES.xSmall / 2,
     color: "black",
   },
-
-  // searchWrapper: {
-  //   flex: 1,
-  //   marginHorizontal: 10,
-  //   alignItems: "center",
-  // },
-  // header: {
-  //   marginTop: 50,
-  //   flexDirection: "row",
-  //   width: "100%",
-  //   justifyContent: "center",
-  //   backgroundColor: "hotpink",
-  //   padding: 20,
-  //   alignItems: "center",
-  //   borderRadius: 10,
-  // },
-  // title: {
-  //   fontSize: 18,
-  //   alignSelf: "center",
-  //   color: "white",
-  // },
-
-  // searchInput: {
-  //   padding: 10,
-  //   backgroundColor: "light-grey",
-  //   width: "95%",
-  //   marginTop: 50,
-  //   borderRadius: 10,
-  //   borderWidth: 1,
-  // },
-
-  // addButton: {
-  //   backgroundColor: "hotpink",
-  //   padding: 8,
-  //   marginTop: 50,
-  //   borderRadius: 8,
-  // },
-  // closeButton: {
-  //   position: "absolute",
-  //   left: 4,
-  // },
 });
