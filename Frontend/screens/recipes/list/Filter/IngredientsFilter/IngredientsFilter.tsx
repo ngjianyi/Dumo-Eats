@@ -20,7 +20,7 @@ export default function IngredientsFilter() {
           style={styles.searchInput}
           value={includeIngredients}
           onChangeText={(text) => setIncludeIngredients(text)}
-          placeholder="To include:"
+          placeholder="To include"
           autoCapitalize="none"
           placeholderTextColor={COLORS.gray}
           aria-label="includeIngredientsInput"
@@ -32,7 +32,7 @@ export default function IngredientsFilter() {
           style={styles.searchInput}
           value={excludeIngredients}
           onChangeText={(text) => setExcludeIngredients(text)}
-          placeholder="To exclude:"
+          placeholder="To exclude"
           autoCapitalize="none"
           placeholderTextColor={COLORS.gray}
           aria-label="excludeIngredientsInput"
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     paddingBottom: SIZES.xSmall / 2,
     textAlign: "center",
     fontSize: SIZES.medium,
-    color: COLORS.secondary,
+    color: "black",
   },
   searchWrapper: {
     backgroundColor: COLORS.white,

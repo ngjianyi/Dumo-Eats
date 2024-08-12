@@ -37,8 +37,11 @@ export default function SocialTabs({
               <Ionicons name="heart-outline" size={25} color="black" />
             )}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setVisible(true)}>
-            <Ionicons name="chatbubble-outline" size={25} color="black" />
+          <TouchableOpacity
+            style={styles.commentButton}
+            onPress={() => setVisible(true)}
+          >
+            <Ionicons name="chatbubble-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
@@ -53,7 +56,11 @@ export default function SocialTabs({
         </View>
       </View>
 
-      <Text>{likes === 1 ? `${likes} like` : `${likes} likes`}</Text>
+      <View style={styles.likesContainer}>
+        <Text style={styles.likesText}>
+          {likes === 1 ? `${likes} like` : `${likes} likes`}
+        </Text>
+      </View>
 
       <Modal
         animationType="slide"
@@ -76,15 +83,19 @@ export default function SocialTabs({
 const styles = StyleSheet.create({
   footer: {
     flexDirection: "row",
-    paddingTop: SIZES.xSmall / 2,
+    justifyContent: "space-between",
   },
   leftFooter: {
     flexDirection: "row",
-    width: "25%",
-    justifyContent: "space-between",
+    // width: "25%",
+    // flex: 1,
+    alignItems: "flex-start",
   },
+  commentButton: { marginLeft: SIZES.xSmall },
   rightFooter: {
-    flex: 1,
+    // flex: 1,
     alignItems: "flex-end",
   },
+  likesContainer: { alignItems: "flex-start" },
+  likesText: { fontSize: SIZES.medium - 2, color: "black" },
 });

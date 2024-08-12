@@ -46,7 +46,7 @@ describe("Renders calorie filters correctly", () => {
       },
     });
 
-    expect(getByText("Calories:")).toBeTruthy();
+    expect(getByText("Calories")).toBeTruthy();
   });
 
   it("should render minimum calorie input box", () => {

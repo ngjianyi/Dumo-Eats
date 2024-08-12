@@ -14,7 +14,7 @@ import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import Header from "./Header";
 import CuisineTabs from "./CuisineTabs/CuisineTabs";
 import Recipes from "@/screens/recipes/list/Recipes";
-import { SIZES } from "@/constants/Theme";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 export default function RecipeListScreen({ navigation }: any) {
   const {
@@ -98,7 +98,8 @@ export default function RecipeListScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: SIZES.xSmall / 2,
+    margin: SIZES.xSmall,
+    backgroundColor: COLORS.white,
   },
   activity: {
     paddingTop: 20,

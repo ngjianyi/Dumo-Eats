@@ -64,10 +64,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: SIZES.large,
     textAlign: "center",
-    color: COLORS.primary,
+    color: "black",
   },
   name: {
-    color: COLORS.secondary,
+    color: "black",
   },
   pointWrapper: {
     flexDirection: "row",

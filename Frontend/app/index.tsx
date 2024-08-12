@@ -26,6 +26,7 @@ export default function Index() {
           component={SignupScreen}
           options={{
             headerShown: false,
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
@@ -33,6 +34,7 @@ export default function Index() {
           component={LoginScreen}
           options={{
             headerShown: false,
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
@@ -40,6 +42,7 @@ export default function Index() {
           component={ForgotScreen}
           options={{
             headerShown: false,
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
@@ -47,6 +50,7 @@ export default function Index() {
           component={TabNavigation}
           options={{
             headerShown: false,
+            gestureEnabled: false,
           }}
         />
       </Stack.Navigator>

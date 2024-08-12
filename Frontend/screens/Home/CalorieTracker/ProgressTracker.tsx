@@ -19,6 +19,10 @@ import CalorieGoal from "@/contexts/CalorieGoal";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import moment from "moment";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 export default function ProgressTracker() {
   const docref: DocumentReference<DocumentData, DocumentData> = getUserRef();
@@ -102,11 +106,24 @@ export default function ProgressTracker() {
 
   return (
     <View>
+      <View style={styles.calorieContainer}>
+        <Text style={styles.caloriesText}>
+          Calories: {currentCal} / {calorieContext?.calorie} kcal
+        </Text>
+        <Text style={styles.caloriesText}>
+          {calorieContext?.calorie
+            ? `${Math.ceil((currentCal / calorieContext?.calorie) * 100)}%`
+            : "Error"}
+        </Text>
+      </View>
+
       <Progress.Bar
         progress={prog}
         width={null}
-        height={30}
-        borderRadius={20}
+        height={SIZES.medium * 2}
+        borderRadius={SIZES.medium}
+        color={COLORS.blue}
+        borderColor={COLORS.blue}
         aria-label="caloriebar"
       />
       <View style={styles.buttonsContainer}>
@@ -115,7 +132,7 @@ export default function ProgressTracker() {
           onPress={resetHandler}
           aria-label="ResetButton"
         >
-          <Text style={styles.reset}>Reset</Text>
+          <Ionicons name="reload" size={SIZES.xLarge} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -123,16 +140,18 @@ export default function ProgressTracker() {
           onPress={modalHandler}
           aria-label="UpdateButton"
         >
-          <Text style={styles.update}>Update</Text>
+          <AntDesign name="plus" size={SIZES.xLarge} color={COLORS.white} />
         </TouchableOpacity>
       </View>
-      <View style={styles.detail}>
-        <Text style={styles.amount}>
-          {currentCal} / {calorieContext?.calorie}
-        </Text>
-      </View>
 
-      <Modal visible={open}>
+      <Modal
+        visible={open}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => {
+          () => setOpen(false);
+        }}
+      >
         <UpdateCaloriesScreen modalHandler={modalHandler} />
       </Modal>
     </View>
@@ -140,44 +159,28 @@ export default function ProgressTracker() {
 }
 
 const styles = StyleSheet.create({
+  calorieContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: SIZES.xSmall / 2,
+  },
+  caloriesText: {
+    fontSize: SIZES.medium,
+  },
   buttonsContainer: {
     flexDirection: "row",
-  },
-
-  updateButton: {
-    backgroundColor: "lightblue",
-    marginRight: 10,
-    padding: 6,
-    marginTop: 10,
-    borderRadius: 10,
-    position: "absolute",
-    right: 0,
-  },
-
-  resetButton: {
-    backgroundColor: "red",
-    marginRight: 10,
-    padding: 6,
-    marginTop: 10,
-    borderRadius: 10,
-  },
-
-  reset: {
-    fontSize: 15,
-    paddingHorizontal: 8,
-    color: "white",
-  },
-
-  update: {
-    fontSize: 15,
-  },
-
-  amount: {
-    marginTop: 10,
-    color: "mediumblue",
-  },
-  detail: {
-    flexDirection: "row",
     justifyContent: "flex-end",
+    marginTop: SIZES.xSmall / 2,
+  },
+  resetButton: {
+    backgroundColor: COLORS.tertiary,
+    padding: SIZES.xSmall / 2,
+    borderRadius: SIZES.xLarge / 2 + SIZES.xSmall / 2,
+    marginRight: SIZES.xSmall,
+  },
+  updateButton: {
+    backgroundColor: COLORS.blue,
+    padding: SIZES.xSmall / 2,
+    borderRadius: SIZES.xLarge / 2 + SIZES.xSmall / 2,
   },
 });

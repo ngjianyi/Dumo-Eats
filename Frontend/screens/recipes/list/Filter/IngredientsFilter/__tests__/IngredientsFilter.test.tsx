@@ -24,7 +24,7 @@ const renderWithContext = (
 };
 
 describe("Renders ingredients filters correctly", () => {
-  it("should render include ingredients title", () => {
+  it("should render ingredients title", () => {
     const { getByText } = renderWithContext(<IngredientsFilter />, {
       providerProps: {
         value: {
@@ -46,7 +46,7 @@ describe("Renders ingredients filters correctly", () => {
       },
     });
 
-    expect(getByText("Ingredients to include:")).toBeTruthy();
+    expect(getByText("Ingredients")).toBeTruthy();
   });
 
   it("should render include ingredients input box", () => {
@@ -73,34 +73,7 @@ describe("Renders ingredients filters correctly", () => {
 
     const includeIngredientsInput = getByLabelText("includeIngredientsInput");
     expect(includeIngredientsInput).toBeTruthy();
-    expect(includeIngredientsInput.props.placeholder).toBe(
-      "Separate ingredients with a space"
-    );
-  });
-
-  it("should render exclude ingredients title", () => {
-    const { getByText } = renderWithContext(<IngredientsFilter />, {
-      providerProps: {
-        value: {
-          query: "",
-          setQuery: jest.fn(),
-          cuisineType: "",
-          setCuisineType: jest.fn(),
-          minCalories: 0,
-          setMinCalories: jest.fn(),
-          maxCalories: 0,
-          setMaxCalories: jest.fn(),
-          includeIngredients: "",
-          setIncludeIngredients: jest.fn(),
-          excludeIngredients: "",
-          setExcludeIngredients: jest.fn(),
-          intolerances: [],
-          setIntolerances: jest.fn(),
-        },
-      },
-    });
-
-    expect(getByText("Ingredients to exclude:")).toBeTruthy();
+    expect(includeIngredientsInput.props.placeholder).toBe("To include");
   });
 
   it("should render exclude ingredients input box", () => {
@@ -127,8 +100,6 @@ describe("Renders ingredients filters correctly", () => {
 
     const excludeIngredientsInput = getByLabelText("excludeIngredientsInput");
     expect(excludeIngredientsInput).toBeTruthy();
-    expect(excludeIngredientsInput.props.placeholder).toBe(
-      "Separate ingredients with a space"
-    );
+    expect(excludeIngredientsInput.props.placeholder).toBe("To exclude");
   });
 });

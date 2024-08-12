@@ -61,7 +61,7 @@ describe("Renders intolerances filters correctly", () => {
       },
     });
 
-    expect(getByText("Allergens:")).toBeTruthy();
+    expect(getByText("Allergens")).toBeTruthy();
   });
 
   it("should render flatlist items correctly", () => {

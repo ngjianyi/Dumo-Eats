@@ -31,12 +31,8 @@ export default function CommentCreate({ commentButtonHandler }: Props) {
       <View style={styles.input}>
         <View style={styles.textInput}>
           <TextInput
-            style={{
-              marginRight: 10,
-              width: "90%",
-              borderRadius: SIZES.medium,
-            }}
             placeholder="Add a comment"
+            placeholderTextColor="black"
             value={body}
             multiline={true}
             onChangeText={(val) => setBody(val)}
@@ -47,7 +43,7 @@ export default function CommentCreate({ commentButtonHandler }: Props) {
         </View>
 
         <TouchableOpacity onPress={commentHandler} style={styles.sendButton}>
-          <Ionicons name="send" size={25} color="black" />
+          <Ionicons name="send" size={25} color={COLORS.gray} />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

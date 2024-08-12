@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, DimensionValue } from "react-native";
 import React from "react";
 import * as Progress from "react-native-progress";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 interface props {
   calorie: number;
@@ -19,18 +20,20 @@ const getWidth = (prog: number): DimensionValue | undefined => {
 export default function CalorieBar({ calorie, prog, yLabel }: props) {
   return (
     <View style={styles.container}>
-      <View style={{ marginRight: 20, marginLeft: 10 }}>
+      <View style={styles.textContainer}>
         <Text style={styles.word}>{yLabel}</Text>
       </View>
+
       <View style={{ width: getWidth(prog) }}>
         <Progress.Bar
           progress={1}
           width={null}
-          height={20}
-          borderRadius={10}
-          color="dodgerblue"
+          height={SIZES.medium * 2}
+          borderRadius={SIZES.medium}
+          color={COLORS.blue}
         />
       </View>
+
       <View style={{ marginLeft: 5 }}>
         <Text style={styles.word}>{calorie}</Text>
       </View>
@@ -42,13 +45,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-
+  textContainer: { marginRight: SIZES.small, width: "20%" },
   word: {
-    fontSize: 14,
+    fontSize: SIZES.medium,
     color: "black",
-  },
-
-  barContainer: {
-    width: "80%",
   },
 });

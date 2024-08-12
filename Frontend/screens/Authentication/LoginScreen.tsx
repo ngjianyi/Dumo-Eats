@@ -5,10 +5,12 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
   TouchableWithoutFeedback,
   Keyboard,
   Image,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -17,6 +19,8 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import UserLoggedInContext from "@/contexts/UserLoggedIn";
 import { PropsLogin } from "@/components/navigation/PropTypes";
 import { UserLoggedInInterface } from "@/contexts/UserLoggedIn";
+import { COLORS, SIZES } from "@/constants/Theme";
+
 const logoImg = require("@/assets/images/logo.png");
 
 export default function LoginScreen({ navigation }: PropsLogin) {
@@ -33,31 +37,41 @@ export default function LoginScreen({ navigation }: PropsLogin) {
   const auth = AUTH;
 
   const handleSubmit = async () => {
+    if (!email) {
+      Alert.alert("", "Please enter an email");
+      return;
+    } else if (!password) {
+      Alert.alert("", "Please enter a password");
+      return;
+    }
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (!auth.currentUser?.emailVerified) {
         AUTH.signOut();
-        alert("Email not verified");
+        Alert.alert("", "Email is not verified");
       } else {
         userLoggedInContext?.setUser(!userLoggedInContext?.UserLoggedIn);
+        setEmail("");
+        setPassword("");
+        Keyboard.dismiss();
       }
     } catch (error: any) {
       const errorCode = error.code;
-      if (errorCode == "auth/invalid-email") {
-        alert("Invalid email provided");
-      } else if (errorCode == "auth/invalid-credential") {
-        alert("Invalid credentials provided");
-      } else if (errorCode == "auth/missing-password") {
-        alert("Please enter password");
+      if (
+        errorCode == "auth/invalid-email" ||
+        errorCode == "auth/invalid-password" ||
+        errorCode == "auth/invalid-credential"
+      ) {
+        Alert.alert("", "Invalid email / password");
       } else {
-        alert("Login failed, invalid credentials");
+        Alert.alert("", "Something went wrong");
       }
     } finally {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(AUTH, (user) => {
       if (user && userLoggedInContext?.UserLoggedIn) {
@@ -75,16 +89,17 @@ export default function LoginScreen({ navigation }: PropsLogin) {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <Image source={logoImg} style={styles.logo} />
-          <View style={styles.headerText}>
-            <Text style={styles.subHeaderTextHello}>Hello! </Text>
-            <Text style={styles.subHeaderText}>Welcome back to DumoEats!</Text>
+
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>Welcome back!</Text>
           </View>
         </View>
+
         <View style={styles.details}>
           <TextInput
             style={styles.input}
-            placeholderTextColor={"grey"}
-            placeholder=" Email"
+            placeholderTextColor={COLORS.gray}
+            placeholder="Email"
             value={email}
             onChangeText={(val) => {
               setEmail(val);
@@ -97,8 +112,8 @@ export default function LoginScreen({ navigation }: PropsLogin) {
           <View style={{ justifyContent: "center" }}>
             <TextInput
               style={styles.input}
-              placeholderTextColor={"grey"}
-              placeholder=" Password"
+              placeholderTextColor={COLORS.gray}
+              placeholder="Password"
               secureTextEntry={!visible}
               value={password}
               onChangeText={(val) => {
@@ -109,42 +124,44 @@ export default function LoginScreen({ navigation }: PropsLogin) {
               autoComplete="off"
               aria-label="Password"
             />
-            <TouchableOpacity style={styles.visible} onPress={pressHandler}>
-              {visible ? (
-                <Ionicons name="eye" size={22} color="black" />
-              ) : (
-                <Ionicons name="eye-off" size={22} color="black" />
-              )}
+
+            <TouchableHighlight
+              style={styles.visible}
+              onPress={pressHandler}
+              underlayColor={COLORS.lightWhite}
+            >
+              <Ionicons
+                name={visible ? "eye" : "eye-off"}
+                size={22}
+                color={COLORS.gray}
+              />
+            </TouchableHighlight>
+          </View>
+
+          <View style={styles.forgetPasswordContainer}>
+            <TouchableOpacity onPress={forgetHandler}>
+              <Text style={styles.blueText}>Forgot password?</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={forgetHandler}>
-            <Text style={{ textAlign: "right", color: "dodgerblue" }}>
-              Forgot password?
-            </Text>
-          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={handleSubmit}
-          aria-label="loginButton"
-        >
-          <Text style={styles.login}>Log In</Text>
-        </TouchableOpacity>
-        {loading ? (
-          <ActivityIndicator size="large" color="deepskyblue" />
-        ) : (
-          true
-        )}
-        <View>
-          <Text style={{ textAlign: "center" }}>
-            Don't have an account yet?
-          </Text>
+
+        {!loading ? (
           <TouchableOpacity
-            style={styles.signupButton}
-            onPress={signupHandler}
-            aria-label="signupButton"
+            style={styles.loginButton}
+            onPress={handleSubmit}
+            aria-label="loginButton"
           >
-            <Text style={styles.signUp}>Sign Up</Text>
+            <Text style={styles.login}>Log In</Text>
+          </TouchableOpacity>
+        ) : (
+          <ActivityIndicator size="large" color={COLORS.tertiary} />
+        )}
+
+        <View style={styles.noAccountContainer}>
+          <Text style={styles.defaultText}>Don't have an account?</Text>
+
+          <TouchableOpacity onPress={signupHandler} aria-label="signupButton">
+            <Text style={styles.signupText}>Sign up</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -155,78 +172,73 @@ export default function LoginScreen({ navigation }: PropsLogin) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: COLORS.lightWhite,
   },
-
   header: {
     marginTop: 50,
     alignItems: "center",
   },
-
-  headerText: {
-    flexDirection: "row",
-  },
-
-  subHeaderTextHello: {
-    fontWeight: "bold",
-    marginVertical: 10,
-    color: "darkgreen",
-  },
-
-  subHeaderText: {
-    fontWeight: "bold",
-    marginVertical: 10,
-  },
-
   details: {
-    margin: 5,
-    padding: 35,
+    margin: SIZES.xxLarge,
   },
-
   input: {
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: "lavender",
-    borderRadius: 5,
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginVertical: SIZES.small,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
   },
-
   visible: {
     position: "absolute",
-    right: 12,
+    right: SIZES.xSmall,
+    backgroundColor: COLORS.lightWhite,
+    paddingLeft: SIZES.xSmall / 2,
   },
-
   loginButton: {
-    backgroundColor: "springgreen",
-    marginTop: 40,
-    marginBottom: 30,
-    marginHorizontal: 30,
-    borderRadius: 20,
-    padding: 5,
+    backgroundColor: COLORS.tertiary,
+    marginHorizontal: SIZES.xxLarge,
+    borderRadius: SIZES.xSmall * 2,
+    padding: SIZES.xSmall / 4,
   },
-
   login: {
     textAlign: "center",
-    fontSize: 18,
-    padding: 5,
+    fontSize: SIZES.large,
+    padding: SIZES.xSmall / 2,
     color: "black",
   },
-
-  signupButton: {
-    backgroundColor: "maroon",
-    marginTop: 10,
-    marginBottom: 30,
-    marginHorizontal: 30,
-    borderRadius: 20,
-    padding: 5,
+  forgetPasswordContainer: {
+    alignItems: "flex-end",
   },
-
-  signUp: {
-    textAlign: "center",
-    fontSize: 18,
-    padding: 5,
-    color: "white",
+  noAccountContainer: {
+    justifyContent: "center",
+    flexDirection: "row",
+    marginTop: SIZES.large,
   },
-
+  headerContainer: {
+    margin: SIZES.xSmall,
+  },
+  headerText: {
+    fontSize: SIZES.xLarge,
+    fontWeight: "700",
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
+  },
+  defaultText: {
+    fontSize: SIZES.medium,
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
+  },
+  blueText: {
+    fontSize: SIZES.medium,
+    color: COLORS.blue,
+    marginVertical: SIZES.xSmall / 4,
+  },
+  signupText: {
+    fontSize: SIZES.medium,
+    color: COLORS.blue,
+    marginLeft: SIZES.xSmall / 2,
+    marginVertical: SIZES.xSmall / 4,
+  },
   logo: {
     height: 50,
     width: 220,

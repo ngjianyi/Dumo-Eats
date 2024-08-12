@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import Scan from "@/screens/Scan";
 import Drawer from "@/screens/recipes/Drawer";
 import { useState } from "react";
 import AutoRefresh from "@/contexts/AutoRefresh";
@@ -14,6 +13,7 @@ import RefreshBadgeContext from "@/contexts/RefreshBadge";
 import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import RefreshCommentContext from "@/contexts/RefreshComment";
 import RefreshCollectionContext from "@/contexts/RefreshCollection";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 export type TabParamList = {
   Home: undefined;
@@ -49,7 +49,7 @@ export default function TabNavigation() {
                 <Tab.Navigator
                   screenOptions={{
                     headerShown: false,
-                    tabBarActiveTintColor: "springgreen",
+                    tabBarActiveTintColor: COLORS.tertiary,
                     tabBarInactiveTintColor: "black",
                   }}
                 >
@@ -58,7 +58,11 @@ export default function TabNavigation() {
                     component={HomeScreen}
                     options={{
                       tabBarIcon: ({ color }) => (
-                        <Ionicons name="home" size={24} color={color} />
+                        <Ionicons
+                          name="home"
+                          size={SIZES.xLarge}
+                          color={color}
+                        />
                       ),
                     }}
                   />
@@ -69,7 +73,7 @@ export default function TabNavigation() {
                       tabBarIcon: ({ color }) => (
                         <SimpleLineIcons
                           name="compass"
-                          size={25}
+                          size={SIZES.xLarge}
                           color={color}
                         />
                       ),
@@ -80,7 +84,11 @@ export default function TabNavigation() {
                     component={BadgesScreen}
                     options={{
                       tabBarIcon: ({ color }) => (
-                        <FontAwesome6 name="award" size={24} color={color} />
+                        <FontAwesome6
+                          name="award"
+                          size={SIZES.xLarge}
+                          color={color}
+                        />
                       ),
                     }}
                   />
@@ -91,7 +99,7 @@ export default function TabNavigation() {
                       tabBarIcon: ({ color }) => (
                         <Ionicons
                           name="person-circle-outline"
-                          size={33}
+                          size={SIZES.xxLarge}
                           color={color}
                         />
                       ),

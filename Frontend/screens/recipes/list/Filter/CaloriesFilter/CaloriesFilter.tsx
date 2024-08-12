@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
     paddingBottom: SIZES.xSmall / 2,
     textAlign: "center",
     fontSize: SIZES.medium,
-    color: COLORS.secondary,
+    color: "black",
   },
   middleWrapper: {
     justifyContent: "center",
     alignItems: "center",
   },
-  middleText: { color: COLORS.secondary },
+  middleText: { color: "black" },
   searchWrapper: {
     backgroundColor: COLORS.white,
     marginHorizontal: SIZES.small,

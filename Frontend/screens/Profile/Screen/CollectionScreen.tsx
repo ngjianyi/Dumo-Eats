@@ -1,8 +1,14 @@
 import { Dispatch, SetStateAction, useContext } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { AUTH, DATA_BASE } from "@/firebaseCONFIG";
-import { DocumentData, DocumentReference, DocumentSnapshot, doc, getDoc } from "firebase/firestore";
+import { DocumentData, DocumentReference, doc } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Tabs from "@/components/tabs/Tabs";
 import RecipeList from "../Collections/RecipeList";
@@ -15,7 +21,7 @@ type Props = {
 };
 
 export default function CollectionScreen({ setCollection }: Props) {
-  const refreshCollectionContext = useContext(RefreshCollectionContext)
+  const refreshCollectionContext = useContext(RefreshCollectionContext);
   const tabs = ["Recipes", "Posts"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [collectionArray, setArray] = useState<DocumentReference[]>([]);
@@ -23,7 +29,7 @@ export default function CollectionScreen({ setCollection }: Props) {
   const getAllCollection = async () => {
     setArray([]);
     const docref = doc(DATA_BASE, "Users", "" + AUTH.currentUser?.uid);
-    const docsnap: DocumentData | undefined= (await getUserDocSnap()).data();
+    const docsnap: DocumentData | undefined = (await getUserDocSnap()).data();
     setArray(docsnap?.collection);
   };
   useEffect(() => {
@@ -31,20 +37,22 @@ export default function CollectionScreen({ setCollection }: Props) {
   }, [refreshCollectionContext?.refreshCollection]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Collection</Text>
-
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
         <TouchableOpacity
           style={styles.closeButton}
           onPress={() => setCollection((prev) => !prev)}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
+
+        <Text style={styles.headerText}>Collections</Text>
       </View>
 
-      <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-      
+      <View style={styles.tabsContainer}>
+        <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+      </View>
+
       {activeTab === "Recipes" ? (
         <RecipeList />
       ) : activeTab === "Posts" ? (
@@ -52,34 +60,29 @@ export default function CollectionScreen({ setCollection }: Props) {
       ) : (
         <Text>Something went wrong</Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightWhite,
+    backgroundColor: COLORS.white,
   },
-  header: {
-    marginTop: 70,
-    flexDirection: "row",
-    marginHorizontal: 10,
-    justifyContent: "center",
-    backgroundColor: "gold",
-    padding: SIZES.medium,
+  headerContainer: {
     alignItems: "center",
-    borderRadius: 10,
+    marginTop: SIZES.medium,
+    margin: SIZES.xSmall,
   },
-  title: {
-    fontSize: 20,
-    alignSelf: "center",
-    color: "white",
-    fontWeight: "bold",
+  closeButton: { position: "absolute", left: SIZES.small },
+  headerText: {
+    fontSize: SIZES.xLarge,
+    fontWeight: "700",
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
   },
-
-  closeButton: {
-    position: "absolute",
-    left: 4,
+  tabsContainer: {
+    alignItems: "center",
+    marginHorizontal: SIZES.xSmall,
   },
 });

@@ -1,6 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import React from "react";
 import CalorieBar from "./CalorieBar";
+import { SIZES } from "@/constants/Theme";
 
 interface props {
   widthArray: number[];
@@ -57,8 +58,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-around",
-    backgroundColor: "lavenderblush",
-    marginHorizontal: 15,
-    borderRadius: 15,
+    marginHorizontal: SIZES.xSmall,
   },
 });

@@ -41,7 +41,7 @@ export default function RecipeDisplay({ item }: Props) {
       setIsCollapsed(true);
     } else {
       setMessage(benefits);
-      setColour("forestgreen");
+      setColour(COLORS.green);
       setIsCollapsed(false);
     }
   };
@@ -77,7 +77,7 @@ export default function RecipeDisplay({ item }: Props) {
               <Ionicons
                 name="alert-circle"
                 size={SIZES.large}
-                color="forestgreen"
+                color={COLORS.green}
                 style={styles.labels}
               />
             </TouchableOpacity>
@@ -130,26 +130,23 @@ export default function RecipeDisplay({ item }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    padding: SIZES.medium,
-    marginVertical: SIZES.xSmall / 4,
+    padding: SIZES.xSmall,
+    marginVertical: SIZES.xSmall / 2,
     borderRadius: SIZES.small,
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS.lightWhite,
     ...SHADOWS.medium,
     shadowColor: COLORS.white,
   },
   logoContainer: {
     width: 70,
     height: 53,
-    marginLeft: SIZES.small,
+    marginLeft: SIZES.xSmall,
   },
   image: {
     width: "100%",
     height: "100%",
-    borderColor: COLORS.gray,
-    borderWidth: 1,
   },
   textContainer: {
     flex: 1,
@@ -157,7 +154,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: SIZES.medium,
     fontFamily: "DMBold",
-    color: COLORS.primary,
+    color: "black",
   },
   details: {
     flexDirection: "row",
@@ -167,18 +164,6 @@ const styles = StyleSheet.create({
     fontSize: SIZES.small + 2,
     fontFamily: "DMRegular",
     color: COLORS.gray,
-  },
-  warning: {
-    fontSize: SIZES.small + 2,
-    fontFamily: "DMRegular",
-    color: COLORS.tertiary,
-    marginTop: 3,
-  },
-  benefit: {
-    fontSize: SIZES.small + 2,
-    fontFamily: "DMRegular",
-    color: "forestgreen",
-    marginTop: 3,
   },
   labels: {
     paddingLeft: SIZES.xSmall / 2,

@@ -47,12 +47,11 @@ export default function ({ recipe }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS.white,
     paddingHorizontal: SIZES.medium,
     flex: 1,
   },
   pointsContainer: {
-    marginVertical: SIZES.small,
     flex: 1,
   },
   pointWrapper: {
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
   },
   pointText: {
     fontSize: SIZES.medium - 2,
-    color: COLORS.gray,
+    color: "black",
     marginLeft: SIZES.small,
   },
 });

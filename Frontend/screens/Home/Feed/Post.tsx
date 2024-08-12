@@ -1,13 +1,5 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Modal,
-} from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   getDoc,
   DocumentReference,
@@ -15,12 +7,18 @@ import {
   DocumentSnapshot,
 } from "firebase/firestore";
 import { getUserDocSnap } from "@/utils/social/User";
-import { likeHandler, saveHandler } from "@/utils/social/SocialHandlers";
+import {
+  likeHandler,
+  saveHandler,
+  commentHandler,
+} from "@/utils/social/SocialHandlers";
 
 import { AUTH } from "@/firebaseCONFIG";
-import CommentsScreen from "./Comments/CommentsScreen";
 import RefreshCommentContext from "@/contexts/RefreshComment";
 import RefreshCollectionContext from "@/contexts/RefreshCollection";
+
+import SocialTabs from "@/components/social/SocialTabs";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 const profilepic = require("@/assets/images/defaultProfile.png");
 
@@ -42,7 +40,6 @@ export default function Post({ item }: PostProps) {
   const refreshCommentContext = useContext(RefreshCommentContext);
   const refreshCollectionContext = useContext(RefreshCollectionContext);
   const postref: DocumentReference = item.postRef;
-  const [visible, setVisible] = useState<boolean>(false);
   const [comments, setComments] = useState<DocumentReference[]>([]);
   const [likes, setLikes] = useState<number>(0);
   const [heart, setHeart] = useState<boolean>(false);
@@ -71,7 +68,7 @@ export default function Post({ item }: PostProps) {
 
   const getAllComments = async () => {
     const updatedDoc: DocumentData | undefined = (await getDoc(postref)).data();
-    setComments(updatedDoc?.comments);
+    setComments(updatedDoc?.comments.reverse());
   };
 
   // to keep previous state of likes when refreshed / logged in
@@ -98,65 +95,47 @@ export default function Post({ item }: PostProps) {
     );
   }, []);
 
+  const commentButtonHandler = useCallback(
+    async (trimmedBody: string): Promise<void> => {
+      await commentHandler(trimmedBody, postref, "PostsComments");
+      refreshCommentContext?.setRefreshComment(
+        (refreshComment) => !refreshComment
+      );
+    },
+    []
+  );
+
   return (
     <View style={styles.container}>
-      <View>
-        <Modal visible={visible}>
-          <CommentsScreen
-            item={item}
-            visible={visible}
-            setVisible={setVisible}
-            comments={comments}
-          />
-        </Modal>
-      </View>
       <View style={styles.header}>
-        <View style={styles.userinfo}>
-          {image != "" ? (
-            <Image source={{ uri: image }} style={styles.profilePic} />
-          ) : (
-            <Image source={profilepic} style={styles.profilePic} />
-          )}
-          <View>
-            <Text style={styles.username}>{username}</Text>
-            <Text style={styles.username}>{item.time}</Text>
-          </View>
+        <Image
+          source={image ? { uri: image } : profilepic}
+          style={styles.profilePic}
+        />
+
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>{username}</Text>
+          <Text style={styles.headerText}>{item.time}</Text>
         </View>
       </View>
-      <View style={styles.imageHolder}>
+      <View style={styles.imageContainer}>
         <Image source={{ uri: item.image }} style={styles.image} />
       </View>
-      <View style={styles.footer}>
-        <View style={styles.leftFooter}>
-          <TouchableOpacity onPress={likeButtonHandler}>
-            {heart ? (
-              <Ionicons name="heart" size={40} color="red" />
-            ) : (
-              <Ionicons name="heart-outline" size={40} color="black" />
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setVisible(!visible)}>
-            <Ionicons name="chatbubble-outline" size={35} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.rightFooter}>
-          <TouchableOpacity onPress={saveButtonhandler}>
-            {saved ? (
-              <Ionicons name="bookmark" size={35} color="magenta" />
-            ) : (
-              <Ionicons name="bookmark-outline" size={35} color="black" />
-            )}
-          </TouchableOpacity>
-        </View>
+
+      <View style={styles.socialsContainer}>
+        <SocialTabs
+          heart={heart}
+          likes={likes}
+          likeButtonHandler={likeButtonHandler}
+          saved={saved}
+          saveButtonHandler={saveButtonhandler}
+          commentRefs={comments}
+          commentButtonHandler={commentButtonHandler}
+        />
       </View>
-      <View style={styles.description}>
-        <Text style={[styles.caption, { color: "green", marginBottom: 3 }]}>
-          {likes === 1 ? `${likes} like` : `${likes} likes`}
-        </Text>
-        <Text style={styles.caption}>
-          <Text style={{ fontWeight: "bold" }}>{username}</Text>
-          <Text>{" " + item.caption}</Text>
-        </Text>
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.usernameText}>{username}</Text>
+        <Text style={styles.descriptionText}>{item.caption}</Text>
       </View>
     </View>
   );
@@ -164,78 +143,42 @@ export default function Post({ item }: PostProps) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    marginVertical: 10,
+    marginHorizontal: SIZES.xSmall,
+    backgroundColor: COLORS.lightWhite,
+    marginBottom: SIZES.xSmall,
+    borderRadius: SIZES.small,
   },
+
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "95%",
-    marginBottom: 0,
-    backgroundColor: "aliceblue",
-    borderWidth: 1,
-    borderBottomWidth: 0,
+    padding: SIZES.xSmall / 2,
   },
-
   profilePic: {
-    borderRadius: 50,
-    height: 40,
-    width: 40,
-    marginLeft: 5,
+    height: SIZES.xxLarge,
+    width: SIZES.xxLarge,
+    borderRadius: SIZES.xxLarge / 2,
   },
-
-  username: {
-    marginLeft: 5,
+  headerTextContainer: {
+    marginLeft: SIZES.xSmall,
   },
-
-  userinfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 5,
-  },
-  imageHolder: {
-    flex: 1,
-    aspectRatio: 1.5,
-    width: "95%",
-    alignItems: "center",
-    borderWidth: 1,
+  headerText: { fontSize: SIZES.medium - 2, color: "black" },
+  imageContainer: {
+    aspectRatio: 1.4,
   },
   image: {
     height: "100%",
     width: "100%",
     resizeMode: "cover",
   },
-
-  footer: {
+  descriptionContainer: {
     flexDirection: "row",
-    backgroundColor: "lavenderblush",
-    width: "95%",
-    borderWidth: 1,
-    borderBottomWidth: 0,
+    paddingHorizontal: SIZES.xSmall / 2,
+    paddingBottom: SIZES.xSmall / 2,
   },
-
-  leftFooter: {
-    paddingVertical: 5,
-    flexDirection: "row",
-    width: "25%",
-    justifyContent: "space-between",
-  },
-
-  rightFooter: {
-    flex: 1,
-    paddingVertical: 5,
-    alignItems: "flex-end",
-  },
-
-  description: {
-    width: "95%",
-    backgroundColor: "lavenderblush",
-    borderWidth: 1,
-    borderTopWidth: 0,
-  },
-
-  caption: {
-    paddingLeft: 5,
+  usernameText: { fontSize: SIZES.medium - 2, fontWeight: "600" },
+  descriptionText: { marginLeft: SIZES.xSmall / 2, fontSize: SIZES.medium - 2 },
+  socialsContainer: {
+    paddingTop: SIZES.xSmall / 2,
+    paddingHorizontal: SIZES.xSmall / 2,
   },
 });

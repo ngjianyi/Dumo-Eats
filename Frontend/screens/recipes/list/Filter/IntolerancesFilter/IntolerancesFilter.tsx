@@ -32,7 +32,7 @@ export default function IntolerancesFilter() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.allergyContainer}>
-        <Text style={styles.titleText}>Allergens:</Text>
+        <Text style={styles.titleText}>Allergens</Text>
 
         <FlatList
           data={intolerancesList}
@@ -41,7 +41,7 @@ export default function IntolerancesFilter() {
               style={{
                 ...styles.tab,
                 borderColor: intolerances.includes(item)
-                  ? COLORS.secondary
+                  ? "black"
                   : COLORS.gray2,
               }}
               onPress={() => {
@@ -55,9 +55,7 @@ export default function IntolerancesFilter() {
               <Text
                 style={{
                   ...styles.tabText,
-                  color: intolerances.includes(item)
-                    ? COLORS.secondary
-                    : COLORS.gray2,
+                  color: intolerances.includes(item) ? "black" : COLORS.gray2,
                 }}
               >
                 {item}
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
     paddingBottom: SIZES.xSmall / 2,
     textAlign: "center",
     fontSize: SIZES.medium,
-    color: COLORS.secondary,
+    color: "black",
   },
   tab: {
     paddingVertical: SIZES.small / 2,
