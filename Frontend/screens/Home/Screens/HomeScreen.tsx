@@ -43,6 +43,10 @@ export default function HomeScreen() {
     getAllPosts();
   }, [refresh, autoRefreshcontext?.autoRefresh]);
 
+  /**
+   * Retrieve all post documents from post collections and then filter and select
+   * posts with usernames that are followed by current user
+   */
   const getAllPosts = async () => {
     setLoading(true);
     setPosts([]);

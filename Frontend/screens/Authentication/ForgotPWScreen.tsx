@@ -19,6 +19,9 @@ export default function ForgotScreen({ navigation }: Propsforget) {
   const backHandler = (): void => navigation.navigate("login");
   const [email, setEmail] = useState<string>("");
 
+  /**
+   * Trigger Firebase to send a reset password email
+   */
   const sendReset = () => {
     if (!email) {
       Alert.alert("", "Please enter an email");

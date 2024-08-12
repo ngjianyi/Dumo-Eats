@@ -3,12 +3,12 @@ import React, { useState, useEffect } from "react";
 import { DocumentData, DocumentReference } from "firebase/firestore";
 import axios, { AxiosError } from "axios";
 import { getUserDocSnap } from "@/utils/social/User";
-import { Recipe } from "@/utils/recipes/RecipesTypes";
+import { RecipeType } from "@/utils/recipes/RecipesTypes";
 import Recipes from "@/screens/recipes/list/Recipes";
 import { SIZES } from "@/constants/Theme";
 
 export default function RecipeList() {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [recipes, setRecipes] = useState<RecipeType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [totalRecipes, setTotalRecipes] = useState<number>(1);

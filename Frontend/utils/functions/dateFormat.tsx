@@ -1,3 +1,12 @@
+/**
+ * Function that changes the format of each date in array from month day, year
+ * to day month.
+ * @param dates An array of strings representing the previous 7 days
+ * in the format July 24, 2024
+ * @returns An array of string presenting the previous 7 date in the
+ * format 24 July
+ */
+
 export function dateFormat(dates: string[]): string[] {
   const res: string[] = [];
   for (let i = 0; i < dates.length; i++) {

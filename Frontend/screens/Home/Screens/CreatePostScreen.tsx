@@ -1,5 +1,4 @@
 import {
-  ScrollView,
   Text,
   View,
   StyleSheet,
@@ -12,7 +11,6 @@ import {
   KeyboardAvoidingView,
   Alert,
   ImageSourcePropType,
-  SafeAreaView,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { Formik, FormikProps } from "formik";
@@ -63,6 +61,9 @@ export default function CreatePostScreen({
   const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
 
+  /**
+   * Allow users to choose an image from their phone library
+   */
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -75,14 +76,19 @@ export default function CreatePostScreen({
     }
   };
 
+  /**
+   * Upload formik form values onto firestore Posts collection
+   * @param value Formik form values, which consists of post details
+   */
   const onSubmitHandler = async (value: any) => {
     setLoading(true);
     value.image = image;
     Keyboard.dismiss();
     const userName = (await getUserDocSnap()).data()?.userName;
     /**
-     * converting uri into blob, then upload into firebase storage, then get download url
-     * add the download url to value.image and send it to data base after submitting the formik form
+     * Converting image into blob, then upload blob onto firebase storage.
+     * Retrieve download url and add the download url to value.image
+     * which will be stored in firestore
      */
     try {
       const response: Response = await fetch(value.image);
