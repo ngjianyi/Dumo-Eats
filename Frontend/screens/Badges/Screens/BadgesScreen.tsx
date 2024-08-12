@@ -24,9 +24,6 @@ export default function BadgesScreen() {
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Badges</Text>
       </View>
-      {/* <View style={styles.header}>
-        <Text style={{ fontSize: 20, textAlign: "center" }}>Badges</Text>
-      </View> */}
       <View style={styles.badgesContainer}>
         <BadgesList booleanArray={badges} />
       </View>
@@ -43,21 +40,4 @@ const styles = StyleSheet.create({
   },
   headerText: { fontSize: SIZES.xLarge, fontWeight: "500" },
   badgesContainer: { marginHorizontal: SIZES.xSmall },
-  // container: {
-  //   flex: 1,
-  //   alignItems: "center",
-  // },
-
-  // header: {
-  //   marginTop: 20,
-  //   backgroundColor: "orange",
-  //   width: "95%",
-  //   paddingVertical: 20,
-  // },
-
-  // badgesContainer: {
-  //   width: "95%",
-  //   marginTop: 10,
-  //   flex: 1,
-  // },
 });

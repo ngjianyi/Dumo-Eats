@@ -26,19 +26,6 @@ export default function BadgeGrey({ item }: badgeprops) {
         <Text style={styles.detailsText}>{item.description}</Text>
       </View>
     </View>
-    // <View style={styles.badgeContainer}>
-    //   <View style={styles.icon}>
-    //     <Image style={styles.pic} source={item.imgGrey} />
-    //   </View>
-    //   <View style={styles.content}>
-    //     <View style={styles.header}>
-    //       <Text style={styles.title}>{item.title}</Text>
-    //     </View>
-    //     <View>
-    //       <Text style={styles.sentence}>{item.description}</Text>
-    //     </View>
-    //   </View>
-    // </View>
   );
 }
 
@@ -70,40 +57,4 @@ const styles = StyleSheet.create({
     fontSize: SIZES.medium,
     textAlign: "center",
   },
-  // badgeContainer: {
-  //   flexDirection: "row",
-  //   backgroundColor: "floralwhite",
-  //   width: "100%",
-  //   borderWidth: 1,
-  //   borderColor: "maroon",
-  //   alignItems: "center",
-  //   padding: 50,
-  // },
-
-  // icon: {
-  //   position: "absolute",
-  //   left: 10,
-  // },
-  // pic: {
-  //   height: 50,
-  //   width: 50,
-  // },
-  // content: {
-  //   marginLeft: 50,
-  // },
-
-  // header: {
-  //   marginBottom: 5,
-  // },
-
-  // title: {
-  //   fontWeight: "bold",
-  //   fontSize: 20,
-  //   color: "gainsboro",
-  // },
-
-  // sentence: {
-  //   fontSize: 14,
-  //   color: "darkgrey",
-  // },
 });
