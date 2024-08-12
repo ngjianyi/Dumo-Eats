@@ -6,7 +6,6 @@ import {
   Text,
   SafeAreaView,
   KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { Dispatch, SetStateAction } from "react";
 import { DocumentReference, DocumentData } from "firebase/firestore";
@@ -62,7 +61,6 @@ const styles = StyleSheet.create({
     marginTop: "auto",
     backgroundColor: COLORS.white,
     borderRadius: SIZES.small,
-    // flex: 1,
   },
   commentBox: {
     flex: 1,
@@ -70,7 +68,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     marginTop: SIZES.xSmall,
-    // width: "95%",
     justifyContent: "center",
     alignItems: "center",
   },

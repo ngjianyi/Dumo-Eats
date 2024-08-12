@@ -1,7 +1,13 @@
-import { Nutrient } from "./RecipesTypes";
+import { NutrientType } from "./RecipesTypes";
 import { getUserDocSnap } from "../social/User";
 
-export default async function DailyAllowance(nutrients: Nutrient[]) {
+/**
+ * Filters the nutrients to get nutrients that are above average or below average in health benefits
+ *
+ * @param nutrients - The list of nutrients to filter
+ * @returns - An array of an array of nutrients that are above average in health benefits and an array of nutrients that are below average in health problems
+ */
+export default async function DailyAllowance(nutrients: NutrientType[]) {
   const user = await getUserDocSnap();
   const calorieGoal = user.data()?.calorieGoal;
   const caloriesLeft = user.data()?.calorieGoal - user.data()?.currentCalorie;

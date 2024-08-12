@@ -87,13 +87,10 @@ const styles = StyleSheet.create({
   },
   leftFooter: {
     flexDirection: "row",
-    // width: "25%",
-    // flex: 1,
     alignItems: "flex-start",
   },
   commentButton: { marginLeft: SIZES.xSmall },
   rightFooter: {
-    // flex: 1,
     alignItems: "flex-end",
   },
   likesContainer: { alignItems: "flex-start" },

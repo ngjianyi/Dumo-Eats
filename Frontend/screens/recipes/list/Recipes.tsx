@@ -11,6 +11,9 @@ type Props = {
 export default function Recipes({ recipes, getRecipes }: Props) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  /**
+   * Function to call when refreshing flatlist
+   */
   const onRefresh = () => {
     setRefreshing(true);
     getRecipes();

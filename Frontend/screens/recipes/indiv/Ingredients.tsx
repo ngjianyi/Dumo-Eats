@@ -11,7 +11,9 @@ type Props = {
 export default function ({ recipe }: Props) {
   const [ingredients, setIngredients] = useState<IngredientType[]>([]);
 
-  // Filters duplicate ingredients
+  /**
+   * Filters duplicate ingredients
+   */
   const getFilteredIngredients = () => {
     setIngredients([
       ...new Map(
