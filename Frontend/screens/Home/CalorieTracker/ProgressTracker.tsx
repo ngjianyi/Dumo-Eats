@@ -144,36 +144,6 @@ export default function ProgressTracker() {
         </TouchableOpacity>
       </View>
 
-      {/* <Progress.Bar
-        progress={prog}
-        width={null}
-        height={30}
-        borderRadius={20}
-        aria-label="caloriebar"
-      /> */}
-      {/* <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={styles.resetButton}
-          onPress={resetHandler}
-          aria-label="ResetButton"
-        >
-          <Text style={styles.reset}>Reset</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.updateButton}
-          onPress={modalHandler}
-          aria-label="UpdateButton"
-        >
-          <Text style={styles.update}>Update</Text>
-        </TouchableOpacity>
-      </View> */}
-      {/* <View style={styles.detail}>
-        <Text style={styles.amount}>
-          {currentCal} / {calorieContext?.calorie}
-        </Text>
-      </View> */}
-
       <Modal
         visible={open}
         animationType="slide"
@@ -213,41 +183,4 @@ const styles = StyleSheet.create({
     padding: SIZES.xSmall / 2,
     borderRadius: SIZES.xLarge / 2 + SIZES.xSmall / 2,
   },
-
-  // updateButton: {
-  // backgroundColor: "lightblue",
-  // marginRight: 10,
-  // padding: 6,
-  // marginTop: 10,
-  // borderRadius: 10,
-  // position: "absolute",
-  // right: 0,
-  // },
-
-  // resetButton: {
-  // backgroundColor: "red",
-  // marginRight: 10,
-  // padding: 6,
-  // marginTop: 10,
-  // borderRadius: 10,
-  // },
-
-  // reset: {
-  //   fontSize: 15,
-  //   paddingHorizontal: 8,
-  //   color: "white",
-  // },
-
-  // update: {
-  //   fontSize: 15,
-  // },
-
-  // amount: {
-  //   marginTop: 10,
-  //   color: "mediumblue",
-  // },
-  // detail: {
-  //   flexDirection: "row",
-  //   justifyContent: "flex-end",
-  // },
 });

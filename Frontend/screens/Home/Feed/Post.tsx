@@ -1,13 +1,5 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Modal,
-} from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   getDoc,
   DocumentReference,
@@ -22,12 +14,11 @@ import {
 } from "@/utils/social/SocialHandlers";
 
 import { AUTH } from "@/firebaseCONFIG";
-import CommentsScreen from "./Comments/CommentsScreen";
 import RefreshCommentContext from "@/contexts/RefreshComment";
 import RefreshCollectionContext from "@/contexts/RefreshCollection";
 
 import SocialTabs from "@/components/social/SocialTabs";
-import { COLORS, SIZES, SHADOWS } from "@/constants/Theme";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 const profilepic = require("@/assets/images/defaultProfile.png");
 
@@ -49,7 +40,6 @@ export default function Post({ item }: PostProps) {
   const refreshCommentContext = useContext(RefreshCommentContext);
   const refreshCollectionContext = useContext(RefreshCollectionContext);
   const postref: DocumentReference = item.postRef;
-  const [visible, setVisible] = useState<boolean>(false);
   const [comments, setComments] = useState<DocumentReference[]>([]);
   const [likes, setLikes] = useState<number>(0);
   const [heart, setHeart] = useState<boolean>(false);
@@ -117,64 +107,6 @@ export default function Post({ item }: PostProps) {
 
   return (
     <View style={styles.container}>
-      {/* <View>
-        <Modal visible={visible}>
-          <CommentsScreen
-            item={item}
-            visible={visible}
-            setVisible={setVisible}
-            comments={comments}
-          />
-        </Modal>
-      </View> */}
-      {/* <View style={styles.header}>
-        <View style={styles.userinfo}>
-          {image != "" ? (
-            <Image source={{ uri: image }} style={styles.profilePic} />
-          ) : (
-            <Image source={profilepic} style={styles.profilePic} />
-          )}
-          <View>
-            <Text style={styles.username}>{username}</Text>
-            <Text style={styles.username}>{item.time}</Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.imageHolder}>
-        <Image source={{ uri: item.image }} style={styles.image} />
-      </View> */}
-      {/* <View style={styles.footer}>
-        <View style={styles.leftFooter}>
-          <TouchableOpacity onPress={likeButtonHandler}>
-            {heart ? (
-              <Ionicons name="heart" size={40} color="red" />
-            ) : (
-              <Ionicons name="heart-outline" size={40} color="black" />
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setVisible(!visible)}>
-            <Ionicons name="chatbubble-outline" size={35} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.rightFooter}>
-          <TouchableOpacity onPress={saveButtonhandler}>
-            {saved ? (
-              <Ionicons name="bookmark" size={35} color="magenta" />
-            ) : (
-              <Ionicons name="bookmark-outline" size={35} color="black" />
-            )}
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.description}>
-        <Text style={[styles.caption, { color: "green", marginBottom: 3 }]}>
-          {likes === 1 ? `${likes} like` : `${likes} likes`}
-        </Text>
-        <Text style={styles.caption}>
-          <Text style={{ fontWeight: "bold" }}>{username}</Text>
-          <Text>{" " + item.caption}</Text>
-        </Text>
-      </View> */}
       <View style={styles.header}>
         <Image
           source={image ? { uri: image } : profilepic}
@@ -211,35 +143,17 @@ export default function Post({ item }: PostProps) {
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems: "center",
-    // marginVertical: 10,
     marginHorizontal: SIZES.xSmall,
     backgroundColor: COLORS.lightWhite,
     marginBottom: SIZES.xSmall,
     borderRadius: SIZES.small,
-    ...SHADOWS.medium,
-    shadowColor: COLORS.white,
   },
 
   header: {
     flexDirection: "row",
-    // margin: SIZES.xSmall / 2,
     padding: SIZES.xSmall / 2,
-
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // alignItems: "center",
-    // // width: "95%",
-    // marginBottom: 0,
-    // backgroundColor: "aliceblue",
-    // borderWidth: 1,
-    // borderBottomWidth: 0,
   },
   profilePic: {
-    // borderRadius: 50,
-    // height: 40,
-    // width: 40,
-    // marginLeft: 5,
     height: SIZES.xxLarge,
     width: SIZES.xxLarge,
     borderRadius: SIZES.xxLarge / 2,
@@ -250,7 +164,6 @@ const styles = StyleSheet.create({
   headerText: { fontSize: SIZES.medium - 2, color: "black" },
   imageContainer: {
     aspectRatio: 1.4,
-    // aspectRatio: 1.5
   },
   image: {
     height: "100%",
@@ -259,70 +172,13 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     flexDirection: "row",
-    // marginHorizontal: SIZES.xSmall / 2,
-    // marginTop: SIZES.xSmall / 2,
     paddingHorizontal: SIZES.xSmall / 2,
     paddingBottom: SIZES.xSmall / 2,
-
-    // backgroundColor: "lavenderblush",
   },
   usernameText: { fontSize: SIZES.medium - 2, fontWeight: "600" },
   descriptionText: { marginLeft: SIZES.xSmall / 2, fontSize: SIZES.medium - 2 },
   socialsContainer: {
-    // marginHorizontal: SIZES.xSmall / 2,
-    // marginBottom: SIZES.xSmall / 2,
     paddingTop: SIZES.xSmall / 2,
     paddingHorizontal: SIZES.xSmall / 2,
-    // paddingBottom: SIZES.xSmall / 2,
-    // backgroundColor: "lavenderblush",
   },
-
-  // username: {
-  //   marginLeft: 5,
-  // },
-
-  // userinfo: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   marginVertical: 5,
-  // },
-  // imageHolder: {
-  //   flex: 1,
-  //   aspectRatio: 1.5,
-  //   // width: "95%",
-  //   alignItems: "center",
-  //   borderWidth: 1,
-  // },
-
-  // footer: {
-  //   flexDirection: "row",
-  //   backgroundColor: "lavenderblush",
-  //   // width: "95%",
-  //   borderWidth: 1,
-  //   borderBottomWidth: 0,
-  // },
-
-  // leftFooter: {
-  //   paddingVertical: 5,
-  //   flexDirection: "row",
-  //   width: "25%",
-  //   justifyContent: "space-between",
-  // },
-
-  // rightFooter: {
-  //   flex: 1,
-  //   paddingVertical: 5,
-  //   alignItems: "flex-end",
-  // },
-
-  // description: {
-  //   width: "95%",
-  //   backgroundColor: "lavenderblush",
-  //   borderWidth: 1,
-  //   borderTopWidth: 0,
-  // },
-
-  // caption: {
-  //   paddingLeft: 5,
-  // },
 });

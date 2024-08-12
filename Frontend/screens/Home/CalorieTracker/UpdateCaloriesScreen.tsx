@@ -156,37 +156,6 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        {/* <SafeAreaView style={styles.container}>
-        <View style={styles.closeContainer}>
-          <TouchableOpacity
-            onPress={() => modalHandler()}
-            style={styles.closeButton}
-          >
-            <Ionicons name="close-outline" size={30} color="white" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Calories Log</Text>
-        </View>
-        <View style={styles.detailsCalorie}>
-          <TextInput
-            style={styles.input}
-            placeholder="Add calories (kcal)"
-            keyboardType="numeric"
-            onChangeText={updateCalories}
-            aria-label="InputBox"
-          />
-        </View>
-
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={submitCalories}
-          aria-label="SubmitButton"
-        >
-          <Text style={styles.submit}>Submit</Text>
-        </TouchableOpacity>
-      </SafeAreaView> */}
-
         <SafeAreaView style={styles.container}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Log your calories</Text>
@@ -264,60 +233,4 @@ const styles = StyleSheet.create({
     padding: SIZES.xSmall / 2,
     color: "black",
   },
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: "white",
-  // },
-  // closeContainer: {
-  //   alignItems: "flex-end",
-  //   marginTop: 20,
-  // },
-
-  // closeButton: {
-  //   marginRight: 20,
-  //   backgroundColor: "red",
-  // },
-
-  // header: {
-  //   marginTop: 50,
-  // },
-
-  // headerText: {
-  //   textAlign: "center",
-  //   fontSize: 35,
-  //   color: "darkcyan",
-  //   fontWeight: "bold",
-  // },
-
-  // detailsFood: {},
-
-  // detailsCalorie: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
-
-  // input: {
-  //   backgroundColor: "lavender",
-  //   padding: 10,
-  //   marginVertical: 10,
-  //   borderRadius: 5,
-  //   width: 300,
-  // },
-
-  // submitButton: {
-  //   backgroundColor: "maroon",
-  //   marginTop: 40,
-  //   marginBottom: 30,
-  //   marginHorizontal: 30,
-  //   borderRadius: 20,
-  //   padding: 5,
-  // },
-
-  // submit: {
-  //   textAlign: "center",
-  //   color: "white",
-  //   fontSize: 18,
-  //   padding: 5,
-  // },
 });

@@ -80,17 +80,6 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.header}>
-        <Text style={{ fontSize: 18 }}>Today's progress</Text>
-      </View> */}
-
-      {/* <View style={styles.progress}>
-        <Text style={styles.calories}>Calories (Kcal):</Text>
-        <View style={styles.bar}>
-          <ProgressTracker />
-        </View>
-      </View> */}
-
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>
           {new Date(Date.now()).toDateString()}
@@ -113,21 +102,6 @@ export default function HomeScreen() {
         <ActivityIndicator size="large" color={COLORS.tertiary} />
       )}
 
-      {/* <View style={styles.header}>
-        <Text style={{ fontSize: 18 }}>Feed</Text>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={() => setRefresh(!refresh)}>
-            <Ionicons name="refresh-sharp" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.upload} onPress={uploadHandler}>
-            <Text style={{ fontSize: 18, color: "white" }}>Upload</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View>
-        {loading ? <ActivityIndicator color="blue" size="large" /> : true}
-      </View>
-      <Feed posts={posts} /> */}
       <Modal
         visible={upload}
         animationType="slide"
@@ -150,7 +124,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
-    // backgroundColor: "lavenderblush",
   },
   headerContainer: {
     margin: SIZES.xSmall,
@@ -176,51 +149,4 @@ const styles = StyleSheet.create({
     padding: SIZES.xSmall / 2,
     borderRadius: SIZES.large / 2,
   },
-
-  // header: {
-  //   flexDirection: "row",
-  //   marginTop: 20,
-  //   backgroundColor: "turquoise",
-  //   padding: 8,
-  //   marginHorizontal: 14,
-  //   borderRadius: 10,
-  //   marginBottom: 20,
-  //   alignItems: "center",
-  // },
-
-  // progress: {
-  //   backgroundColor: "lightgrey",
-  //   borderRadius: 20,
-  //   marginVertical: 20,
-  //   marginHorizontal: 14,
-  // },
-
-  // calories: {
-  //   fontSize: 15,
-  //   paddingLeft: 18,
-  //   marginVertical: 10,
-  // },
-
-  // bar: {
-  //   paddingHorizontal: 15,
-  //   marginBottom: 20,
-  // },
-
-  // button: {
-  //   flexDirection: "row",
-  //   position: "absolute",
-  //   right: 3,
-  //   alignItems: "center",
-  // },
-
-  // uploadButton: {
-  //   flex: 1,
-  //   alignItems: "flex-end",
-  // },
-
-  // upload: {
-  //   backgroundColor: "green",
-  //   borderRadius: 5,
-  //   padding: 3,
-  // },
 });
