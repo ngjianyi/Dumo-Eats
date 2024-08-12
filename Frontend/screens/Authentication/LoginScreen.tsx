@@ -35,6 +35,11 @@ export default function LoginScreen({ navigation }: PropsLogin) {
   const [loading, setLoading] = useState<boolean>(false);
 
   const auth = AUTH;
+  /**
+   * Function triggers firebase authentication server to check if credentials
+   * are valid. If credentials are valid, users are navigated to homescreen.
+   * Otherwise, an alert message will be displayed
+   */
 
   const handleSubmit = async () => {
     if (!email) {

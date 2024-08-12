@@ -46,6 +46,14 @@ export default function SignupScreen({ navigation }: PropsSignup) {
   const [loading, setLoading] = useState<boolean>(false);
   const auth = AUTH;
 
+  /**
+   * Function that uses Firebase's server to create a user account
+   * based on user email and input password.
+   * Function checks that every input is filled correctly, and username
+   * and email are available
+   * Otherwise, an alert message is shown
+   * A user data document is also added to the Users collection in firestore
+   */
   const handleSubmit = async () => {
     if (!username) {
       Alert.alert("", "Please enter a username");

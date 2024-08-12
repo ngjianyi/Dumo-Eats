@@ -20,7 +20,6 @@ import RefreshCalorieContext from "@/contexts/RefreshCalorie";
 import moment from "moment";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { COLORS, SIZES } from "@/constants/Theme";
 
@@ -32,6 +31,10 @@ export default function ProgressTracker() {
   const [open, setOpen] = useState<boolean>(false);
   const calorieContext = useContext(CalorieGoal);
 
+  /**
+   * Retrieves current calorie from firestore and sets the
+   * ratio for progress bar
+   */
   const getCalorieProgress = async () => {
     const docsnap = await getUserDocSnap();
     calorieContext?.setCalorie(docsnap.data()?.calorieGoal);
@@ -47,6 +50,9 @@ export default function ProgressTracker() {
     }
   };
 
+  /**
+   * Function that allow users to manually reset calories
+   */
   const resetHandler = async () => {
     Alert.alert(
       "Reset Calories",
@@ -73,7 +79,10 @@ export default function ProgressTracker() {
       ]
     );
   };
-
+  /**
+   * Function that automatically resets calories for progressbar
+   * whenever a user logs in on a new day
+   */
   const autoReset = async () => {
     const docsnap: DocumentSnapshot<DocumentData, DocumentData> =
       await getUserDocSnap();

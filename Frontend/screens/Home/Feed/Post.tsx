@@ -47,6 +47,10 @@ export default function Post({ item }: PostProps) {
   const [image, setImage] = useState<string>("");
   const [username, setUsername] = useState<string>("");
 
+  /**
+   * Function updates the existing state of likes, comments for each
+   * uploaded post on feed
+   */
   const setInitialStates = async () => {
     const updatedDoc: DocumentData | undefined = (await getDoc(postref)).data();
     const docSnap: DocumentSnapshot<DocumentData, DocumentData> =

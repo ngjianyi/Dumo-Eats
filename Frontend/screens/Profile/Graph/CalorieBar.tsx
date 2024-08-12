@@ -8,6 +8,11 @@ interface props {
   prog: number;
   yLabel: string;
 }
+/**
+ *
+ * @param prog ratio of each bar to the screeen size
+ * @returns percentage value of ratio
+ */
 const getWidth = (prog: number): DimensionValue | undefined => {
   if (prog > 1) {
     prog = 1;

@@ -24,7 +24,12 @@ import { getUserDocSnap, getUserRef } from "@/utils/social/User";
 import moment from "moment";
 
 import { COLORS, SIZES } from "@/constants/Theme";
-
+/**
+ *
+ * @param prev Previous string date when calorie goal is met
+ * @param curr Current string date when calorie goal is met
+ * @returns true if the two dates are consecutive dates
+ */
 export const checkStreak = (prev: string, curr: string): boolean => {
   const array1: string[] = prev.split("/");
   const array2: string[] = curr.split("/");
@@ -75,6 +80,11 @@ export default function UpdateCaloriesScreen({ modalHandler }: any) {
     }
   };
 
+  /**
+   * Updates total calories recorded in firestore based on user input
+   * Check if streak is maintained and update firestore
+   * Check if any achievements criterias are met and update firestore
+   */
   const submitCalories = async () => {
     modalHandler();
     const doc: DocumentData | undefined = (await getUserDocSnap()).data();
