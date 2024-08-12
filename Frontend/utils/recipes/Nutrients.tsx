@@ -57,6 +57,12 @@ const compare = (a: NutrientType, b: NutrientType) => {
   return a.name > b.name ? 1 : -1;
 };
 
+/**
+ * Separates the nutrients into their respective types
+ *
+ * @param nutrients - The list of nutrients to separate
+ * @returns - An array of objects containing the nutrients types' name and list of nutrients
+ */
 const separateNutrients = (
   nutrients: NutrientType[]
 ): { name: string; nutrients: NutrientType[] }[] => {

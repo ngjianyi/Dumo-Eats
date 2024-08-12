@@ -1,5 +1,11 @@
 import { Timestamp } from "firebase/firestore";
 
+/**
+ * Returns the time elapsed from the date given in string format
+ *
+ * @param date - The date to compare with the current date
+ * @returns - The string format of time elapsed
+ */
 export default function TimeElapsed(date: Timestamp): string {
   const now: number = Timestamp.now().toMillis();
   const timeDiff: number = now - date.toMillis();

@@ -16,6 +16,9 @@ type Props = {
 export default function CommentCreate({ commentButtonHandler }: Props) {
   const [body, setBody] = useState<string>("");
 
+  /**
+   * Creates a comment if the body is non-empty
+   */
   const commentHandler = async () => {
     const trimmedBody = body.trim();
     if (trimmedBody) {

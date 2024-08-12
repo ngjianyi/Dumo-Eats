@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Image} from "react-native";
+import { View, StyleSheet, Text, Image } from "react-native";
 import { DocumentReference, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { COLORS, SIZES } from "@/constants/Theme";
@@ -10,11 +10,14 @@ type Props = {
 const profilepic = require("@/assets/images/defaultProfile.png");
 
 export default function Comment({ commentRef }: Props) {
-
   const [username, setUsername] = useState<string>("");
   const [body, setBody] = useState<string>("");
   const [date, setDate] = useState<string>("");
-  const [image, setImage] = useState<string>("")
+  const [image, setImage] = useState<string>("");
+
+  /**
+   * Gets the comment document using the comment reference from the props
+   */
   const getComment = async () => {
     const commentDocSnap = await getDoc(commentRef);
     if (commentDocSnap.exists()) {
@@ -24,7 +27,7 @@ export default function Comment({ commentRef }: Props) {
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
         setUsername(userData.userName);
-        setImage(userData.profilePic)
+        setImage(userData.profilePic);
       } else {
         setUsername("Unknown");
       }
@@ -43,22 +46,20 @@ export default function Comment({ commentRef }: Props) {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.picContainer}>
-          {
-            image != "" 
-            ? <Image source={{uri: image}} style={styles.pic}/>
-            : <Image source ={profilepic} style={styles.pic}/>
-          }
+          {image != "" ? (
+            <Image source={{ uri: image }} style={styles.pic} />
+          ) : (
+            <Image source={profilepic} style={styles.pic} />
+          )}
         </View>
         <View>
           <View style={styles.words}>
-              <Text style={styles.username}>{username}</Text>
-              <Text style={styles.date}> {date}</Text>  
+            <Text style={styles.username}>{username}</Text>
+            <Text style={styles.date}> {date}</Text>
           </View>
           <Text style={styles.body}>{body}</Text>
         </View>
-        
       </View>
-      
     </View>
   );
 }
@@ -67,23 +68,22 @@ const styles = StyleSheet.create({
   container: { padding: SIZES.xSmall },
   header: { flexDirection: "row" },
 
-  
   picContainer: {
     borderRadius: 50,
     height: 40,
     width: 40,
     marginLeft: 5,
-    marginRight:5,
+    marginRight: 5,
   },
 
   pic: {
-    width:"100%",
-    height:"100%",
+    width: "100%",
+    height: "100%",
     borderRadius: 20,
   },
-  
+
   words: {
-    flexDirection:"row",
+    flexDirection: "row",
   },
 
   username: {

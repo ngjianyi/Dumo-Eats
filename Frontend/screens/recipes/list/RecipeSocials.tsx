@@ -33,6 +33,10 @@ export default function RecipeSocials({ recipe }: Props) {
     "Recipes",
     recipeId
   );
+
+  /**
+   * Sets the heart symbol and number of likes of the recipe
+   */
   const getRecipeLikes = useCallback(async () => {
     const recipe = await getDoc(recipeRef);
     if (recipe.exists()) {
@@ -53,6 +57,9 @@ export default function RecipeSocials({ recipe }: Props) {
     }
   }, []);
 
+  /**
+   * Sets the saved symbol to whether the recipe is saved by the user
+   */
   const getRecipeSaved = useCallback(async () => {
     const userData = (await getUserDocSnap()).data();
     if (
@@ -67,6 +74,9 @@ export default function RecipeSocials({ recipe }: Props) {
     }
   }, []);
 
+  /**
+   * Sets the array of recipe's comments
+   */
   const getRecipeComments = useCallback(async (): Promise<void> => {
     const recipe = await getDoc(recipeRef);
     const data = recipe.data();
@@ -79,18 +89,25 @@ export default function RecipeSocials({ recipe }: Props) {
     getRecipeComments();
   }, []);
 
+  /**
+   * Custom recipe like handler
+   */
   const likeButtonHandler = useCallback(() => {
     likeHandler(setHeart, setLikes, recipeRef);
   }, []);
 
+  /**
+   * Custom recipe save handler
+   */
   const saveButtonHandler = useCallback(() => {
-    // recipeSaveHandler(setSaved, recipeId);
     saveHandler(setSaved, recipeRef, "savedRecipes");
   }, []);
 
+  /**
+   * Custom recipe comment handler
+   */
   const commentButtonHandler = useCallback(
     async (trimmedBody: string): Promise<void> => {
-      // await recipeCommentHandler(trimmedBody, recipeRef);
       await commentHandler(trimmedBody, recipeRef, "RecipesComments");
       getRecipeComments();
     },

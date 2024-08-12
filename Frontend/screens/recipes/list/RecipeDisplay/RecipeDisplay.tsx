@@ -34,6 +34,9 @@ export default function RecipeDisplay({ item }: Props) {
     });
   }, []);
 
+  /**
+   * Sets the message to be benefits or collapse the message if it was previously the benefits
+   */
   const benefitHandler = () => {
     if (message == benefits) {
       setMessage([]);
@@ -46,6 +49,9 @@ export default function RecipeDisplay({ item }: Props) {
     }
   };
 
+  /**
+   * Sets the message to be warnings or collapse the message if it was previously the warnings
+   */
   const warningHandler = () => {
     if (message == warnings) {
       setMessage([]);
