@@ -9,12 +9,11 @@ import {
   Keyboard,
   Image,
   Modal,
-  ScrollView,
   ImageSourcePropType,
   Alert,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { AUTH, DATA_BASE, STORAGE } from "@/firebaseCONFIG";
+import { AUTH, STORAGE } from "@/firebaseCONFIG";
 import {
   StorageReference,
   getDownloadURL,
@@ -25,8 +24,6 @@ import {
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
-  doc,
-  getDoc,
   updateDoc,
 } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";

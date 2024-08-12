@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Alert,
   ImageSourcePropType,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { Formik, FormikProps } from "formik";
@@ -32,6 +33,8 @@ import {
 import moment from "moment";
 import RefreshBadgeContext from "@/contexts/RefreshBadge";
 import { getUserDocSnap, getUserRef } from "@/utils/social/User";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { COLORS, SIZES } from "@/constants/Theme";
 
 interface Props {
   upload: boolean;
@@ -167,106 +170,142 @@ export default function CreatePostScreen({
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView>
-        <ScrollView>
-          <Text style={styles.header}>Create New Post</Text>
-          <Formik
-            initialValues={{
-              caption: "",
-              image: "",
-              time: "",
-              likes: [],
-              comments: [],
-              postRef: null,
-              userRef: null,
-            }}
-            //the val is initialValues after being updated with new values
-            onSubmit={(val, { resetForm }) => {
-              onSubmitHandler(val);
-              resetForm();
-            }}
+        <View>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setUpload(!upload)}
           >
-            {({
-              handleChange,
-              handleSubmit,
-              values,
-            }: FormikProps<FormValues>) => (
-              <View>
-                <TouchableOpacity style={styles.image} onPress={pickImage}>
-                  {image ? (
-                    <Image source={{ uri: image }} style={styles.Pic} />
-                  ) : (
-                    <Image source={img} style={styles.Pic} />
-                  )}
-                </TouchableOpacity>
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Create a new post</Text>
+        </View>
+
+        <Formik
+          initialValues={{
+            caption: "",
+            image: "",
+            time: "",
+            likes: [],
+            comments: [],
+            postRef: null,
+            userRef: null,
+          }}
+          //the val is initialValues after being updated with new values
+          onSubmit={(val, { resetForm }) => {
+            onSubmitHandler(val);
+            resetForm();
+          }}
+        >
+          {({
+            handleChange,
+            handleSubmit,
+            values,
+          }: FormikProps<FormValues>) => (
+            <View>
+              <TouchableOpacity style={styles.image} onPress={pickImage}>
+                {image ? (
+                  <Image source={{ uri: image }} style={styles.Pic} />
+                ) : (
+                  <Image source={img} style={styles.Pic} />
+                )}
+              </TouchableOpacity>
+              <View style={styles.details}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Description"
-                  placeholderTextColor={"lightgrey"}
+                  placeholder="Caption"
+                  placeholderTextColor={COLORS.gray}
                   value={values?.caption}
                   multiline={true}
                   onChangeText={handleChange("caption")}
                   autoCapitalize="none"
                   autoCorrect={false}
+                  autoComplete="off"
                 />
+              </View>
+
+              {!loading ? (
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => handleSubmit()}
                 >
-                  {loading ? (
-                    <ActivityIndicator color="black" />
-                  ) : (
-                    <Text style={{ textAlign: "center", fontSize: 20 }}>
-                      Upload
-                    </Text>
-                  )}
+                  <Text style={styles.buttonText}>Upload</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, { backgroundColor: "red" }]}
-                  onPress={() => setUpload(!upload)}
-                >
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: 20,
-                      color: "white",
-                    }}
-                  >
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
-        </ScrollView>
+              ) : (
+                <ActivityIndicator size="large" color={COLORS.tertiary} />
+              )}
+            </View>
+          )}
+        </Formik>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    marginHorizontal: 17,
-    fontSize: 25,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginVertical: 80,
+  closeButton: {
+    marginLeft: SIZES.xSmall * 2,
+    marginTop: "20%",
+  },
+  headerContainer: {
+    alignItems: "center",
+    marginTop: "25%",
+    margin: SIZES.xSmall,
+  },
+  headerText: {
+    fontSize: SIZES.xLarge,
+    fontWeight: "700",
+    color: "black",
+    marginVertical: SIZES.xSmall / 4,
+  },
+  details: {
+    margin: SIZES.xxLarge,
   },
   input: {
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 5,
-    paddingVertical: 20,
-    marginVertical: 20,
-    marginHorizontal: 25,
-    fontSize: 17,
+    borderWidth: SIZES.xSmall / 8,
+    borderColor: COLORS.gray,
+    marginVertical: SIZES.small,
+    padding: SIZES.small,
+    borderRadius: SIZES.xSmall / 2,
   },
   button: {
-    backgroundColor: "lightblue",
-    marginHorizontal: 150,
-    borderRadius: 15,
-    padding: 10,
-    marginVertical: 10,
+    backgroundColor: COLORS.tertiary,
+    marginHorizontal: SIZES.xxLarge,
+    borderRadius: SIZES.xSmall * 2,
+    padding: SIZES.xSmall / 4,
   },
+  buttonText: {
+    textAlign: "center",
+    fontSize: SIZES.large,
+    padding: SIZES.xSmall / 2,
+    color: "black",
+  },
+
+  // header: {
+  //   marginHorizontal: 17,
+  //   fontSize: 25,
+  //   fontWeight: "bold",
+  //   textAlign: "center",
+  //   marginVertical: 80,
+  // },
+  // input: {
+  //   borderWidth: 1,
+  //   borderRadius: 10,
+  //   padding: 5,
+  //   paddingVertical: 20,
+  //   marginVertical: 20,
+  //   marginHorizontal: 25,
+  //   fontSize: 17,
+  // },
+  // button: {
+  //   backgroundColor: "lightblue",
+  //   marginHorizontal: 150,
+  //   borderRadius: 15,
+  //   padding: 10,
+  //   marginVertical: 10,
+  // },
   image: {
     marginVertical: 20,
     alignItems: "center",
