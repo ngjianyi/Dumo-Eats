@@ -6,6 +6,16 @@ DumoEats is a mobile app which aims to help users adopt a healthier lifestyle. W
 
 https://expo.dev/preview/update?message=Final&updateRuntimeVersion=1.0.0&createdAt=2024-08-13T07%3A16%3A51.687Z&slug=exp&projectId=45c86e06-b0c3-478f-aee0-504df2d0fd70&group=89d2f574-65bf-40cf-9a7a-83543274b1d9
 
+## Screenshots
+
+Home screen
+
+![Home screen](Images/HomepageUI.png)
+
+Recipe recommendation screen
+
+![Recipe recommendation screen](Images/RecipesUI.png)
+
 ## Running the app locally
 
 1. Install dependencies for the project by entering this command:
