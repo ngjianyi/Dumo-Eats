@@ -61,7 +61,6 @@ export default function AddUsersScreen({ searchUser, setSearch }: Props) {
       {
         text: "OK",
         onPress: () => {
-          // setSearch(!searchUser);
           refreshContext?.setRefresh(!refreshContext.autoRefresh);
         },
       },

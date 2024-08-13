@@ -97,7 +97,7 @@ export default function CreatePostScreen({
       const storageRef = ref(STORAGE, "DumoEatsPosts/" + Date.now() + ".jpg");
       uploadBytes(storageRef, blob)
         .then((snapshot) => {
-          console.log("Uploaded a blob");
+          console.log("Uploaded a blob successfully");
         })
         .then((response) => {
           getDownloadURL(storageRef).then(async (dlURL) => {
@@ -110,16 +110,15 @@ export default function CreatePostScreen({
             const docSnap: DocumentSnapshot<DocumentData, DocumentData> =
               await getUserDocSnap();
             value.time = moment().format("LLL"); // June 19, 2024 11:22 AM
-            //check for whtehr its first post for necessary achievemtn
+            //check whether its first post for necessary achievement
             const firstTime: boolean = !docSnap.data()?.badges[2];
             const temp: boolean[] = docSnap.data()?.badges;
             if (firstTime) {
               temp[2] = true;
             }
 
-            //create a reference for doc that will point to Subcollection eg
+            //create a reference for doc that will point to Subcollection
             const id: string = "" + AUTH.currentUser?.uid;
-            // const subCollectionDocRef = doc(DATA_BASE, "Posts",id);
             const subCollectionDocRef = doc(DATA_BASE, "Posts", userName);
             const docSnapshot = await getDoc(subCollectionDocRef);
 
@@ -199,7 +198,7 @@ export default function CreatePostScreen({
             postRef: null,
             userRef: null,
           }}
-          //the val is initialValues after being updated with new values
+          //val is initialValues after being updated with new values
           onSubmit={(val, { resetForm }) => {
             onSubmitHandler(val);
             resetForm();
@@ -288,30 +287,6 @@ const styles = StyleSheet.create({
     padding: SIZES.xSmall / 2,
     color: "black",
   },
-
-  // header: {
-  //   marginHorizontal: 17,
-  //   fontSize: 25,
-  //   fontWeight: "bold",
-  //   textAlign: "center",
-  //   marginVertical: 80,
-  // },
-  // input: {
-  //   borderWidth: 1,
-  //   borderRadius: 10,
-  //   padding: 5,
-  //   paddingVertical: 20,
-  //   marginVertical: 20,
-  //   marginHorizontal: 25,
-  //   fontSize: 17,
-  // },
-  // button: {
-  //   backgroundColor: "lightblue",
-  //   marginHorizontal: 150,
-  //   borderRadius: 15,
-  //   padding: 10,
-  //   marginVertical: 10,
-  // },
   image: {
     marginVertical: 20,
     alignItems: "center",
