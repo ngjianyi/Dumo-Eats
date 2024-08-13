@@ -8,14 +8,9 @@ https://expo.dev/preview/update?message=Final&updateRuntimeVersion=1.0.0&created
 
 ## Screenshots
 
-Home screen
-
-<img src="Images/HomepageUI.png" alt="Home screen" width="180" height="390">
-
-Recipe recommendation screen
-
-<img src="Images/RecipesUI.png" alt="Recipe recommendation screen" width="180" height="390">
-
+| Home screen                                                                  | Recipe recommendation screen                                                                 |
+|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| <img src="Images/HomepageUI.png" alt="Home screen" width="180" height="390"> | <img src="Images/RecipesUI.png" alt="Recipe recommendation screen" width="180" height="390"> |
 
 ## Running the app locally
 
