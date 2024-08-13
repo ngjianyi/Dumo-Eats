@@ -53,7 +53,7 @@ export default function RecipeListScreen({ navigation }: any) {
           intolerances: intolerances.toString(),
           includeIngredients: includeIngredients.split(" ").toString(),
           excludeIngredients: excludeIngredients.split(" ").toString(),
-          number: 3,
+          number: 6,
         },
       })
       .then((response) => {
@@ -85,7 +85,11 @@ export default function RecipeListScreen({ navigation }: any) {
       </TouchableWithoutFeedback>
 
       {isLoading ? (
-        <ActivityIndicator style={styles.activity} size="large" />
+        <ActivityIndicator
+          style={styles.activity}
+          size="large"
+          color={COLORS.tertiary}
+        />
       ) : error ? (
         <Text style={styles.error}>Something went wrong</Text>
       ) : totalRecipes == 0 ? (

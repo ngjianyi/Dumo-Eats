@@ -101,7 +101,11 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
       {!loading ? (
-        <Feed posts={posts} getAllPosts={getAllPosts} />
+        posts.length > 0 ? (
+          <Feed posts={posts} getAllPosts={getAllPosts} />
+        ) : (
+          <Text style={styles.error}>No posts</Text>
+        )
       ) : (
         <ActivityIndicator size="large" color={COLORS.tertiary} />
       )}
@@ -152,5 +156,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blue,
     padding: SIZES.xSmall / 2,
     borderRadius: SIZES.large / 2,
+  },
+  error: {
+    textAlign: "center",
+    fontSize: SIZES.medium,
   },
 });
