@@ -113,6 +113,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
             autoCorrect={false}
             autoComplete="off"
             aria-label="Email"
+            textContentType="oneTimeCode"
           />
           <View style={{ justifyContent: "center" }}>
             <TextInput
@@ -128,6 +129,7 @@ export default function LoginScreen({ navigation }: PropsLogin) {
               autoCorrect={false}
               autoComplete="off"
               aria-label="Password"
+              textContentType="oneTimeCode"
             />
 
             <TouchableHighlight
