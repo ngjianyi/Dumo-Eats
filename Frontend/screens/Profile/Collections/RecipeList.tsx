@@ -28,7 +28,7 @@ export default function RecipeList() {
     }
 
     setIsLoading(true);
-    const KEY = "429fc2334b13424f9ab79a250d6d4a3c";
+    const KEY = process.env.EXPO_PUBLIC_API_KEY;
     const URL = "https://api.spoonacular.com/recipes/informationBulk";
     await axios
       .get(URL, {
