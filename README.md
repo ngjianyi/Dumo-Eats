@@ -24,8 +24,7 @@ npm install
 
 2. Enter Spoonacular API key as environment variable
 
-Create a `.env` file
-Input your API key as `EXPO_PUBLIC_API_KEY=YOUR_API_KEY`
+Create a `.env` file and add in your API key as `EXPO_PUBLIC_API_KEY=YOUR_API_KEY`
 
 3. Run the app in development mode by entering this command:
 
