@@ -12,17 +12,22 @@ DumoEats is a mobile app which aims to help users adopt a healthier lifestyle. W
 
 ## Running the app locally
 
-1. Install dependencies for the project by entering this command:
-
 ```bash
 cd Frontend
 ```
+
+1. Install dependencies for the project by entering this command:
 
 ```bash
 npm install
 ```
 
-2. Run the app in development mode by entering this command:
+2. Enter Spoonacular API key as environment variable
+
+Create a `.env` file
+Input your API key as `EXPO_PUBLIC_API_KEY=YOUR_API_KEY`
+
+3. Run the app in development mode by entering this command:
 
 ```bash
 npx expo start
